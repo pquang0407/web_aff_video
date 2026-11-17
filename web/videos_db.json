@@ -22,6 +22,18 @@
     ]
   },
   "videos": {
+    "dog_mukkbang": {
+      "id": "dog_mukkbang",
+      "title": "Cười xỉu với chú chó siêu đáng yêu ăn cơm cực ngon lành",
+      "duration": "00:05",
+      "views": "119.3K",
+      "likes": "22.7K",
+      "uploadDate": "Vừa xong",
+      "category": "🔥 ĐANG THỊNH HÀNH",
+      "videoUrl": "../storage/2_web_full/dog_mukkbang.mp4",
+      "posterUrl": "../storage/2_web_full/dog_mukkbang_poster.jpg",
+      "description": "Trời ơi chú chó đeo kính điệu đà ăn cơm nhìn mà tan chảy con tim. Biểu cảm quá đỗi dễ thương khiến ai xem cũng phải bật cười. Xem ngay trọn vẹn video tại link dưới bình luận nhé. #cute #funnydog #thucung #xuhuong"
+    },
     "dl_20261117_164538_7689117850883165461": {
       "id": "dl_20261117_164538_7689117850883165461",
       "title": "Nap 6 trieu vao app do den, thanh nien 2k5 nhan cai ket 5 nam tu",
@@ -108,15 +120,15 @@
     },
     "default": {
       "id": "default",
-      "title": "Nap 6 trieu vao app do den, thanh nien 2k5 nhan cai ket 5 nam tu",
-      "duration": "00:39",
-      "views": "194.0K",
-      "likes": "17.7K",
+      "title": "Cười xỉu với chú chó siêu đáng yêu ăn cơm cực ngon lành",
+      "duration": "00:05",
+      "views": "119.3K",
+      "likes": "22.7K",
       "uploadDate": "Vừa xong",
       "category": "🔥 ĐANG THỊNH HÀNH",
-      "videoUrl": "../storage/2_web_full/dl_20261117_164538_7689117850883165461.mp4",
-      "posterUrl": "../storage/2_web_full/dl_20261117_164538_7689117850883165461_poster.jpg",
-      "description": "Tu 6 trieu ban dau giao dich len ca ty dong roi cai ket dang cay cho thanh nien 2k5 la day. Xem ngay chi tiet vu an o link duoi binh luan nhe. #danhbac #phapluat #tintuc #xuhuong"
+      "videoUrl": "../storage/2_web_full/dog_mukkbang.mp4",
+      "posterUrl": "../storage/2_web_full/dog_mukkbang_poster.jpg",
+      "description": "Trời ơi chú chó đeo kính điệu đà ăn cơm nhìn mà tan chảy con tim. Biểu cảm quá đỗi dễ thương khiến ai xem cũng phải bật cười. Xem ngay trọn vẹn video tại link dưới bình luận nhé. #cute #funnydog #thucung #xuhuong"
     }
   },
   "deals": [
