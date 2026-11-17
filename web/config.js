@@ -26,6 +26,18 @@ const CONFIG = {
     ]
   },
   "videos": {
+    "sample_test_clip": {
+      "id": "sample_test_clip",
+      "title": "Cận cảnh bảng màu thử nghiệm phát sóng TV kinh điển và âm thanh đếm ngược",
+      "duration": "00:10",
+      "views": "300.3K",
+      "likes": "21.0K",
+      "uploadDate": "Vừa xong",
+      "category": "🔥 ĐANG THỊNH HÀNH",
+      "videoUrl": "../storage/2_web_full/sample_test_clip.mp4",
+      "posterUrl": "../storage/2_web_full/sample_test_clip_poster.jpg",
+      "description": "Khám phá lại bảng màu kiểm tra tín hiệu TV cổ điển cùng âm thanh đếm ngược quen thuộc. Xem ngay bản đầy đủ không che tại link dưới bình luận. #testcard #tvclassic #retro #khampha"
+    },
     "duck_mukkbang": {
       "id": "duck_mukkbang",
       "title": "Chú vịt ngộ nghĩnh ăn dưa hấu cực đáng yêu",
@@ -136,15 +148,15 @@ const CONFIG = {
     },
     "default": {
       "id": "default",
-      "title": "Chú vịt ngộ nghĩnh ăn dưa hấu cực đáng yêu",
-      "duration": "00:05",
-      "views": "150.7K",
-      "likes": "8.7K",
+      "title": "Cận cảnh bảng màu thử nghiệm phát sóng TV kinh điển và âm thanh đếm ngược",
+      "duration": "00:10",
+      "views": "300.3K",
+      "likes": "21.0K",
       "uploadDate": "Vừa xong",
       "category": "🔥 ĐANG THỊNH HÀNH",
-      "videoUrl": "../storage/2_web_full/duck_mukkbang.mp4",
-      "posterUrl": "../storage/2_web_full/duck_mukkbang_poster.jpg",
-      "description": "Trời ơi chú vịt gì mà vừa mập mạp vừa có quả đầu xoăn ăn dưa hấu cưng xỉu dọc xỉu ngang! Xem ngay khoảnh khắc siêu dễ thương này để xả stress nhé. #vitcon #cute #trending #giaitri. Xem trọn vẹn bản rõ nét tại link dưới bình luận nha!"
+      "videoUrl": "../storage/2_web_full/sample_test_clip.mp4",
+      "posterUrl": "../storage/2_web_full/sample_test_clip_poster.jpg",
+      "description": "Khám phá lại bảng màu kiểm tra tín hiệu TV cổ điển cùng âm thanh đếm ngược quen thuộc. Xem ngay bản đầy đủ không che tại link dưới bình luận. #testcard #tvclassic #retro #khampha"
     }
   },
   "deals": [
