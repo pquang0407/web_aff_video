@@ -22,6 +22,18 @@
     ]
   },
   "videos": {
+    "vid_TikTok_7663695826769808660": {
+      "id": "vid_TikTok_7663695826769808660",
+      "title": "Bất ngờ với quán lẩu rooftop view triệu đô ngắm toàn cảnh thành phố rực rỡ",
+      "duration": "00:07",
+      "views": "297.6K",
+      "likes": "9.3K",
+      "uploadDate": "Vừa xong",
+      "category": "🔥 ĐANG THỊNH HÀNH",
+      "videoUrl": "videos/vid_TikTok_7663695826769808660.mp4",
+      "posterUrl": "videos/vid_TikTok_7663695826769808660_poster.jpg",
+      "description": "Trải nghiệm ăn lẩu cực chill giữa không gian thượng lưu ngắm trọn thành phố lên đèn. Cảnh đẹp và món ăn ngon thế này ai mà cưỡng lại được. #LẩuRooftop #ReviewDuLịch #ĂnUống #CheckIn #XemFullVideoDướiBìnhLuận"
+    },
     "vid_TikTok_7708011729371876638": {
       "id": "vid_TikTok_7708011729371876638",
       "title": "Quán lẩu ngắm toàn cảnh thành phố cực chill về đêm",
@@ -48,15 +60,15 @@
     },
     "default": {
       "id": "default",
-      "title": "Quán lẩu ngắm toàn cảnh thành phố cực chill về đêm",
-      "duration": "00:08",
-      "views": "211.7K",
-      "likes": "24.6K",
+      "title": "Bất ngờ với quán lẩu rooftop view triệu đô ngắm toàn cảnh thành phố rực rỡ",
+      "duration": "00:07",
+      "views": "297.6K",
+      "likes": "9.3K",
       "uploadDate": "Vừa xong",
       "category": "🔥 ĐANG THỊNH HÀNH",
-      "videoUrl": "videos/vid_TikTok_7708011729371876638.mp4",
-      "posterUrl": "videos/vid_TikTok_7708011729371876638_poster.jpg",
-      "description": "Trải nghiệm ăn lẩu view rooftop ngắm trọn thành phố lung linh ánh đèn cực chill cùng người thương. Không gian lãng mạn và đồ ăn ngon hết nấc. Xem ngay bản đầy đủ tại link dưới bình luận nhé! #LẩuRooftop #CheckInThànhPhố #ChillCùngGấu #FoodReview"
+      "videoUrl": "videos/vid_TikTok_7663695826769808660.mp4",
+      "posterUrl": "videos/vid_TikTok_7663695826769808660_poster.jpg",
+      "description": "Trải nghiệm ăn lẩu cực chill giữa không gian thượng lưu ngắm trọn thành phố lên đèn. Cảnh đẹp và món ăn ngon thế này ai mà cưỡng lại được. #LẩuRooftop #ReviewDuLịch #ĂnUống #CheckIn #XemFullVideoDướiBìnhLuận"
     }
   },
   "deals": [
