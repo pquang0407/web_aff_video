@@ -26,6 +26,18 @@ const CONFIG = {
     ]
   },
   "videos": {
+    "cat_mukkbang": {
+      "id": "cat_mukkbang",
+      "title": "Mèo cam đeo kính cực ngầu ăn cá nướng giòn rụm",
+      "duration": "00:05",
+      "views": "240.8K",
+      "likes": "22.8K",
+      "uploadDate": "Vừa xong",
+      "category": "🔥 ĐANG THỊNH HÀNH",
+      "videoUrl": "../storage/2_web_full/cat_mukkbang.mp4",
+      "posterUrl": "../storage/2_web_full/cat_mukkbang_poster.jpg",
+      "description": "Trời ơi chú mèo cam đeo kính ăn cá nướng nhìn mà mê chữ ê chữ dính luôn! Biểu cảm phê pha lúc ăn xong quá là hài hước và đáng yêu. Xem ngay bản full không che tại link dưới bình luận nhé! #meocam #thucungdangyeu #canuong #vuinhon #viral"
+    },
     "animal_live_show": {
       "id": "animal_live_show",
       "title": "Bộ ba thú cưng siêu cute diện đồ đi biển cực chất",
@@ -40,15 +52,15 @@ const CONFIG = {
     },
     "default": {
       "id": "default",
-      "title": "Bộ ba thú cưng siêu cute diện đồ đi biển cực chất",
-      "duration": "00:10",
-      "views": "192.0K",
-      "likes": "16.4K",
+      "title": "Mèo cam đeo kính cực ngầu ăn cá nướng giòn rụm",
+      "duration": "00:05",
+      "views": "240.8K",
+      "likes": "22.8K",
       "uploadDate": "Vừa xong",
       "category": "🔥 ĐANG THỊNH HÀNH",
-      "videoUrl": "../storage/2_web_full/animal_live_show.mp4",
-      "posterUrl": "../storage/2_web_full/animal_live_show_poster.jpg",
-      "description": "Xem ngay bộ ba thú cưng cực đáng yêu diện đồ đi biển cực ngầu. Nhìn là mê ngay không thể rời mắt. #thucung #cute #xuhuong #fyp"
+      "videoUrl": "../storage/2_web_full/cat_mukkbang.mp4",
+      "posterUrl": "../storage/2_web_full/cat_mukkbang_poster.jpg",
+      "description": "Trời ơi chú mèo cam đeo kính ăn cá nướng nhìn mà mê chữ ê chữ dính luôn! Biểu cảm phê pha lúc ăn xong quá là hài hước và đáng yêu. Xem ngay bản full không che tại link dưới bình luận nhé! #meocam #thucungdangyeu #canuong #vuinhon #viral"
     }
   },
   "deals": [
