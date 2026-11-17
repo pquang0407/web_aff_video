@@ -157,11 +157,14 @@ def download_from_url(url: str, max_downloads: int = 1, auto_trigger_pipeline: b
         "format": "bestvideo[ext=mp4]+bestaudio[ext=m4a]/best[ext=mp4]/best",
         "merge_output_format": "mp4",
         "max_downloads": max_downloads,
-        "download_archive": str(ARCHIVE_FILE_PATH),
         "ignoreerrors": True,
         "no_warnings": True,
         "quiet": False,
     }
+
+    # Chỉ ghi log archive khi cào quét hàng loạt từ kênh/Page để tránh tải lặp
+    if max_downloads > 1:
+        ydl_opts["download_archive"] = str(ARCHIVE_FILE_PATH)
 
     if cookie_file and os.path.exists(cookie_file):
         ydl_opts["cookiefile"] = cookie_file
@@ -184,6 +187,22 @@ def download_from_url(url: str, max_downloads: int = 1, auto_trigger_pipeline: b
 
     after_files = set(RAW_STORAGE_DIR.glob("*.mp4"))
     new_files = list(after_files - before_files)
+
+    # Nếu new_files rỗng (do file video đã tải trước đó trong khoang),
+    # tự động tái sử dụng file đã có để tiếp tục đẩy vào AI Pipeline!
+    if not new_files and max_downloads == 1:
+        try:
+            with yt_dlp.YoutubeDL({"quiet": True, "no_warnings": True}) as ydl:
+                info = ydl.extract_info(url, download=False)
+                if info:
+                    vid_id = str(info.get("id", ""))
+                    matched = [f for f in RAW_STORAGE_DIR.glob("*.mp4") if vid_id and vid_id in f.name]
+                    if matched:
+                        existing_file = matched[0]
+                        logger.info(f"Phát hiện video đã có sẵn trong khoang thô: {existing_file.name} -> Đẩy vào AI Pipeline!")
+                        new_files.append(existing_file)
+        except Exception as check_err:
+            logger.debug(f"Không thể kiểm tra file có sẵn: {check_err}")
 
     for nf in new_files:
         file_size_mb = round(nf.stat().st_size / (1024 * 1024), 2)
