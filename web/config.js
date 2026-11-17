@@ -26,6 +26,18 @@ const CONFIG = {
     ]
   },
   "videos": {
+    "dl_20261117_161728_7707973373313305870": {
+      "id": "dl_20261117_161728_7707973373313305870",
+      "title": "Quán nướng view hoàng hôn triệu đô đẹp ngất ngây",
+      "duration": "00:08",
+      "views": "309.4K",
+      "likes": "14.3K",
+      "uploadDate": "Vừa xong",
+      "category": "🔥 ĐANG THỊNH HÀNH",
+      "videoUrl": "../storage/2_web_full/dl_20261117_161728_7707973373313305870.mp4",
+      "posterUrl": "../storage/2_web_full/dl_20261117_161728_7707973373313305870_poster.jpg",
+      "description": "Trải nghiệm ăn nướng ngắm trọn hoàng hôn siêu đỉnh giữa lòng thành phố. Cảnh đẹp và đồ ăn ngon thế này thì ai mà cưỡng lại được. #HoangHon #QuanNuong #CheckIn #Viral #ReviewDuLich Xem trọn vẹn video tại link dưới bình luận nhé!"
+    },
     "dance": {
       "id": "dance",
       "title": "Bộ ba thú cưng siêu dễ thương nhảy múa cực cuốn hút",
@@ -76,15 +88,15 @@ const CONFIG = {
     },
     "default": {
       "id": "default",
-      "title": "Bộ ba thú cưng siêu dễ thương nhảy múa cực cuốn hút",
-      "duration": "00:10",
-      "views": "88.6K",
-      "likes": "7.5K",
+      "title": "Quán nướng view hoàng hôn triệu đô đẹp ngất ngây",
+      "duration": "00:08",
+      "views": "309.4K",
+      "likes": "14.3K",
       "uploadDate": "Vừa xong",
       "category": "🔥 ĐANG THỊNH HÀNH",
-      "videoUrl": "../storage/2_web_full/dance.mp4",
-      "posterUrl": "../storage/2_web_full/dance_poster.jpg",
-      "description": "Xem ngay bộ ba siêu đáng yêu này nhún nhảy cực chất. Trọn vẹn video thú vị này đang chờ bạn khám phá. #thucung #dangyeu #nhaymua #xuhuong #fyp"
+      "videoUrl": "../storage/2_web_full/dl_20261117_161728_7707973373313305870.mp4",
+      "posterUrl": "../storage/2_web_full/dl_20261117_161728_7707973373313305870_poster.jpg",
+      "description": "Trải nghiệm ăn nướng ngắm trọn hoàng hôn siêu đỉnh giữa lòng thành phố. Cảnh đẹp và đồ ăn ngon thế này thì ai mà cưỡng lại được. #HoangHon #QuanNuong #CheckIn #Viral #ReviewDuLich Xem trọn vẹn video tại link dưới bình luận nhé!"
     }
   },
   "deals": [
