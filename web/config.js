@@ -1,8 +1,6 @@
 /**
  * CONFIG.JS - Được sinh tự động bởi Module 3 (Web Publisher)
- * Tích hợp toàn bộ Deal, Voucher và Tracking Aff tho-hoan-tien
- * Email liên kết: phuquang04072001@gmail.com (Tracking: vid_30a2abe6e6)
- * Cập nhật lúc: 2026-11-17 17:45:31 (Chu kỳ 15 phút/lần)
+ * Không cần chỉnh sửa thủ công khi thêm video mới.
  */
 const CONFIG = {
   "affiliate": {
@@ -27,7 +25,32 @@ const CONFIG = {
       "#FullHD"
     ]
   },
-  "videos": {},
+  "videos": {
+    "animal_live_show": {
+      "id": "animal_live_show",
+      "title": "Bộ ba thú cưng siêu cute diện đồ đi biển cực chất",
+      "duration": "00:10",
+      "views": "192.0K",
+      "likes": "16.4K",
+      "uploadDate": "Vừa xong",
+      "category": "🔥 ĐANG THỊNH HÀNH",
+      "videoUrl": "../storage/2_web_full/animal_live_show.mp4",
+      "posterUrl": "../storage/2_web_full/animal_live_show_poster.jpg",
+      "description": "Xem ngay bộ ba thú cưng cực đáng yêu diện đồ đi biển cực ngầu. Nhìn là mê ngay không thể rời mắt. #thucung #cute #xuhuong #fyp"
+    },
+    "default": {
+      "id": "default",
+      "title": "Bộ ba thú cưng siêu cute diện đồ đi biển cực chất",
+      "duration": "00:10",
+      "views": "192.0K",
+      "likes": "16.4K",
+      "uploadDate": "Vừa xong",
+      "category": "🔥 ĐANG THỊNH HÀNH",
+      "videoUrl": "../storage/2_web_full/animal_live_show.mp4",
+      "posterUrl": "../storage/2_web_full/animal_live_show_poster.jpg",
+      "description": "Xem ngay bộ ba thú cưng cực đáng yêu diện đồ đi biển cực ngầu. Nhìn là mê ngay không thể rời mắt. #thucung #cute #xuhuong #fyp"
+    }
+  },
   "deals": [
     {
       "title": "Voucher Giảm Tới 200K Toàn Sàn Shopee",
