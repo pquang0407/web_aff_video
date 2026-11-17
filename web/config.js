@@ -26,6 +26,18 @@ const CONFIG = {
     ]
   },
   "videos": {
+    "dl_20261117_164538_7689117850883165461": {
+      "id": "dl_20261117_164538_7689117850883165461",
+      "title": "Nap 6 trieu vao app do den, thanh nien 2k5 nhan cai ket 5 nam tu",
+      "duration": "00:39",
+      "views": "194.0K",
+      "likes": "17.7K",
+      "uploadDate": "Vừa xong",
+      "category": "🔥 ĐANG THỊNH HÀNH",
+      "videoUrl": "../storage/2_web_full/dl_20261117_164538_7689117850883165461.mp4",
+      "posterUrl": "../storage/2_web_full/dl_20261117_164538_7689117850883165461_poster.jpg",
+      "description": "Tu 6 trieu ban dau giao dich len ca ty dong roi cai ket dang cay cho thanh nien 2k5 la day. Xem ngay chi tiet vu an o link duoi binh luan nhe. #danhbac #phapluat #tintuc #xuhuong"
+    },
     "dl_20261117_162009_7708668189600730388": {
       "id": "dl_20261117_162009_7708668189600730388",
       "title": "T1 Oner Viết Thư Gây Xúc Động Mạnh: Lời Nhắn Gửi Đến Ai?",
@@ -100,15 +112,15 @@ const CONFIG = {
     },
     "default": {
       "id": "default",
-      "title": "T1 Oner Viết Thư Gây Xúc Động Mạnh: Lời Nhắn Gửi Đến Ai?",
-      "duration": "00:27",
-      "views": "94.7K",
-      "likes": "16.6K",
+      "title": "Nap 6 trieu vao app do den, thanh nien 2k5 nhan cai ket 5 nam tu",
+      "duration": "00:39",
+      "views": "194.0K",
+      "likes": "17.7K",
       "uploadDate": "Vừa xong",
       "category": "🔥 ĐANG THỊNH HÀNH",
-      "videoUrl": "../storage/2_web_full/dl_20261117_162009_7708668189600730388.mp4",
-      "posterUrl": "../storage/2_web_full/dl_20261117_162009_7708668189600730388_poster.jpg",
-      "description": "Khoảnh khắc đầy cảm xúc của Oner T1 viết thư tay và bước đi khiến fan nghẹn ngào. Đằng sau những bước chân đó là câu chuyện gì chưa được kể? Xem ngay toàn bộ video để hiểu rõ hơn. #T1Oner #Esports #LPL #LCK #LienMinhHuyenThoai"
+      "videoUrl": "../storage/2_web_full/dl_20261117_164538_7689117850883165461.mp4",
+      "posterUrl": "../storage/2_web_full/dl_20261117_164538_7689117850883165461_poster.jpg",
+      "description": "Tu 6 trieu ban dau giao dich len ca ty dong roi cai ket dang cay cho thanh nien 2k5 la day. Xem ngay chi tiet vu an o link duoi binh luan nhe. #danhbac #phapluat #tintuc #xuhuong"
     }
   },
   "deals": [
