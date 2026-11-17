@@ -26,6 +26,18 @@ const CONFIG = {
     ]
   },
   "videos": {
+    "duck_mukkbang": {
+      "id": "duck_mukkbang",
+      "title": "Chú vịt ngộ nghĩnh ăn dưa hấu cực đáng yêu",
+      "duration": "00:05",
+      "views": "150.7K",
+      "likes": "8.7K",
+      "uploadDate": "Vừa xong",
+      "category": "🔥 ĐANG THỊNH HÀNH",
+      "videoUrl": "../storage/2_web_full/duck_mukkbang.mp4",
+      "posterUrl": "../storage/2_web_full/duck_mukkbang_poster.jpg",
+      "description": "Trời ơi chú vịt gì mà vừa mập mạp vừa có quả đầu xoăn ăn dưa hấu cưng xỉu dọc xỉu ngang! Xem ngay khoảnh khắc siêu dễ thương này để xả stress nhé. #vitcon #cute #trending #giaitri. Xem trọn vẹn bản rõ nét tại link dưới bình luận nha!"
+    },
     "dog_mukkbang": {
       "id": "dog_mukkbang",
       "title": "Cười xỉu với chú chó siêu đáng yêu ăn cơm cực ngon lành",
@@ -124,15 +136,15 @@ const CONFIG = {
     },
     "default": {
       "id": "default",
-      "title": "Cười xỉu với chú chó siêu đáng yêu ăn cơm cực ngon lành",
+      "title": "Chú vịt ngộ nghĩnh ăn dưa hấu cực đáng yêu",
       "duration": "00:05",
-      "views": "119.3K",
-      "likes": "22.7K",
+      "views": "150.7K",
+      "likes": "8.7K",
       "uploadDate": "Vừa xong",
       "category": "🔥 ĐANG THỊNH HÀNH",
-      "videoUrl": "../storage/2_web_full/dog_mukkbang.mp4",
-      "posterUrl": "../storage/2_web_full/dog_mukkbang_poster.jpg",
-      "description": "Trời ơi chú chó đeo kính điệu đà ăn cơm nhìn mà tan chảy con tim. Biểu cảm quá đỗi dễ thương khiến ai xem cũng phải bật cười. Xem ngay trọn vẹn video tại link dưới bình luận nhé. #cute #funnydog #thucung #xuhuong"
+      "videoUrl": "../storage/2_web_full/duck_mukkbang.mp4",
+      "posterUrl": "../storage/2_web_full/duck_mukkbang_poster.jpg",
+      "description": "Trời ơi chú vịt gì mà vừa mập mạp vừa có quả đầu xoăn ăn dưa hấu cưng xỉu dọc xỉu ngang! Xem ngay khoảnh khắc siêu dễ thương này để xả stress nhé. #vitcon #cute #trending #giaitri. Xem trọn vẹn bản rõ nét tại link dưới bình luận nha!"
     }
   },
   "deals": [
