@@ -45,8 +45,13 @@ document.addEventListener("DOMContentLoaded", function () {
 
   function getSmartPoster(vid) {
     if (!vid) return SMART_THUMBNAILS.default;
-    if (vid.posterUrl && (vid.posterUrl.startsWith("http://") || vid.posterUrl.startsWith("https://"))) {
-      return vid.posterUrl;
+    if (vid.posterUrl) {
+      let p = vid.posterUrl.trim();
+      if (p.startsWith("http://") || p.startsWith("https://")) return p;
+      if (p.startsWith("../storage/2_web_full/")) {
+        p = "videos/" + p.replace("../storage/2_web_full/", "");
+      }
+      return p;
     }
     const text = `${vid.id || ""} ${vid.title || ""} ${vid.description || ""}`.toLowerCase();
     if (text.includes("mèo") || text.includes("cat") || text.includes("mukbang")) return SMART_THUMBNAILS.pets;
