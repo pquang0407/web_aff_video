@@ -145,6 +145,9 @@ def process_single_video(input_path: Path, video_id: Optional[str] = None) -> Op
     logger.info(f"• Tiêu đề Web: {analysis['title']}")
     logger.info("--------------------------------------------------")
 
+    # Tự động xuất bản ngay lên Web Player (Module 3) & Git Push
+    trigger_web_publisher()
+
     return metadata
 
 def scan_raw_folder():
