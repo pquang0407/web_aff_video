@@ -90,7 +90,28 @@ document.addEventListener("DOMContentLoaded", function () {
         videoData = CONFIG.videos[videoKeys[0]];
       }
     }
-    if (!videoData) return;
+    if (!videoData) {
+      if (videoTitle) videoTitle.textContent = "🎬 Sẵn sàng phát sóng clip mới";
+      if (videoDesc) videoDesc.textContent = "Hệ thống đang ở trạng thái sạch. Hãy gửi video vào Telegram Bot hoặc Web Admin để tự động xử lý và phát sóng tại đây!";
+      if (videoCategory) videoCategory.textContent = "⚡ MEDIA STREAM HUB";
+      if (videoViews) videoViews.textContent = "0 lượt xem";
+      if (videoDate) videoDate.textContent = "Chờ nạp clip";
+      if (videoDuration) videoDuration.textContent = "--:--";
+      if (videoLikes) videoLikes.textContent = "0";
+      if (dockLikesCount) dockLikesCount.textContent = "0";
+
+      const emptyPoster = "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=800&auto=format&fit=crop&q=80";
+      if (playerOverlay) {
+        playerOverlay.style.backgroundImage = `linear-gradient(rgba(10,12,18,0.7), rgba(10,12,18,0.9)), url('${emptyPoster}')`;
+        playerOverlay.style.display = "flex";
+      }
+      if (stageAmbientBg) {
+        stageAmbientBg.style.backgroundImage = `url('${emptyPoster}')`;
+      }
+      renderSuggestedVideos();
+      renderTrendingSidebar();
+      return;
+    }
     currentVideoId = (videoData.id && videoData.id !== "default") ? videoData.id : (videoKeys[0] || videoId);
 
     if (videoTitle) videoTitle.textContent = videoData.title;
@@ -226,6 +247,24 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // 3. Tính toán Phân trang
     const totalClips = filteredKeys.length;
+
+    if (totalClips === 0) {
+      suggestedGrid.innerHTML = `
+        <div style="grid-column: 1 / -1; padding: 48px 20px; text-align: center; background: rgba(255,255,255,0.02); border: 1px dashed rgba(255,255,255,0.12); border-radius: 16px; margin: 10px 0;">
+          <div style="font-size: 36px; margin-bottom: 10px;">🎬</div>
+          <h3 style="font-size: 16px; font-weight: 600; color: #fff; margin-bottom: 6px;">Kho video đang sẵn sàng</h3>
+          <p style="font-size: 13px; color: var(--text-muted); max-width: 440px; margin: 0 auto;">Chưa có clip nào trong kho phát sóng. Hãy gửi video vào Telegram Bot hoặc Web Admin để tự động xử lý và hiển thị tại đây!</p>
+        </div>
+      `;
+      const totalClipsBadge = document.getElementById("totalClipsBadge");
+      const paginationStatus = document.getElementById("paginationStatus");
+      if (totalClipsBadge) totalClipsBadge.textContent = "0 Clip";
+      if (paginationStatus) paginationStatus.textContent = "Trang 0 / 0";
+      const bar = document.getElementById("paginationBar");
+      if (bar) bar.innerHTML = "";
+      return;
+    }
+
     const totalPages = Math.max(1, Math.ceil(totalClips / PAGE_SIZE));
     if (currentPage > totalPages) currentPage = totalPages;
 
@@ -357,6 +396,16 @@ document.addEventListener("DOMContentLoaded", function () {
       if (vid.videoUrl) seenUrls.add(vid.videoUrl);
       return true;
     });
+
+    if (uniqueKeys.length === 0) {
+      trendingList.innerHTML = `
+        <div style="padding: 30px 16px; text-align: center; color: var(--text-muted); font-size: 13px; background: rgba(255,255,255,0.02); border-radius: 12px; border: 1px dashed rgba(255,255,255,0.1);">
+          <div style="font-size: 26px; margin-bottom: 8px;">🔥</div>
+          <div>Bảng xếp hạng 24h đang chờ clip mới được nạp vào.</div>
+        </div>
+      `;
+      return;
+    }
 
     uniqueKeys.forEach((key, index) => {
       const vid = CONFIG.videos[key];
