@@ -26,6 +26,18 @@ const CONFIG = {
     ]
   },
   "videos": {
+    "dance": {
+      "id": "dance",
+      "title": "Bộ ba thú cưng siêu dễ thương nhảy múa cực cuốn hút",
+      "duration": "00:10",
+      "views": "88.6K",
+      "likes": "7.5K",
+      "uploadDate": "Vừa xong",
+      "category": "🔥 ĐANG THỊNH HÀNH",
+      "videoUrl": "../storage/2_web_full/dance.mp4",
+      "posterUrl": "../storage/2_web_full/dance_poster.jpg",
+      "description": "Xem ngay bộ ba siêu đáng yêu này nhún nhảy cực chất. Trọn vẹn video thú vị này đang chờ bạn khám phá. #thucung #dangyeu #nhaymua #xuhuong #fyp"
+    },
     "chao_co": {
       "id": "chao_co",
       "title": "Bộ ba thú cưng siêu ngầu tạo dáng cực chất",
@@ -64,15 +76,15 @@ const CONFIG = {
     },
     "default": {
       "id": "default",
-      "title": "Bộ ba thú cưng siêu ngầu tạo dáng cực chất",
-      "duration": "00:05",
-      "views": "314.3K",
-      "likes": "22.4K",
+      "title": "Bộ ba thú cưng siêu dễ thương nhảy múa cực cuốn hút",
+      "duration": "00:10",
+      "views": "88.6K",
+      "likes": "7.5K",
       "uploadDate": "Vừa xong",
       "category": "🔥 ĐANG THỊNH HÀNH",
-      "videoUrl": "../storage/2_web_full/chao_co.mp4",
-      "posterUrl": "../storage/2_web_full/chao_co_poster.jpg",
-      "description": "Trời ơi tin được không bộ ba thú cưng diện áo hoa kính mát cực ngầu đang khiến cộng đồng mạng đứng ngồi không yên. Khoảnh khắc cực kỳ đáng yêu này chắc chắn sẽ làm bạn tan chảy ngay lập tức. #thucung #dangyeu #xuhuong #trend #viral. Xem trọn vẹn tại link dưới bình luận nhé!"
+      "videoUrl": "../storage/2_web_full/dance.mp4",
+      "posterUrl": "../storage/2_web_full/dance_poster.jpg",
+      "description": "Xem ngay bộ ba siêu đáng yêu này nhún nhảy cực chất. Trọn vẹn video thú vị này đang chờ bạn khám phá. #thucung #dangyeu #nhaymua #xuhuong #fyp"
     }
   },
   "deals": [
