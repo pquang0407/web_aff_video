@@ -128,6 +128,32 @@ def prepare_candidate_urls(url: str) -> tuple[list, int]:
     return [url], 1
 
 
+def download_tiktok_direct(url: str) -> Path | None:
+    """Tải video TikTok trực tiếp qua API TikWM không watermark - 100% không bị chặn IP Cloud"""
+    try:
+        import urllib.request
+        api_url = f"https://www.tikwm.com/api/?url={url}"
+        req = urllib.request.Request(api_url, headers={"User-Agent": "Mozilla/5.0"})
+        with urllib.request.urlopen(req, timeout=15) as resp:
+            data = json.loads(resp.read().decode("utf-8"))
+
+        if data.get("code") == 0 and data.get("data"):
+            d = data["data"]
+            vid_id = str(d.get("id") or int(datetime.now().timestamp()))
+            play_url = d.get("play") or d.get("wmplay")
+            if play_url:
+                target_file = RAW_STORAGE_DIR / f"vid_TikTok_{vid_id}.mp4"
+                v_req = urllib.request.Request(play_url, headers={"User-Agent": "Mozilla/5.0"})
+                with urllib.request.urlopen(v_req, timeout=30) as v_resp:
+                    target_file.write_bytes(v_resp.read())
+                if target_file.exists() and target_file.stat().st_size > 10000:
+                    logger.info(f"✅ Tải thành công video TikTok qua TikWM: {target_file.name}")
+                    return target_file
+    except Exception as e:
+        logger.warning(f"Lỗi tải TikTok qua TikWM API: {e}")
+    return None
+
+
 def download_from_url(url: str, max_downloads: int = 1, auto_trigger_pipeline: bool = True) -> list:
     """
     Tải video tự động từ bất kỳ liên kết nào:
@@ -188,7 +214,13 @@ def download_from_url(url: str, max_downloads: int = 1, auto_trigger_pipeline: b
     after_files = set(RAW_STORAGE_DIR.glob("*.mp4"))
     new_files = list(after_files - before_files)
 
-    # Nếu new_files rỗng (do file video đã tải trước đó trong khoang),
+    # Nếu new_files rỗng, thử fallback trực tiếp qua API TikWM đối với TikTok
+    if not new_files and any(k in url.lower() for k in ["tiktok.com", "vt.tiktok", "vm.tiktok"]):
+        direct_file = download_tiktok_direct(url)
+        if direct_file:
+            new_files.append(direct_file)
+
+    # Nếu new_files vẫn rỗng (do file video đã tải trước đó trong khoang),
     # tự động tái sử dụng file đã có để tiếp tục đẩy vào AI Pipeline!
     if not new_files and max_downloads == 1:
         try:
