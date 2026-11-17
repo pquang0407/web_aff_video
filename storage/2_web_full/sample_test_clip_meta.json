@@ -16,5 +16,5 @@
   "published_at": "2026-11-17T16:45:14.916634",
   "web_video_url": "../storage/2_web_full/sample_test_clip.mp4",
   "web_poster_url": "../storage/2_web_full/sample_test_clip_poster.jpg",
-  "target_web_url": "https://zento-web-five.vercel.app/?v=sample_test_clip"
+  "target_web_url": "https://webaffvideo-web.vercel.app/?v=sample_test_clip"
 }

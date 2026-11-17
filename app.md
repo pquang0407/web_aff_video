@@ -89,7 +89,7 @@ D:\web_aff\
 1. **Trên Facebook Fanpage (`fb_service.py`):**
    * Tải video Teaser (`_teaser.mp4`) kèm `social_caption` lên Fanpage qua Graph API `/videos`.
    * Ngay khi nhận được `post_id`, tự động gọi `/comments` để bình luận:
-     `👉 Xem trọn vẹn bản Full HD không che tại đây: https://zento-web-five.vercel.app/?v=<id>`
+     `👉 Xem trọn vẹn bản Full HD không che tại đây: https://webaffvideo-web.vercel.app/?v=<id>`
 2. **Trên Meta Threads (`threads_service.py`):**
    * Tạo bài đăng Threads kèm video/caption.
    * Tự động tạo bình luận trả lời (`reply_to_id`) ngay dưới bài Threads vừa đăng chứa link Web Player.
@@ -260,4 +260,4 @@ Hệ thống hỗ trợ nạp video tự động từ bất kỳ liên kết nà
 * Chạy kiểm thử `test_social_poster.py` đạt **100% PASS cả 3 Test Cases**:
   * **Test 1:** Kết nối thành công Cookie (`UID: 100007435262523`) & nạp đủ 5 Fanpage.
   * **Test 2:** Nạp thành công 9 video đã xuất bản vào Hàng đợi `Social Queue`.
-  * **Test 3:** Đăng thử nghiệm thành công video `animal_live_show` lên Fanpage `MicroFeast` và `Threads`, tự động thả comment link `https://zento-web-five.vercel.app/?v=animal_live_show` ngay dưới bài đăng!
+  * **Test 3:** Đăng thử nghiệm thành công video `animal_live_show` lên Fanpage `MicroFeast` và `Threads`, tự động thả comment link `https://webaffvideo-web.vercel.app/?v=animal_live_show` ngay dưới bài đăng!

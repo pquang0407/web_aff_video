@@ -490,7 +490,7 @@
           badgeText = `⏰ HẸN GIỜ: ${item.scheduled_at.replace("T", " ")}`;
         }
 
-        const targetUrl = item.target_web_url || `https://zento-web-five.vercel.app/?v=${item.id}`;
+        const targetUrl = item.target_web_url && !item.target_web_url.includes("zento-web-five") ? item.target_web_url : `https://webaffvideo-web.vercel.app/?v=${item.id}`;
         return `
           <div class="queue-item">
             <div class="queue-info">

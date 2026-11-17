@@ -72,7 +72,10 @@ def post_video_to_social(
         teaser_path = Path(meta.get("full_video_path", config.FULL_DIR / f"{video_id}.mp4"))
 
     caption = (custom_caption or meta.get("social_caption") or meta.get("title") or "").strip()
-    target_web_url = meta.get("target_web_url") or f"https://zento-web-five.vercel.app/?v={video_id}"
+    base_web_url = os.getenv("WEB_BASE_URL", "https://webaffvideo-web.vercel.app").rstrip("/")
+    target_web_url = meta.get("target_web_url") or f"{base_web_url}/?v={video_id}"
+    if "zento-web-five" in target_web_url:
+        target_web_url = f"{base_web_url}/?v={video_id}"
 
     sched_cfg = config.get_scheduler_config()
     cmt_template = sched_cfg.get("comment_template", "👉 Xem trọn vẹn bản Full HD không che tại đây: {url}")
