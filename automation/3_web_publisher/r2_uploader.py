@@ -6,6 +6,7 @@ Hỗ trợ 2 chế độ:
 """
 
 import logging
+import shutil
 from pathlib import Path
 from typing import Tuple
 
@@ -25,10 +26,25 @@ def upload_media_pair(
     Trả về bộ (video_url, poster_url) tương ứng với chế độ 'local' hoặc 'cloud_r2'
     """
     if mode == "local":
-        video_url = f"../storage/2_web_full/{video_path.name}"
-        poster_url = f"../storage/2_web_full/{poster_path.name}"
-        logger.info(f"[LOCAL MODE] Gán đường dẫn trực tiếp: {video_url}")
-        return video_url, poster_url
+        # Tự động sao chép sang web/videos/ để Vercel / Web Player phục vụ trực tiếp
+        try:
+            web_videos_dir = config.WEB_DIR / "videos"
+            web_videos_dir.mkdir(parents=True, exist_ok=True)
+            target_v = web_videos_dir / video_path.name
+            target_p = web_videos_dir / poster_path.name
+            if video_path.exists() and not target_v.exists():
+                shutil.copy2(video_path, target_v)
+            if poster_path.exists() and not target_p.exists():
+                shutil.copy2(poster_path, target_p)
+            video_url = f"videos/{video_path.name}"
+            poster_url = f"videos/{poster_path.name}" if target_p.exists() else f"../storage/2_web_full/{poster_path.name}"
+            logger.info(f"[WEB SERVE MODE] Đã chuẩn bị file video cho Web: {video_url}")
+            return video_url, poster_url
+        except Exception as copy_err:
+            logger.warning(f"Lỗi sao chép video vào web/videos/: {copy_err}")
+            video_url = f"../storage/2_web_full/{video_path.name}"
+            poster_url = f"../storage/2_web_full/{poster_path.name}"
+            return video_url, poster_url
 
     # Chế độ CLOUD R2
     video_key = f"videos/{video_path.name}"

@@ -134,9 +134,11 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     if (videoElement) {
-      videoElement.src = (videoData.videoUrl && (videoData.videoUrl.startsWith("http") || !videoData.videoUrl.includes("../storage")))
-        ? videoData.videoUrl
-        : "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4";
+      let vUrl = (videoData.videoUrl || "").trim();
+      if (vUrl.startsWith("../storage/2_web_full/")) {
+        vUrl = "videos/" + vUrl.replace("../storage/2_web_full/", "");
+      }
+      videoElement.src = vUrl || "https://interactive-examples.mdn.mozilla.net/media/cc0-videos/flower.mp4";
       videoElement.poster = smartPoster;
       videoElement.classList.remove("active");
     }
