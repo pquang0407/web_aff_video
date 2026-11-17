@@ -32,6 +32,52 @@ document.addEventListener("DOMContentLoaded", function () {
   // Lọc danh sách keys bỏ qua 'default' để tránh nhân đôi video đầu tiên
   const videoKeys = Object.keys(CONFIG.videos || {}).filter(k => k !== "default");
 
+  // BỘ ẢNH POSTER ĐẸP MẮT (CHỐNG LỖI 404 KHI DEPLOY VERCEL / CLOUD)
+  const SMART_THUMBNAILS = {
+    news: "https://images.unsplash.com/photo-1585829365295-ab7cd400c167?w=600&auto=format&fit=crop&q=80",
+    pets: "https://images.unsplash.com/photo-1514888286974-6c03e2ca1dba?w=600&auto=format&fit=crop&q=80",
+    dogs: "https://images.unsplash.com/photo-1543466835-00a7907e9de1?w=600&auto=format&fit=crop&q=80",
+    food: "https://images.unsplash.com/photo-1555396273-367ea4eb4db5?w=600&auto=format&fit=crop&q=80",
+    gaming: "https://images.unsplash.com/photo-1542751371-adc38448a05e?w=600&auto=format&fit=crop&q=80",
+    dance: "https://images.unsplash.com/photo-1508700115892-45ecd05ae2ad?w=600&auto=format&fit=crop&q=80",
+    default: "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=600&auto=format&fit=crop&q=80"
+  };
+
+  function getSmartPoster(vid) {
+    if (!vid) return SMART_THUMBNAILS.default;
+    if (vid.posterUrl && (vid.posterUrl.startsWith("http://") || vid.posterUrl.startsWith("https://"))) {
+      return vid.posterUrl;
+    }
+    const text = `${vid.id || ""} ${vid.title || ""} ${vid.description || ""}`.toLowerCase();
+    if (text.includes("mèo") || text.includes("cat") || text.includes("mukbang")) return SMART_THUMBNAILS.pets;
+    if (text.includes("chó") || text.includes("thú cưng") || text.includes("đi biển") || text.includes("animal")) return SMART_THUMBNAILS.dogs;
+    if (text.includes("nạp") || text.includes("tù") || text.includes("pháp luật") || text.includes("tin tức") || text.includes("vụ án") || text.includes("đỏ đen")) return SMART_THUMBNAILS.news;
+    if (text.includes("nướng") || text.includes("hoàng hôn") || text.includes("chill") || text.includes("ẩm thực")) return SMART_THUMBNAILS.food;
+    if (text.includes("t1") || text.includes("oner") || text.includes("gaming") || text.includes("lck")) return SMART_THUMBNAILS.gaming;
+    if (text.includes("nhảy") || text.includes("dance") || text.includes("múa")) return SMART_THUMBNAILS.dance;
+    return SMART_THUMBNAILS.default;
+  }
+
+  function getVideoCategoryKey(vid) {
+    if (!vid) return "hot";
+    const text = `${vid.id || ""} ${vid.title || ""} ${vid.description || ""} ${vid.category || ""}`.toLowerCase();
+    if (text.includes("mèo") || text.includes("cat") || text.includes("mukbang") || text.includes("chó") || text.includes("thú cưng") || text.includes("animal")) {
+      return "pets";
+    }
+    if (text.includes("nạp") || text.includes("tù") || text.includes("pháp luật") || text.includes("tin tức") || text.includes("vụ án") || text.includes("đỏ đen")) {
+      return "news";
+    }
+    if (text.includes("t1") || text.includes("oner") || text.includes("gaming") || text.includes("nướng") || text.includes("chill") || text.includes("dance")) {
+      return "chill";
+    }
+    return "hot";
+  }
+
+  // Quản lý Phân trang & Danh mục (Hỗ trợ khi có từ 20 đến 100+ clip)
+  let currentCategory = "all";
+  let currentPage = 1;
+  const PAGE_SIZE = 6;
+
   /**
    * 1. Nạp và hiển thị video chính lên Player 9:16
    */
@@ -56,18 +102,21 @@ document.addEventListener("DOMContentLoaded", function () {
     if (videoLikes) videoLikes.textContent = videoData.likes;
     if (dockLikesCount) dockLikesCount.textContent = videoData.likes;
 
-    // Cập nhật Poster & Ambient Background
-    if (playerOverlay && videoData.posterUrl) {
-      playerOverlay.style.backgroundImage = `url('${videoData.posterUrl}')`;
+    // Cập nhật Poster & Ambient Background thông minh (không bị ảnh chết)
+    const smartPoster = getSmartPoster(videoData);
+    if (playerOverlay) {
+      playerOverlay.style.backgroundImage = `url('${smartPoster}')`;
       playerOverlay.style.display = "flex";
     }
-    if (stageAmbientBg && videoData.posterUrl) {
-      stageAmbientBg.style.backgroundImage = `url('${videoData.posterUrl}')`;
+    if (stageAmbientBg) {
+      stageAmbientBg.style.backgroundImage = `url('${smartPoster}')`;
     }
 
-    if (videoElement && videoData.videoUrl) {
-      videoElement.src = videoData.videoUrl;
-      videoElement.poster = videoData.posterUrl;
+    if (videoElement) {
+      videoElement.src = (videoData.videoUrl && (videoData.videoUrl.startsWith("http") || !videoData.videoUrl.includes("../storage")))
+        ? videoData.videoUrl
+        : "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4";
+      videoElement.poster = smartPoster;
       videoElement.classList.remove("active");
     }
 
@@ -139,7 +188,7 @@ document.addEventListener("DOMContentLoaded", function () {
   if (nextClipActionBtn) nextClipActionBtn.addEventListener("click", () => switchRelativeVideo(1));
 
   /**
-   * 4. Render Danh Sách Video Đề Xuất Phía Dưới (Đã lọc trùng lặp)
+   * 4. Render Danh Sách Video Đề Xuất Phía Dưới (Phân trang 1, 2, 3... & Danh mục)
    */
   function renderSuggestedVideos() {
     if (!suggestedGrid || !CONFIG.videos) return;
@@ -151,7 +200,8 @@ document.addEventListener("DOMContentLoaded", function () {
     const seenUrls = new Set();
     if (currentUrl) seenUrls.add(currentUrl);
 
-    const otherKeys = videoKeys.filter(k => {
+    // 1. Lọc video không trùng với video đang phát
+    const allOtherKeys = videoKeys.filter(k => {
       if (k === currentVideoId) return false;
       const vid = CONFIG.videos[k];
       if (!vid) return false;
@@ -161,13 +211,40 @@ document.addEventListener("DOMContentLoaded", function () {
       return true;
     });
 
-    otherKeys.forEach(key => {
+    // 2. Lọc theo Danh mục đang chọn
+    let filteredKeys = allOtherKeys;
+    if (currentCategory !== "all") {
+      filteredKeys = allOtherKeys.filter(k => {
+        const vid = CONFIG.videos[k];
+        return getVideoCategoryKey(vid) === currentCategory;
+      });
+      // Nếu danh mục lọc tạm thời rỗng, fallback về all để luôn có clip
+      if (filteredKeys.length === 0) {
+        filteredKeys = allOtherKeys;
+      }
+    }
+
+    // 3. Tính toán Phân trang
+    const totalClips = filteredKeys.length;
+    const totalPages = Math.max(1, Math.ceil(totalClips / PAGE_SIZE));
+    if (currentPage > totalPages) currentPage = totalPages;
+
+    const totalClipsBadge = document.getElementById("totalClipsBadge");
+    const paginationStatus = document.getElementById("paginationStatus");
+    if (totalClipsBadge) totalClipsBadge.textContent = `${totalClips} Clip`;
+    if (paginationStatus) paginationStatus.textContent = `Trang ${currentPage} / ${totalPages}`;
+
+    const startIdx = (currentPage - 1) * PAGE_SIZE;
+    const pageKeys = filteredKeys.slice(startIdx, startIdx + PAGE_SIZE);
+
+    pageKeys.forEach(key => {
       const vid = CONFIG.videos[key];
+      const poster = getSmartPoster(vid);
       const card = document.createElement("div");
       card.className = "suggested-card";
       card.innerHTML = `
         <div class="card-thumb-wrap">
-          <img class="card-thumb" src="${vid.posterUrl}" alt="${vid.title}" loading="lazy">
+          <img class="card-thumb" src="${poster}" alt="${vid.title}" loading="lazy" onerror="this.onerror=null;this.src='${SMART_THUMBNAILS.default}';">
           <div class="card-play-icon">
             <svg viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
           </div>
@@ -189,10 +266,84 @@ document.addEventListener("DOMContentLoaded", function () {
 
       suggestedGrid.appendChild(card);
     });
+
+    // 4. Render các nút phân trang [1] [2] [3]...
+    renderPaginationBar(totalPages);
   }
 
   /**
-   * 5. Render Bảng Xếp Hạng Clip Nóng 24H (Cột Phải - Đã lọc trùng lặp)
+   * Hàm tạo thanh phân trang tự động [Trước] [1] [2] [3]... [Sau]
+   */
+  function renderPaginationBar(totalPages) {
+    const bar = document.getElementById("paginationBar");
+    if (!bar) return;
+    bar.innerHTML = "";
+
+    if (totalPages <= 1) return; // Nếu chỉ có 1 trang thì không cần hiện nút
+
+    // Nút "Trước"
+    const prevBtn = document.createElement("button");
+    prevBtn.className = "page-btn";
+    prevBtn.textContent = "◀ Trước";
+    prevBtn.disabled = (currentPage === 1);
+    prevBtn.addEventListener("click", function () {
+      if (currentPage > 1) {
+        currentPage--;
+        renderSuggestedVideos();
+        document.getElementById("suggestedSection")?.scrollIntoView({ behavior: "smooth" });
+      }
+    });
+    bar.appendChild(prevBtn);
+
+    // Các nút số trang [1], [2], [3]...
+    for (let p = 1; p <= totalPages; p++) {
+      const pageBtn = document.createElement("button");
+      pageBtn.className = `page-btn ${p === currentPage ? "active" : ""}`;
+      pageBtn.textContent = p;
+      pageBtn.addEventListener("click", (function (pageIndex) {
+        return function () {
+          currentPage = pageIndex;
+          renderSuggestedVideos();
+          document.getElementById("suggestedSection")?.scrollIntoView({ behavior: "smooth" });
+        };
+      })(p));
+      bar.appendChild(pageBtn);
+    }
+
+    // Nút "Sau"
+    const nextBtn = document.createElement("button");
+    nextBtn.className = "page-btn";
+    nextBtn.textContent = "Sau ▶";
+    nextBtn.disabled = (currentPage === totalPages);
+    nextBtn.addEventListener("click", function () {
+      if (currentPage < totalPages) {
+        currentPage++;
+        renderSuggestedVideos();
+        document.getElementById("suggestedSection")?.scrollIntoView({ behavior: "smooth" });
+      }
+    });
+    bar.appendChild(nextBtn);
+  }
+
+  // Khởi tạo sự kiện bấm chuyển Danh mục 1, 2, 3...
+  function initCategoryTabs() {
+    const tabContainer = document.getElementById("categoryTabsBar");
+    if (!tabContainer) return;
+    const tabButtons = tabContainer.querySelectorAll(".cat-tab-btn");
+
+    tabButtons.forEach(btn => {
+      btn.addEventListener("click", function () {
+        tabButtons.forEach(b => b.classList.remove("active"));
+        this.classList.add("active");
+        currentCategory = this.dataset.cat || "all";
+        currentPage = 1; // Reset về trang 1 khi đổi danh mục
+        renderSuggestedVideos();
+      });
+    });
+  }
+
+  /**
+   * 5. Render Bảng Xếp Hạng Clip Nóng 24H (Cột Phải - Đã lọc sạch lỗi ảnh 404)
    */
   function renderTrendingSidebar() {
     if (!trendingList || !CONFIG.videos) return;
@@ -209,6 +360,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     uniqueKeys.forEach((key, index) => {
       const vid = CONFIG.videos[key];
+      const poster = getSmartPoster(vid);
       const rankNum = index + 1;
       const rankClass = rankNum <= 3 ? `top-${rankNum}` : "";
       const isCurrent = key === currentVideoId || (vid.id === currentVideoId);
@@ -223,7 +375,7 @@ document.addEventListener("DOMContentLoaded", function () {
       item.innerHTML = `
         <div class="rank-badge ${rankClass}">#${rankNum}</div>
         <div class="trending-thumb-wrap">
-          <img class="trending-thumb" src="${vid.posterUrl}" alt="${vid.title}" loading="lazy">
+          <img class="trending-thumb" src="${poster}" alt="${vid.title}" loading="lazy" onerror="this.onerror=null;this.src='${SMART_THUMBNAILS.default}';">
           <span class="trending-duration">${vid.duration}</span>
         </div>
         <div class="trending-info">
@@ -398,6 +550,7 @@ document.addEventListener("DOMContentLoaded", function () {
   if (stagePromoCard) stagePromoCard.addEventListener("click", () => triggerAffiliateAction());
 
   // Khởi chạy toàn bộ ứng dụng
+  initCategoryTabs();
   loadMainVideo(currentVideoId, false);
   renderLeftSidebarWidgets();
   initLiveChat();

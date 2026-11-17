@@ -256,11 +256,29 @@
       <!-- KHU VỰC VIDEO ĐỀ XUẤT LIÊN QUAN -->
       <section class="suggested-section" id="suggestedSection">
         <div class="section-heading">
-          <span>🎬 CLIP ĐỀ XUẤT TIẾP THEO (NHẤN ĐỂ XEM)</span>
-          <span class="section-sub">Tự động phát HD</span>
+          <div style="display:flex; align-items:center; gap:8px;">
+            <span>🎬 KHO CLIP ĐỀ XUẤT TIẾP THEO</span>
+            <span class="badge-total-clips" id="totalClipsBadge">0 Clip</span>
+          </div>
+          <span class="section-sub" id="paginationStatus">Trang 1 / 1</span>
         </div>
+
+        <!-- BỘ LỌC DANH MỤC (HỖ TRỢ KHI LÊN 20 - 100 CLIP) -->
+        <div class="category-tabs-bar" id="categoryTabsBar">
+          <button type="button" class="cat-tab-btn active" data-cat="all">🌟 Tất cả clip</button>
+          <button type="button" class="cat-tab-btn" data-cat="hot">🔥 Danh mục 1: Đang Hot</button>
+          <button type="button" class="cat-tab-btn" data-cat="pets">🐱 Danh mục 2: Thú cưng Mukbang</button>
+          <button type="button" class="cat-tab-btn" data-cat="news">⚡ Danh mục 3: Tin tức & Xã hội</button>
+          <button type="button" class="cat-tab-btn" data-cat="chill">🎮 Danh mục 4: Giải trí & Chill</button>
+        </div>
+
         <div id="suggestedGrid" class="suggested-grid">
-          <!-- Render tự động từ config.js -->
+          <!-- Render tự động từ app.js -->
+        </div>
+
+        <!-- THANH PHÂN TRANG (PAGINATION) -->
+        <div class="pagination-bar" id="paginationBar">
+          <!-- Render tự động các nút trang 1, 2, 3... -->
         </div>
       </section>
 
