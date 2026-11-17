@@ -164,26 +164,42 @@ def upsert_video_into_config(
 
 
 def _trigger_git_push(video_id: str) -> None:
-    """Tự động commit và push config.js để Vercel / Cloudflare Pages tự động cập nhật"""
+    """Tự động commit và push web/videos, config.js để Vercel tự động cập nhật"""
     try:
+        web_videos_dir = config.WEB_DIR / "videos"
+        # 1. Thêm cả thư mục video/poster và các file config
         subprocess.run(
-            ["git", "add", str(config.WEB_CONFIG_JS), str(config.WEB_VIDEOS_DB)],
+            ["git", "add", str(web_videos_dir), str(config.WEB_CONFIG_JS), str(config.WEB_VIDEOS_DB)],
             cwd=str(config.BASE_DIR),
             check=True,
             capture_output=True,
         )
-        subprocess.run(
-            ["git", "commit", "-m", f"chore(publisher): auto publish video {video_id}"],
+        
+        # 2. Kiểm tra xem có thay đổi nào để commit không
+        diff_proc = subprocess.run(
+            ["git", "diff", "--staged", "--quiet"],
             cwd=str(config.BASE_DIR),
-            check=True,
-            capture_output=True,
         )
-        subprocess.run(
+        if diff_proc.returncode != 0:
+            subprocess.run(
+                ["git", "commit", "-m", f"chore(publisher): auto publish video {video_id} with media"],
+                cwd=str(config.BASE_DIR),
+                check=True,
+                capture_output=True,
+            )
+
+        # 3. Push lên GitHub (với cơ chế rebase an toàn nếu remote có commit mới)
+        push_proc = subprocess.run(
             ["git", "push"],
             cwd=str(config.BASE_DIR),
-            check=True,
             capture_output=True,
+            text=True,
         )
-        logger.info(f"[AUTO DEPLOY] Đã git push cập nhật video {video_id} lên Cloud!")
+        if push_proc.returncode != 0:
+            logger.info("Git push cần rebase, đang pull rebase và thử lại...")
+            subprocess.run(["git", "pull", "--rebase"], cwd=str(config.BASE_DIR), capture_output=True)
+            subprocess.run(["git", "push"], cwd=str(config.BASE_DIR), check=True, capture_output=True)
+
+        logger.info(f"[AUTO DEPLOY] Đã git push cập nhật video {video_id} và media lên Cloud thành công!")
     except Exception as e:
         logger.warning(f"Bỏ qua git push tự động: {e}")

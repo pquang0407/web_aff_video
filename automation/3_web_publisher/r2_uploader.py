@@ -7,6 +7,7 @@ Hỗ trợ 2 chế độ:
 
 import logging
 import shutil
+import subprocess
 from pathlib import Path
 from typing import Tuple
 
@@ -36,9 +37,20 @@ def upload_media_pair(
                 shutil.copy2(video_path, target_v)
             if poster_path.exists() and not target_p.exists():
                 shutil.copy2(poster_path, target_p)
+            elif not target_p.exists() and video_path.exists():
+                # Tự động trích xuất poster thật từ video nếu chưa có
+                try:
+                    subprocess.run(
+                        ["ffmpeg", "-y", "-ss", "00:00:02", "-i", str(video_path), "-vframes", "1", "-q:v", "2", str(target_p)],
+                        capture_output=True,
+                        check=False
+                    )
+                except Exception as fe:
+                    logger.warning(f"Không thể trích xuất poster bằng ffmpeg: {fe}")
+
             video_url = f"videos/{video_path.name}"
-            poster_url = f"videos/{poster_path.name}" if target_p.exists() else f"../storage/2_web_full/{poster_path.name}"
-            logger.info(f"[WEB SERVE MODE] Đã chuẩn bị file video cho Web: {video_url}")
+            poster_url = f"videos/{target_p.name}" if target_p.exists() else f"../storage/2_web_full/{poster_path.name}"
+            logger.info(f"[WEB SERVE MODE] Đã chuẩn bị file video & poster cho Web: {video_url} | {poster_url}")
             return video_url, poster_url
         except Exception as copy_err:
             logger.warning(f"Lỗi sao chép video vào web/videos/: {copy_err}")
