@@ -1,0 +1,685 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Social Poster Admin • Quản Trị Phiên Đăng Nhập & Lịch Đăng Tự Động 24/7</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    :root {
+      --bg: #0b0c14;
+      --card: #141624;
+      --surface: #1d2033;
+      --accent: #ff0055;
+      --blue: #1877f2;
+      --green: #00e676;
+      --gold: #ffaa00;
+      --text: #ffffff;
+      --muted: #9499b8;
+      --border: rgba(255,255,255,0.09);
+    }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.5;
+      padding-bottom: 60px;
+    }
+    .topbar {
+      background: rgba(20, 22, 36, 0.95);
+      border-bottom: 1px solid var(--border);
+      padding: 14px 28px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      backdrop-filter: blur(10px);
+    }
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .brand-icon {
+      width: 38px;
+      height: 38px;
+      border-radius: 10px;
+      background: linear-gradient(135deg, #1877f2, #ff0055);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 800;
+      font-size: 18px;
+    }
+    .brand h1 { font-size: 17px; font-weight: 800; }
+    .brand p { font-size: 12px; color: var(--muted); }
+    .status-pills { display: flex; gap: 10px; align-items: center; }
+    .pill {
+      padding: 6px 14px;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: 700;
+      background: var(--surface);
+      border: 1px solid var(--border);
+    }
+    .pill.ok { color: var(--green); border-color: rgba(0,230,118,0.35); background: rgba(0,230,118,0.1); }
+    .pill.warn { color: var(--gold); border-color: rgba(255,170,0,0.35); background: rgba(255,170,0,0.1); }
+
+    .container {
+      max-width: 1420px;
+      margin: 22px auto;
+      padding: 0 20px;
+      display: grid;
+      grid-template-columns: 440px 1fr;
+      gap: 22px;
+    }
+    .card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 20px;
+      margin-bottom: 20px;
+      box-shadow: 0 8px 25px rgba(0,0,0,0.4);
+    }
+    .card.highlight-card {
+      border-color: rgba(0, 230, 118, 0.35);
+      background: linear-gradient(180deg, rgba(0, 230, 118, 0.05) 0%, var(--card) 100%);
+    }
+    .card-title {
+      font-size: 15px;
+      font-weight: 800;
+      margin-bottom: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 10px;
+    }
+    label {
+      display: block;
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--muted);
+      margin-bottom: 6px;
+      margin-top: 12px;
+    }
+    input, textarea, select {
+      width: 100%;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      color: #fff;
+      border-radius: 10px;
+      padding: 9px 12px;
+      font-size: 13px;
+      outline: none;
+    }
+    textarea { min-height: 70px; resize: vertical; font-family: monospace; }
+    input:focus, textarea:focus, select:focus { border-color: var(--blue); }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      padding: 9px 14px;
+      border-radius: 10px;
+      font-size: 12px;
+      font-weight: 700;
+      border: none;
+      cursor: pointer;
+      transition: all 0.2s;
+      color: #fff;
+    }
+    .btn-blue { background: var(--blue); }
+    .btn-green { background: #00b862; }
+    .btn-accent { background: linear-gradient(135deg, #ff0055, #ff5500); }
+    .btn-surface { background: var(--surface); border: 1px solid var(--border); }
+    .btn:hover { opacity: 0.92; transform: translateY(-1px); }
+
+    .note-box {
+      background: rgba(255, 170, 0, 0.1);
+      border: 1px solid rgba(255, 170, 0, 0.3);
+      border-radius: 10px;
+      padding: 10px 12px;
+      font-size: 12px;
+      color: #ffdd99;
+      margin-top: 10px;
+      line-height: 1.4;
+    }
+
+    .page-list {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      margin-top: 8px;
+    }
+    .page-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 10px 12px;
+      border-radius: 10px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      cursor: pointer;
+    }
+    .page-item.active {
+      border-color: var(--green);
+      background: rgba(0, 230, 118, 0.08);
+    }
+    .page-name { font-size: 13px; font-weight: 700; }
+    .page-id { font-size: 11px; color: var(--muted); }
+
+    /* QUEUE TABLE */
+    .queue-grid {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    .queue-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      padding: 14px;
+      border-radius: 12px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+    }
+    .queue-info { flex: 1; min-width: 0; }
+    .queue-title { font-size: 14px; font-weight: 800; margin-bottom: 4px; color: #fff; }
+    .queue-meta { font-size: 12px; color: var(--muted); margin-bottom: 6px; }
+    .queue-link {
+      display: inline-block;
+      font-size: 11px;
+      color: #00e676;
+      background: rgba(0,230,118,0.1);
+      padding: 3px 8px;
+      border-radius: 6px;
+      text-decoration: none;
+    }
+    .queue-actions {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      width: 215px;
+      flex-shrink: 0;
+    }
+    .badge-status {
+      font-size: 10px;
+      font-weight: 800;
+      padding: 2px 8px;
+      border-radius: 4px;
+      text-transform: uppercase;
+    }
+    .badge-ready { background: rgba(255,170,0,0.2); color: #ffaa00; }
+    .badge-scheduled { background: rgba(24,119,242,0.25); color: #66b2ff; }
+    .badge-posted { background: rgba(0,230,118,0.2); color: #00e676; }
+
+    .history-item {
+      padding: 10px 12px;
+      border-radius: 10px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      margin-bottom: 8px;
+      font-size: 12px;
+    }
+    @media (max-width: 960px) {
+      .container { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+  <header class="topbar">
+    <div class="brand">
+      <div class="brand-icon">🚀</div>
+      <div>
+        <h1>Social Poster & Auto-Scheduler Admin (Module 4)</h1>
+        <p>Quản Trị Phiên Đăng Nhập (Token/Cookie) & Cài Đặt Lịch Tự Động Đăng 24/7</p>
+      </div>
+    </div>
+    <div class="status-pills">
+      <span class="pill ok" id="autoSchedPill">⏰ Auto-Scheduler: ĐANG BẬT 24/7</span>
+      <span class="pill ok" id="pageCountPill">✓ 5 Fanpage sẵn sàng</span>
+    </div>
+  </header>
+
+  <main class="container">
+    <!-- CỘT TRÁI: CÀI ĐẶT LỊCH TỰ ĐỘNG 24/7 + TOKEN/COOKIE PHIÊN ĐĂNG NHẬP -->
+    <div>
+      <!-- 1. BỘ LẬP LỊCH TỰ ĐỘNG 24/7 (KHÔNG CẦN BẤM TAY) -->
+      <section class="card highlight-card">
+        <div class="card-title">
+          <span>⏰ 1. CÀI ĐẶT LỊCH ĐĂNG TỰ ĐỘNG 24/7</span>
+          <span style="font-size:11px; color:var(--green)">Chạy ngầm tự động</span>
+        </div>
+
+        <label>Trạng thái Tự Động Đăng 24/7:</label>
+        <select id="autoPostEnabled">
+          <option value="true">🟢 BẬT — Tự động bốc video trong Queue đi đăng theo lịch</option>
+          <option value="false">⚪ TẮT — Chỉ đăng khi bấm tay</option>
+        </select>
+
+        <label>Chế độ Lập Lịch Tự Động:</label>
+        <select id="scheduleMode" onchange="toggleScheduleModeUI()">
+          <option value="time_slots">🎯 Theo Khung Giờ Vàng cố định mỗi ngày (Khuyên dùng)</option>
+          <option value="interval">🔄 Theo Chu Kỳ Giãn Cách (Cứ mỗi X phút đăng 1 bài)</option>
+        </select>
+
+        <div id="timeSlotsBox">
+          <label>Các Khung Giờ Vàng trong ngày (cách nhau bằng dấu phẩy):</label>
+          <input type="text" id="dailyTimeSlots" value="08:00, 11:30, 17:30, 20:30" placeholder="08:00, 11:30, 17:30, 20:30">
+        </div>
+
+        <div id="intervalBox" style="display:none;">
+          <label>Khoảng cách giữa 2 lần đăng bài (Phút):</label>
+          <input type="number" id="intervalMinutes" value="60" min="5">
+        </div>
+
+        <label>Mẫu bình luận tự động thả dưới bài đăng ({url} = link Web Player):</label>
+        <input type="text" id="commentTemplate" value="👉 Xem trọn vẹn bản Full HD không che tại đây: {url}">
+
+        <div style="margin-top:14px;">
+          <button class="btn btn-green" style="width:100%" onclick="saveSchedulerConfig()">💾 Lưu Cấu Hình Lịch Tự Động 24/7</button>
+        </div>
+      </section>
+
+      <!-- 2. FACEBOOK COOKIE & FANPAGE TOKEN -->
+      <section class="card">
+        <div class="card-title">
+          <span>🔵 2. PHIÊN ĐĂNG NHẬP FACEBOOK & FANPAGE</span>
+          <span style="font-size:11px; color:var(--gold)">Cập nhật khi hết hạn</span>
+        </div>
+
+        <div class="note-box">
+          💡 <strong>Quyền cần chọn trên Graph API Explorer:</strong> Khi tạo User Access Token, bạn hãy chọn đủ 4 quyền sau để đăng video và tự động thả comment link:<br>
+          • <code>pages_show_list</code> (Xem danh sách Fanpage)<br>
+          • <code>pages_manage_posts</code> (Đăng video/bài viết)<br>
+          • <code>pages_manage_engagement</code> (Tự động bình luận link Web Player)<br>
+          • <code>pages_read_engagement</code> (Đọc thông số tương tác)
+        </div>
+
+        <label>Dán User / Page Access Token mới để làm mới phiên đăng nhập:</label>
+        <div style="display:flex; gap:8px;">
+          <input type="password" id="fbTokenInput" placeholder="Dán mã EAA... mới vào đây">
+          <button class="btn btn-blue" onclick="fetchPagesByToken()" style="white-space:nowrap;">Cập nhật Token</button>
+        </div>
+
+        <label>Danh sách Fanpage (Bấm để chọn Page mặc định):</label>
+        <div class="page-list" id="pageListContainer">
+          <!-- Render danh sách Fanpage -->
+        </div>
+
+        <label>Hoặc cập nhật Cookie Facebook (JSON):</label>
+        <textarea id="fbCookieInput" placeholder='[{"name":"c_user","value":"..."},{"name":"xs","value":"..."}]'></textarea>
+        <button class="btn btn-surface" style="margin-top:8px; width:100%" onclick="saveFbCookie()">Lưu Cookie Facebook</button>
+      </section>
+
+      <!-- 3. CẤU HÌNH META THREADS -->
+      <section class="card">
+        <div class="card-title">
+          <span>⚫ 3. PHIÊN ĐĂNG NHẬP META THREADS</span>
+          <span style="font-size:11px; color:#ffaa00">Auto-Reply Link</span>
+        </div>
+
+        <div class="note-box" style="margin-bottom:12px;">
+          💡 <strong>Lưu ý:</strong> Threads dùng Graph API riêng biệt (<code>graph.threads.net</code>), <strong>KHÔNG DÙNG CHUNG</strong> mã Token <code>EAA...</code> của Facebook. Nếu bạn chỉ muốn đăng Fanpage Facebook, hãy để trống ô Token Threads này (hệ thống sẽ tự động chỉ đăng Facebook).
+        </div>
+
+        <label>Threads Username:</label>
+        <input type="text" id="threadsUsername" placeholder="hongbien247">
+
+        <label>Threads User ID (Graph API):</label>
+        <input type="text" id="threadsUserId" placeholder="Nhập Threads User ID">
+
+        <label>Threads Access Token (graph.threads.net):</label>
+        <input type="password" id="threadsToken" placeholder="Dán Threads Access Token...">
+
+        <div style="margin-top:12px;">
+          <button class="btn btn-accent" style="width:100%" onclick="saveThreadsConfig()">Lưu Phiên Threads</button>
+        </div>
+      </section>
+    </div>
+
+    <!-- CỘT PHẢI: HÀNG ĐỢI VIDEO (SOCIAL QUEUE) & ĐẶT LỊCH TỪNG BÀI -->
+    <div>
+      <section class="card">
+        <div class="card-title">
+          <span>🎬 HÀNG ĐỢI VIDEO (TỰ ĐỘNG NHẬN TỪ MODULE 2 & 3)</span>
+          <button class="btn btn-surface" onclick="loadState()">🔄 Làm mới Queue</button>
+        </div>
+        <p style="font-size:12px; color:var(--muted); margin-bottom:14px;">
+          Các video mới do AI tạo ra sẽ tự động xếp vào đây. Khi bật <strong>Auto-Scheduler 24/7</strong>, hệ thống sẽ tự động lấy lần lượt từng bài đi đăng mỗi khi đến Khung Giờ Vàng, hoặc bạn có thể hẹn giờ riêng cho từng bài.
+        </p>
+
+        <!-- NẠP NHANH VIDEO TỪ LINK (FACEBOOK PAGE, GROUP, REEL, TIKTOK, YOUTUBE) -->
+        <div style="background: rgba(99, 102, 241, 0.08); border: 1px dashed rgba(99, 102, 241, 0.4); border-radius: 8px; padding: 12px; margin-bottom: 16px;">
+          <div style="font-weight: 600; font-size: 13px; color: #818cf8; margin-bottom: 6px; display: flex; align-items: center; gap: 6px;">
+            <span>📥 Nạp Nhanh Video Từ Link (Facebook Page, Group, Reel, TikTok, YouTube):</span>
+          </div>
+          <div style="display: flex; gap: 8px;">
+            <input id="inputSourceUrl" type="text" placeholder="Dán link Facebook Page/Group, Reel, Watch, TikTok, YouTube..." style="flex: 1; padding: 8px 12px; border-radius: 6px; border: 1px solid var(--border); background: var(--bg); color: var(--text); font-size: 13px;" />
+            <button class="btn btn-primary" onclick="downloadUrlToPipeline()" id="btnDownloadUrl">⚡ Tải & Chạy Pipeline</button>
+          </div>
+          <div id="urlDownloadStatus" style="font-size: 12px; color: var(--muted); margin-top: 6px; display: none;"></div>
+        </div>
+
+        <div class="queue-grid" id="queueContainer">
+          <!-- Render danh sách video từ storage/2_web_full/*_meta.json -->
+        </div>
+      </section>
+
+      <section class="card">
+        <div class="card-title">
+          <span>📜 NHẬT KÝ ĐÃ ĐĂNG & AUTO-COMMENT LINK</span>
+        </div>
+        <div id="historyContainer">
+          <!-- Render lịch sử đăng -->
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <script>
+    let STATE = {
+      fb_cookie: { connected: true, uid: "100007435262523", cookie_count: 11 },
+      fb_pages: {
+        selected_page_id: "389557840912771",
+        pages: [
+          { id: "389557840912771", name: "MicroFeast", category: "Blog cá nhân" },
+          { id: "953288971202769", name: "EduTech Solutions", category: "Công ty máy tính" },
+          { id: "381362311730683", name: "Mầm Non Ánh Bình Minh", category: "Giáo dục" },
+          { id: "206330329233037", name: "Vựa tôm tươi Văn Quý", category: "Mua sắm & bán lẻ" },
+          { id: "157204847466320", name: "Trường Mẫu giáo Gia Hào", category: "Trường học" }
+        ]
+      },
+      threads: { username: "hongbien247", threads_user_id: "", access_token: "" },
+      scheduler: {
+        auto_post_enabled: true,
+        schedule_mode: "time_slots",
+        daily_time_slots: ["08:00", "11:30", "17:30", "20:30"],
+        interval_minutes: 60,
+        comment_template: "👉 Xem trọn vẹn bản Full HD không che tại đây: {url}"
+      },
+      queue: [],
+      history: []
+    };
+
+    function toggleScheduleModeUI() {
+      const mode = document.getElementById("scheduleMode").value;
+      document.getElementById("timeSlotsBox").style.display = mode === "time_slots" ? "block" : "none";
+      document.getElementById("intervalBox").style.display = mode === "interval" ? "block" : "none";
+    }
+
+    async function loadState() {
+      try {
+        const res = await fetch("/api/state");
+        if (res.ok) {
+          STATE = await res.json();
+        }
+      } catch (e) {
+        console.log("Static mode");
+      }
+      renderUI();
+    }
+
+    function renderUI() {
+      // 1. Render Scheduler Config
+      if (STATE.scheduler) {
+        const isAuto = Boolean(STATE.scheduler.auto_post_enabled);
+        document.getElementById("autoPostEnabled").value = isAuto ? "true" : "false";
+        document.getElementById("scheduleMode").value = STATE.scheduler.schedule_mode || "time_slots";
+        document.getElementById("dailyTimeSlots").value = (STATE.scheduler.daily_time_slots || ["08:00", "11:30", "17:30", "20:30"]).join(", ");
+        document.getElementById("intervalMinutes").value = STATE.scheduler.interval_minutes || 60;
+        document.getElementById("commentTemplate").value = STATE.scheduler.comment_template || "👉 Xem trọn vẹn bản Full HD không che tại đây: {url}";
+        toggleScheduleModeUI();
+
+        const pill = document.getElementById("autoSchedPill");
+        if (isAuto) {
+          pill.className = "pill ok";
+          pill.textContent = `⏰ Auto-Scheduler: ĐANG BẬT (${STATE.scheduler.schedule_mode === 'time_slots' ? 'Khung Giờ Vàng' : STATE.scheduler.interval_minutes + ' phút/bài'})`;
+        } else {
+          pill.className = "pill warn";
+          pill.textContent = "⚪ Auto-Scheduler: ĐANG TẮT";
+        }
+      }
+
+      // 2. Render Fanpage list
+      const pageBox = document.getElementById("pageListContainer");
+      const pages = (STATE.fb_pages && STATE.fb_pages.pages) || [];
+      const selId = STATE.fb_pages ? STATE.fb_pages.selected_page_id : "";
+      document.getElementById("pageCountPill").textContent = `✓ ${pages.length} Fanpage sẵn sàng`;
+
+      pageBox.innerHTML = pages.map(p => {
+        const isSel = String(p.id) === String(selId);
+        return `
+          <div class="page-item ${isSel ? 'active' : ''}" onclick="selectPage('${p.id}')">
+            <div>
+              <div class="page-name">${p.name}</div>
+              <div class="page-id">ID: ${p.id} • ${p.category || 'Fanpage'}</div>
+            </div>
+            <span style="font-size:12px; font-weight:800; color:${isSel ? '#00e676' : '#9499b8'}">
+              ${isSel ? '● Đang chọn' : 'Chọn'}
+            </span>
+          </div>
+        `;
+      }).join("");
+
+      // 3. Render Threads
+      if (STATE.threads) {
+        document.getElementById("threadsUsername").value = STATE.threads.username || "";
+        document.getElementById("threadsUserId").value = STATE.threads.threads_user_id || "";
+      }
+
+      // 4. Render Queue with Per-Video Schedule Picker
+      const qBox = document.getElementById("queueContainer");
+      const qList = STATE.queue || [];
+      qBox.innerHTML = qList.map(item => {
+        const isPosted = item.status === "posted_to_social";
+        const isScheduled = item.status === "scheduled" && item.scheduled_at;
+        let badgeClass = "badge-ready";
+        let badgeText = "⏳ TRONG HÀNG ĐỢI TỰ ĐỘNG";
+        if (isPosted) {
+          badgeClass = "badge-posted";
+          badgeText = "✓ ĐÃ ĐĂNG SOCIAL";
+        } else if (isScheduled) {
+          badgeClass = "badge-scheduled";
+          badgeText = `⏰ HẸN GIỜ: ${item.scheduled_at.replace("T", " ")}`;
+        }
+
+        const targetUrl = item.target_web_url || `https://zento-web-five.vercel.app/?v=${item.id}`;
+        return `
+          <div class="queue-item">
+            <div class="queue-info">
+              <div style="display:flex; align-items:center; gap:8px; margin-bottom:5px;">
+                <span class="badge-status ${badgeClass}">${badgeText}</span>
+                <span style="font-size:12px; color:var(--muted)">ID: <strong>${item.id}</strong> • Thời lượng: ${item.duration || '00:10'}</span>
+              </div>
+              <div class="queue-title">${item.title}</div>
+              <div class="queue-meta">Link Auto-Comment: <a class="queue-link" href="${targetUrl}" target="_blank">${targetUrl}</a></div>
+              <div style="display:flex; align-items:center; gap:6px; margin-top:8px;">
+                <span style="font-size:11px; color:var(--muted)">Hẹn giờ riêng:</span>
+                <input type="datetime-local" id="sched_${item.id}" value="${item.scheduled_at || ''}" style="width:175px; padding:4px 8px; font-size:11px;">
+                <button class="btn btn-surface" style="padding:4px 10px; font-size:11px;" onclick="setVideoSchedule('${item.id}')">Đặt lịch</button>
+              </div>
+            </div>
+            <div class="queue-actions">
+              <button class="btn btn-surface" onclick="triggerPost('${item.id}', true)">🧪 Đăng Giả Lập (Test Luồng)</button>
+              <button class="btn btn-accent" onclick="triggerPost('${item.id}', false)">🚀 Đăng Thật Ngay</button>
+            </div>
+          </div>
+        `;
+      }).join("");
+
+      // 5. Render History
+      const hBox = document.getElementById("historyContainer");
+      const hList = STATE.history || [];
+      if (!hList.length) {
+        hBox.innerHTML = `<div style="color:var(--muted); font-size:13px;">Chưa có lịch sử đăng.</div>`;
+      } else {
+        hBox.innerHTML = hList.map(h => `
+          <div class="history-item">
+            <div style="font-weight:800; color:#fff; margin-bottom:3px;">
+              [${h.mode.toUpperCase()}] ${h.title} (${h.video_id}) - <span style="color:var(--green)">${h.posted_at}</span>
+            </div>
+            <div style="color:var(--muted)">💬 Đã tự động bình luận: <span style="color:#00e676">${h.comment_text}</span></div>
+          </div>
+        `).join("");
+      }
+    }
+
+    async function saveSchedulerConfig() {
+      const slotsRaw = document.getElementById("dailyTimeSlots").value;
+      const slots = slotsRaw.split(",").map(s => s.trim()).filter(Boolean);
+      const payload = {
+        auto_post_enabled: document.getElementById("autoPostEnabled").value === "true",
+        schedule_mode: document.getElementById("scheduleMode").value,
+        daily_time_slots: slots,
+        interval_minutes: parseInt(document.getElementById("intervalMinutes").value || "60", 10),
+        comment_template: document.getElementById("commentTemplate").value
+      };
+      try {
+        const res = await fetch("/api/scheduler/save", {
+          method: "POST",
+          body: JSON.stringify(payload)
+        });
+        const data = await res.json();
+        if (data.ok) {
+          STATE.scheduler = data.scheduler;
+          renderUI();
+          alert("Đã lưu cấu hình Lịch Đăng Tự Động 24/7 thành công!");
+        }
+      } catch (e) {
+        alert("Lỗi kết nối server!");
+      }
+    }
+
+    async function setVideoSchedule(videoId) {
+      const val = document.getElementById(`sched_${videoId}`).value;
+      try {
+        const res = await fetch("/api/scheduler/set-video-time", {
+          method: "POST",
+          body: JSON.stringify({ video_id: videoId, scheduled_at: val })
+        });
+        const data = await res.json();
+        if (data.ok) {
+          STATE.queue = data.queue;
+          renderUI();
+          alert(`Đã hẹn giờ tự động đăng cho video '${videoId}' vào lúc: ${val.replace("T", " ")}!`);
+        }
+      } catch (e) {}
+    }
+
+    async function selectPage(pageId) {
+      STATE.fb_pages.selected_page_id = pageId;
+      renderUI();
+      try {
+        await fetch("/api/fb/select-page", {
+          method: "POST",
+          body: JSON.stringify({ page_id: pageId })
+        });
+      } catch (e) {}
+    }
+
+    async function triggerPost(videoId, simulate) {
+      try {
+        const res = await fetch("/api/social/post", {
+          method: "POST",
+          body: JSON.stringify({ video_id: videoId, simulate: simulate })
+        });
+        const data = await res.json();
+        if (data.ok) {
+          STATE.queue = data.queue;
+          STATE.history = data.history;
+          renderUI();
+          alert(`Đã chạy đăng video '${videoId}' (${simulate ? 'Chế độ Test Giả Lập' : 'Chế độ Đăng Thật'}) + Tự động thả comment link thành công!`);
+        } else {
+          alert("Thông báo: " + data.error);
+        }
+      } catch (e) {
+        alert("Lỗi kết nối server!");
+      }
+    }
+
+    async function saveFbCookie() {
+      const val = document.getElementById("fbCookieInput").value;
+      const res = await fetch("/api/fb/save-cookies", {
+        method: "POST",
+        body: JSON.stringify({ cookies_text: val })
+      });
+      const data = await res.json();
+      if (data.ok) alert("Đã lưu Cookie Facebook thành công!");
+      else alert("Lỗi: " + data.error);
+    }
+
+    async function fetchPagesByToken() {
+      const val = document.getElementById("fbTokenInput").value;
+      const res = await fetch("/api/fb/fetch-pages-token", {
+        method: "POST",
+        body: JSON.stringify({ token: val })
+      });
+      const data = await res.json();
+      if (data.ok) {
+        STATE.fb_pages = data.fb_pages;
+        renderUI();
+        alert(`Đã cập nhật Token mới và lấy thành công ${data.count} Fanpage!`);
+      } else alert("Lỗi: " + data.error);
+    }
+
+    async function saveThreadsConfig() {
+      const payload = {
+        username: document.getElementById("threadsUsername").value,
+        threads_user_id: document.getElementById("threadsUserId").value,
+        access_token: document.getElementById("threadsToken").value,
+        enabled: true
+      };
+      await fetch("/api/threads/save", { method: "POST", body: JSON.stringify(payload) });
+      alert("Đã lưu phiên đăng nhập Threads thành công!");
+    }
+
+    async function downloadUrlToPipeline() {
+      const url = document.getElementById("inputSourceUrl").value.trim();
+      if (!url) {
+        alert("Vui lòng dán link video, page hoặc group Facebook!");
+        return;
+      }
+      const btn = document.getElementById("btnDownloadUrl");
+      const statusDiv = document.getElementById("urlDownloadStatus");
+      btn.disabled = true;
+      btn.innerText = "⏳ Đang tải...";
+      statusDiv.style.display = "block";
+      statusDiv.style.color = "var(--primary)";
+      statusDiv.innerText = "Đang phân tích liên kết và tải video vào khoang storage/1_raw...";
+
+      try {
+        const res = await fetch("/api/collector/download-url", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ url: url, max_count: 3 })
+        });
+        const data = await res.json();
+        if (data.ok && data.count > 0) {
+          statusDiv.style.color = "var(--success)";
+          statusDiv.innerText = `✓ Đã tải thành công ${data.count} video và kích hoạt AI Video Factory! Đang làm mới hàng đợi...`;
+          document.getElementById("inputSourceUrl").value = "";
+          setTimeout(() => { loadState(); }, 3000);
+        } else {
+          statusDiv.style.color = "var(--danger)";
+          statusDiv.innerText = "Không tìm thấy video hợp lệ tại link này. Hãy kiểm tra lại quyền riêng tư hoặc liên kết công khai!";
+        }
+      } catch (e) {
+        statusDiv.style.color = "var(--danger)";
+        statusDiv.innerText = "Lỗi kết nối: " + e.message;
+      } finally {
+        btn.disabled = false;
+        btn.innerText = "⚡ Tải & Chạy Pipeline";
+      }
+    }
+
+    loadState();
+  </script>
+</body>
+</html>

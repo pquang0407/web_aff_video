@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <!-- Ẩn hoàn toàn Referrer để bảo vệ tài khoản Affiliate trước các bộ quét sàn -->
+  <meta name="referrer" content="no-referrer">
+  <title>Media Stream Hub • Trình Phát Video HD Trực Tuyến 24/7</title>
+  <meta name="description" content="Xem video độ nét cao 1080p, cập nhật diễn biến các sự kiện nóng nhất 24/7.">
+
+  <!-- Open Graph Preview -->
+  <meta property="og:title" content="Xem Full Video Chi Tiết Hiện Trường">
+  <meta property="og:description" content="Xem video độ nét cao không giật lag.">
+  <meta property="og:type" content="video.other">
+
+  <!-- CSS Stylesheet -->
+  <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+
+  <!-- Top Header Navigation -->
+  <header class="app-header">
+    <div class="header-left">
+      <a href="index.html" class="logo-area">
+        <div class="logo-badge">▶</div>
+        <div>
+          <span class="logo-text">Media Stream Hub</span>
+          <span class="logo-sub">Nền tảng Video Xu Hướng 24/7</span>
+        </div>
+      </a>
+      <nav class="header-nav">
+        <a href="#top" class="nav-pill active">🔥 Đang Nóng</a>
+        <a href="#suggestedSection" class="nav-pill">🎬 Clip Đề Xuất</a>
+        <a href="#dealList" class="nav-pill deal-nav">🎁 Kho Voucher 0Đ</a>
+      </nav>
+    </div>
+
+    <div class="header-right">
+      <div class="online-counter">
+        <span class="online-dot"></span>
+        <span id="headerOnlineCount">1,428</span> người đang xem
+      </div>
+      <div class="header-status">
+        <span class="status-dot"></span>
+        <span>TRỰC TIẾP HD</span>
+      </div>
+    </div>
+  </header>
+
+  <!-- 3-Column Full Layout -->
+  <main class="main-layout" id="top">
+
+    <!-- =================================================================
+         CỘT BÊN TRÁI (320px): VOUCHER GIỜ VÀNG + DEAL 1K + TIN NÓNG 24H
+         ================================================================= -->
+    <aside class="sidebar-left">
+      <div class="sidebar-sticky-inner">
+
+        <!-- Widget 1: Kho Voucher Sàn Có Đếm Ngược -->
+        <div class="widget-box highlight-border">
+          <div class="widget-header-row">
+            <h3 class="widget-title">
+              <span class="icon-hot">🔥</span> VOUCHER GIỜ VÀNG
+            </h3>
+            <div class="countdown-badge" id="dealCountdown">00:14:38</div>
+          </div>
+          <div id="dealList" class="deal-list">
+            <!-- Render tự động từ config.js -->
+          </div>
+        </div>
+
+        <!-- Widget 2: Săn Deal Sốc 1K - 9K Đang Cháy Hàng -->
+        <div class="widget-box">
+          <div class="widget-header-row">
+            <h3 class="widget-title">⚡ SĂN DEAL SỐC 1K - 9K</h3>
+            <span class="live-tag">FLASH SALE</span>
+          </div>
+          <div id="flashProductsList" class="flash-products-list">
+            <!-- Render tự động từ config.js -->
+          </div>
+        </div>
+
+        <!-- Widget 3: Tin Vắn & Diễn Biến 24h -->
+        <div class="widget-box">
+          <h3 class="widget-title">📡 CẬP NHẬT NHANH 24H</h3>
+          <div class="timeline-list">
+            <div class="timeline-item">
+              <span class="timeline-dot live"></span>
+              <div class="timeline-content">
+                <div class="news-time">Vừa xong • Nóng</div>
+                Đã cập nhật bản Full HD góc quay rõ nét nhất không bị che mờ.
+              </div>
+            </div>
+            <div class="timeline-item">
+              <span class="timeline-dot"></span>
+              <div class="timeline-content">
+                <div class="news-time">12 phút trước</div>
+                Lebih 18.000 lượt chia sẻ clip trên các hội nhóm Facebook & Threads.
+              </div>
+            </div>
+            <div class="timeline-item">
+              <span class="timeline-dot"></span>
+              <div class="timeline-content">
+                <div class="news-time">28 phút trước</div>
+                Kho mã Freeship 0Đ và giảm 50% vừa được làm mới thêm 500 lượt lưu.
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </aside>
+
+    <!-- =================================================================
+         CỘT CHÍNH (CENTER): SÂN KHẤU VIDEO 9:16 + ĐỀ XUẤT + BÌNH LUẬN
+         ================================================================= -->
+    <section class="main-column">
+
+      <!-- Sân khấu Trình phát Video (Khung 9:16 dọc + 2 Dải tương tác 2 bên) -->
+      <div class="player-stage" id="playerStage">
+        <!-- Lớp nền Ambient mờ tự động theo Poster -->
+        <div class="stage-ambient-bg" id="stageAmbientBg"></div>
+
+        <!-- Panel phụ bên trái khung 9:16 (Lấp đầy khoảng trống sân khấu) -->
+        <div class="stage-side-info">
+          <div class="stage-card">
+            <div class="stage-live-pill">
+              <span class="status-dot"></span> SERVER VIP #1
+            </div>
+            <div class="stage-stat-num" id="stageViewers">1,428</div>
+            <div class="stage-stat-label">Người đang xem cùng bạn</div>
+            <div class="stage-divider"></div>
+            <div class="stage-meta-item">🎞️ Định dạng: <strong>9:16 Full HD</strong></div>
+            <div class="stage-meta-item">🔊 Âm thanh: <strong>Gốc + AI Sub</strong></div>
+            <div class="stage-meta-item">⚡ Tốc độ: <strong>Cloudflare CDN</strong></div>
+          </div>
+
+          <div class="stage-card promo-mini" id="stagePromoCard">
+            <div class="promo-mini-tag">🎁 QUÀ TẶNG KÈM</div>
+            <div class="promo-mini-title">Mã Giảm 50% Shopee Đang Mở!</div>
+            <button type="button" class="promo-mini-btn">Nhận Mã Ngay</button>
+          </div>
+        </div>
+
+        <!-- Khung Video 9:16 Chính Giữa -->
+        <div class="player-wrapper">
+          <video id="videoPlayer" class="video-element" controls playsinline preload="metadata">
+            Trình duyệt của bạn không hỗ trợ phát video này.
+          </video>
+
+          <!-- Overlay giả lập kích thích bấm -->
+          <div id="playerOverlay" class="player-overlay">
+            <div class="quality-pill">HD 1080P • FULL</div>
+
+            <div class="play-btn-circle" id="playBtn">
+              <svg viewBox="0 0 24 24">
+                <polygon points="5 3 19 12 5 21 5 3"></polygon>
+              </svg>
+            </div>
+
+            <div class="play-hint-text">Nhấn để phát video có âm thanh</div>
+            <div class="duration-pill" id="videoDuration">00:10</div>
+          </div>
+
+          <div id="playerSpinner" class="player-spinner"></div>
+        </div>
+
+        <!-- Panel nút dọc bên phải khung 9:16 (Kiểu TikTok / Reels PC) -->
+        <div class="stage-side-actions">
+          <button class="dock-btn" id="prevVideoBtn" title="Video trước">
+            <div class="dock-icon">⏮</div>
+            <span>Trước</span>
+          </button>
+          <button class="dock-btn" id="nextVideoBtn" title="Video tiếp theo">
+            <div class="dock-icon">⏭</div>
+            <span>Tiếp theo</span>
+          </button>
+          <button class="dock-btn" id="dockLikeBtn" title="Yêu thích">
+            <div class="dock-icon">❤️</div>
+            <span id="dockLikesCount">18.4K</span>
+          </button>
+          <button class="dock-btn" id="dockShareBtn" title="Chia sẻ">
+            <div class="dock-icon">↗️</div>
+            <span>Chia sẻ</span>
+          </button>
+          <button class="dock-btn accent-dock" id="dockVoucherBtn" title="Săn Voucher">
+            <div class="dock-icon">🎁</div>
+            <span>Mã 0Đ</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Tiêu đề & Thông số Video -->
+      <div class="video-details">
+        <div class="video-category-row">
+          <span class="cat-badge" id="videoCategory">🔥 ĐANG THỊNH HÀNH</span>
+          <span class="verified-stream">✓ Đã kiểm duyệt chất lượng HD</span>
+        </div>
+        <h1 class="video-title" id="videoTitle">Đang tải video...</h1>
+        <p class="video-desc" id="videoDesc">Bản ghi đầy đủ chất lượng cao, âm thanh rõ nét.</p>
+        <div class="video-meta-row">
+          <div class="meta-stats">
+            <span id="videoViews">0 lượt xem</span>
+            <span>•</span>
+            <span id="videoDate">Vừa xong</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Thanh tương tác nhanh -->
+      <div class="action-bar">
+        <button class="action-btn" id="likeBtn">
+          <svg viewBox="0 0 24 24">
+            <path d="M14 9V5a3 3 0 0 0-3-3l-4 9v11h11.28a2 2 0 0 0 2-1.7l1.38-9a2 2 0 0 0-2-2.3zM7 22H4a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h3"></path>
+          </svg>
+          <span id="videoLikes">18.4K</span>
+        </button>
+
+        <button class="action-btn" id="shareBtn">
+          <svg viewBox="0 0 24 24">
+            <circle cx="18" cy="5" r="3"></circle>
+            <circle cx="6" cy="12" r="3"></circle>
+            <circle cx="18" cy="19" r="3"></circle>
+            <line x1="8.59" y1="13.51" x2="15.42" y2="17.49"></line>
+            <line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line>
+          </svg>
+          <span>Chia sẻ</span>
+        </button>
+
+        <button class="action-btn" id="nextClipActionBtn">
+          <svg viewBox="0 0 24 24">
+            <polygon points="5 4 15 12 5 20 5 4"></polygon>
+            <line x1="19" y1="5" x2="19" y2="19"></line>
+          </svg>
+          <span>Xem clip kế tiếp</span>
+        </button>
+      </div>
+
+      <!-- Kênh tác giả -->
+      <div class="author-card">
+        <div class="author-info">
+          <img class="author-avatar" src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=100&auto=format&fit=crop&q=80" alt="Avatar">
+          <div>
+            <div class="author-name">
+              Hóng Biến & Giải Trí 24/7
+              <svg class="verified-icon" viewBox="0 0 24 24">
+                <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
+              </svg>
+            </div>
+            <div class="author-sub">1.2M người theo dõi • Cập nhật liên tục mỗi 15 phút</div>
+          </div>
+        </div>
+        <button class="follow-btn" id="followBtn">Đã theo dõi ✓</button>
+      </div>
+
+      <!-- KHU VỰC VIDEO ĐỀ XUẤT LIÊN QUAN -->
+      <section class="suggested-section" id="suggestedSection">
+        <div class="section-heading">
+          <span>🎬 CLIP ĐỀ XUẤT TIẾP THEO (NHẤN ĐỂ XEM)</span>
+          <span class="section-sub">Tự động phát HD</span>
+        </div>
+        <div id="suggestedGrid" class="suggested-grid">
+          <!-- Render tự động từ config.js -->
+        </div>
+      </section>
+
+      <!-- Bình luận người dùng -->
+      <section class="comments-section">
+        <div class="comments-header">
+          <span class="comments-title">💬 Bình luận nổi bật (386)</span>
+          <span class="comments-sort">Mới nhất ↓</span>
+        </div>
+        <div class="comment-list">
+          <div class="comment-item">
+            <img class="comment-avatar" src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=100&auto=format&fit=crop&q=80" alt="User">
+            <div class="comment-body">
+              <div class="comment-user">Minh Hoàng <span class="user-badge">Fan cứng</span></div>
+              <div class="comment-text">Clip nét căng, xem trên web này mượt hơn hẳn lại còn vừa bấm lưu được mã Freeship 0Đ cột bên trái xong 👍</div>
+              <div class="comment-time">4 phút trước • Thích (42)</div>
+            </div>
+          </div>
+
+          <div class="comment-item">
+            <img class="comment-avatar" src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=100&auto=format&fit=crop&q=80" alt="User">
+            <div class="comment-body">
+              <div class="comment-user">Phương Ly</div>
+              <div class="comment-text">Mấy clip đề xuất bên dưới xem cuốn thật sự, bấm cái nào cũng xem được bản full rõ nét luôn!</div>
+              <div class="comment-time">11 phút trước • Thích (19)</div>
+            </div>
+          </div>
+
+          <div class="comment-item">
+            <img class="comment-avatar" src="https://images.unsplash.com/photo-1570295999919-56ceb5ecca61?w=100&auto=format&fit=crop&q=80" alt="User">
+            <div class="comment-body">
+              <div class="comment-user">Tuấn Anh Lê</div>
+              <div class="comment-text">Đã lưu về máy, cảm ơn ad đã tổng hợp đầy đủ các góc quay nhé!</div>
+              <div class="comment-time">23 phút trước • Thích (8)</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+    </section>
+
+    <!-- =================================================================
+         CỘT BÊN PHẢI (360px): BẢNG XẾP HẠNG CLIP + PHÒNG CHAT TRỰC TIẾP
+         ================================================================= -->
+    <aside class="sidebar-right">
+      <div class="sidebar-sticky-inner">
+
+        <!-- Widget 1: Bảng xếp hạng Top Clip Nóng 24H -->
+        <div class="widget-box">
+          <div class="widget-header-row">
+            <h3 class="widget-title">
+              <span class="icon-hot">🏆</span> BẢNG XẾP HẠNG CLIP 24H
+            </h3>
+            <span class="live-tag">TOP VIEW</span>
+          </div>
+          <div id="trendingList" class="trending-list">
+            <!-- Render tự động có số thứ tự #1, #2, #3 từ config.js -->
+          </div>
+        </div>
+
+        <!-- Widget 2: Phòng Chat Trực Tiếp (Live Chat sôi động) -->
+        <div class="widget-box live-chat-box">
+          <div class="widget-header-row">
+            <h3 class="widget-title">
+              <span class="status-dot"></span> TRÒ CHUYỆN TRỰC TIẾP
+            </h3>
+            <span class="chat-count">Đang hoạt động</span>
+          </div>
+
+          <div class="live-chat-messages" id="liveChatMessages">
+            <!-- Tin nhắn live tự động cập nhật -->
+          </div>
+
+          <form class="live-chat-form" id="liveChatForm">
+            <input type="text" id="liveChatInput" placeholder="Nhập bình luận trực tiếp..." autocomplete="off">
+            <button type="submit">Gửi</button>
+          </form>
+        </div>
+
+        <!-- Widget 3: Từ khóa xu hướng -->
+        <div class="widget-box">
+          <h3 class="widget-title">🏷️ TỪ KHÓA ĐANG LÊN XU HƯỚNG</h3>
+          <div class="hot-tags-wrap" id="hotTagsWrap">
+            <span class="tag-chip">#ClipNong24H</span>
+            <span class="tag-chip">#BossMeoMukbang</span>
+            <span class="tag-chip">#CameraAnNinh</span>
+            <span class="tag-chip">#TrendingReels</span>
+            <span class="tag-chip">#SanVoucher0D</span>
+            <span class="tag-chip">#FullHDKhongChe</span>
+          </div>
+        </div>
+
+      </div>
+    </aside>
+
+  </main>
+
+  <!-- Sticky Footer Bar -->
+  <aside class="sticky-footer-cta">
+    <div class="cta-text">
+      <span>🔥</span> Đừng bỏ lỡ: Kho Voucher Shopee Giảm 50% & Freeship 0Đ đang mở!
+    </div>
+    <button class="cta-btn" id="ctaBtn">LƯU MÃ NGAY</button>
+  </aside>
+
+  <!-- Scripts -->
+  <script src="config.js"></script>
+  <script src="assets/js/deeplink.js"></script>
+  <script src="assets/js/app.js"></script>
+</body>
+</html>

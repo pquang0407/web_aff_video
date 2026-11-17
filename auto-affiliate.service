@@ -1,0 +1,16 @@
+[Unit]
+Description=Auto Video Affiliate 24/7 Cloud Daemon
+After=network.target
+
+[Service]
+Type=simple
+User=root
+WorkingDirectory=/root/web_aff
+ExecStart=/usr/bin/python3 /root/web_aff/main_cloud_daemon.py
+Restart=always
+RestartSec=5
+StandardOutput=journal
+StandardError=journal
+
+[Install]
+WantedBy=multi-user.target

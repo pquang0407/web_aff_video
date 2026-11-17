@@ -1,0 +1,6 @@
+{
+  "auto_pipeline_on_receive": true,
+  "auto_comment_link": true,
+  "default_platform": "all",
+  "max_video_duration_keep": 30
+}

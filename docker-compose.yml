@@ -1,0 +1,20 @@
+version: '3.8'
+
+services:
+  auto-video-affiliate:
+    build: .
+    container_name: auto_affiliate_backend
+    restart: always
+    ports:
+      - "5050:5050"
+    volumes:
+      # Giữ lại toàn bộ video đã tải và render
+      - ./storage:/app/storage
+      # Giữ lại cấu hình biến môi trường
+      - ./.env:/app/.env
+      # Giữ lại token và cookie Facebook/Threads
+      - ./automation/4_social_poster/data:/app/automation/4_social_poster/data
+      # Giữ lại cài đặt bot Telegram
+      - ./automation/1_telegram_collector/system_settings.json:/app/automation/1_telegram_collector/system_settings.json
+    environment:
+      - PYTHONUNBUFFERED=1

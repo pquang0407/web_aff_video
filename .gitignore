@@ -1,0 +1,32 @@
+# Môi trường và Khóa bí mật (Secrets)
+.env
+*.local
+*.secret
+
+# File dữ liệu nhạy cảm Cookie & Phiên đăng nhập
+automation/4_social_poster/data/facebook_cookies.json
+automation/4_social_poster/data/page_config.json
+automation/4_social_poster/data/threads_config.json
+automation/1_telegram_collector/fb_cookies.txt
+automation/1_telegram_collector/ytdlp_archive.txt
+
+# File video dung lượng lớn (MP4, MKV, MOV, TS)
+storage/1_raw/*
+storage/2_web_full/*.mp4
+storage/3_social_teaser/*.mp4
+storage/3_social_teaser/*.mp3
+!storage/1_raw/.gitkeep
+!storage/2_web_full/.gitkeep
+!storage/3_social_teaser/.gitkeep
+
+# Python cache & logs
+__pycache__/
+*.py[cod]
+*$py.class
+*.log
+.pytest_cache/
+
+# OS rác
+.DS_Store
+Thumbs.db
+desktop.ini

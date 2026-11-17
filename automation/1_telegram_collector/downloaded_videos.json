@@ -1,0 +1,78 @@
+{
+  "test_unique_video_9999": {
+    "filename": "test_file.mp4",
+    "timestamp": 0,
+    "info": {
+      "size_mb": 15
+    }
+  },
+  "aff_test_video_8888": {
+    "filename": "aff_test.mp4",
+    "timestamp": 0,
+    "info": {
+      "size_mb": 8.5
+    }
+  },
+  "aff_test_video_1794906252055": {
+    "filename": "aff_test.mp4",
+    "timestamp": 0,
+    "info": {
+      "size_mb": 8.5
+    }
+  },
+  "aff_test_video_1794906696753": {
+    "filename": "aff_test.mp4",
+    "timestamp": 0,
+    "info": {
+      "size_mb": 8.5
+    }
+  },
+  "aff_test_video_1794906714561": {
+    "filename": "aff_test.mp4",
+    "timestamp": 0,
+    "info": {
+      "size_mb": 8.5
+    }
+  },
+  "url_dl_20261117_161728_7707973373313305870": {
+    "filename": "dl_20261117_161728_7707973373313305870.mp4",
+    "timestamp": 1794907051.006321,
+    "info": {
+      "source_url": "https://vt.tiktok.com/ZSptByj7B/",
+      "size_mb": 2.41,
+      "downloaded_at": "2026-11-17T16:17:31.019001"
+    }
+  },
+  "url_dl_20261117_162009_7708668189600730388": {
+    "filename": "dl_20261117_162009_7708668189600730388.mp4",
+    "timestamp": 1794907211.9509816,
+    "info": {
+      "source_url": "https://vt.tiktok.com/ZSptBXrCH/",
+      "size_mb": 1.16,
+      "downloaded_at": "2026-11-17T16:20:12.005812"
+    }
+  },
+  "aff_test_video_1794907621931": {
+    "filename": "aff_test.mp4",
+    "timestamp": 0,
+    "info": {
+      "size_mb": 8.5
+    }
+  },
+  "aff_test_video_1794908705188": {
+    "filename": "aff_test.mp4",
+    "timestamp": 0,
+    "info": {
+      "size_mb": 8.5
+    }
+  },
+  "url_dl_20261117_164538_7689117850883165461": {
+    "filename": "dl_20261117_164538_7689117850883165461.mp4",
+    "timestamp": 1794908741.0145988,
+    "info": {
+      "source_url": "https://vt.tiktok.com/ZSptUrWa3/",
+      "size_mb": 0.77,
+      "downloaded_at": "2026-11-17T16:45:41.030837"
+    }
+  }
+}
