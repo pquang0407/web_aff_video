@@ -149,10 +149,11 @@ def run_admin_server(port: int = PORT) -> None:
     # Khởi chạy luồng lập lịch tự động 24/7 ngầm
     scheduler_daemon.start_background_scheduler_thread()
 
-    server = HTTPServer(("127.0.0.1", port), AdminRequestHandler)
+    # Lắng nghe trên 0.0.0.0 để cho phép truy cập từ xa qua IP công khai máy ảo
+    server = HTTPServer(("0.0.0.0", port), AdminRequestHandler)
     print("==================================================================")
     print(f" WEB ADMIN & BỘ LẬP LỊCH TỰ ĐỘNG 24/7 ĐANG CHẠY TẠI:")
-    print(f" 👉 http://127.0.0.1:{port}")
+    print(f" 👉 http://0.0.0.0:{port}")
     print("==================================================================")
     server.serve_forever()
 
