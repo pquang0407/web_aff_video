@@ -26,6 +26,18 @@ const CONFIG = {
     ]
   },
   "videos": {
+    "chao_co": {
+      "id": "chao_co",
+      "title": "Bộ ba thú cưng siêu ngầu tạo dáng cực chất",
+      "duration": "00:05",
+      "views": "314.3K",
+      "likes": "22.4K",
+      "uploadDate": "Vừa xong",
+      "category": "🔥 ĐANG THỊNH HÀNH",
+      "videoUrl": "../storage/2_web_full/chao_co.mp4",
+      "posterUrl": "../storage/2_web_full/chao_co_poster.jpg",
+      "description": "Trời ơi tin được không bộ ba thú cưng diện áo hoa kính mát cực ngầu đang khiến cộng đồng mạng đứng ngồi không yên. Khoảnh khắc cực kỳ đáng yêu này chắc chắn sẽ làm bạn tan chảy ngay lập tức. #thucung #dangyeu #xuhuong #trend #viral. Xem trọn vẹn tại link dưới bình luận nhé!"
+    },
     "cat_mukkbang": {
       "id": "cat_mukkbang",
       "title": "Mèo cam đeo kính cực ngầu ăn cá nướng giòn rụm",
@@ -52,15 +64,15 @@ const CONFIG = {
     },
     "default": {
       "id": "default",
-      "title": "Mèo cam đeo kính cực ngầu ăn cá nướng giòn rụm",
+      "title": "Bộ ba thú cưng siêu ngầu tạo dáng cực chất",
       "duration": "00:05",
-      "views": "240.8K",
-      "likes": "22.8K",
+      "views": "314.3K",
+      "likes": "22.4K",
       "uploadDate": "Vừa xong",
       "category": "🔥 ĐANG THỊNH HÀNH",
-      "videoUrl": "../storage/2_web_full/cat_mukkbang.mp4",
-      "posterUrl": "../storage/2_web_full/cat_mukkbang_poster.jpg",
-      "description": "Trời ơi chú mèo cam đeo kính ăn cá nướng nhìn mà mê chữ ê chữ dính luôn! Biểu cảm phê pha lúc ăn xong quá là hài hước và đáng yêu. Xem ngay bản full không che tại link dưới bình luận nhé! #meocam #thucungdangyeu #canuong #vuinhon #viral"
+      "videoUrl": "../storage/2_web_full/chao_co.mp4",
+      "posterUrl": "../storage/2_web_full/chao_co_poster.jpg",
+      "description": "Trời ơi tin được không bộ ba thú cưng diện áo hoa kính mát cực ngầu đang khiến cộng đồng mạng đứng ngồi không yên. Khoảnh khắc cực kỳ đáng yêu này chắc chắn sẽ làm bạn tan chảy ngay lập tức. #thucung #dangyeu #xuhuong #trend #viral. Xem trọn vẹn tại link dưới bình luận nhé!"
     }
   },
   "deals": [
