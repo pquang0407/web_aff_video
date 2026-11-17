@@ -22,6 +22,18 @@
     ]
   },
   "videos": {
+    "vid_TikTok_7708011729371876638": {
+      "id": "vid_TikTok_7708011729371876638",
+      "title": "Quán lẩu ngắm toàn cảnh thành phố cực chill về đêm",
+      "duration": "00:08",
+      "views": "211.7K",
+      "likes": "24.6K",
+      "uploadDate": "Vừa xong",
+      "category": "🔥 ĐANG THỊNH HÀNH",
+      "videoUrl": "videos/vid_TikTok_7708011729371876638.mp4",
+      "posterUrl": "videos/vid_TikTok_7708011729371876638_poster.jpg",
+      "description": "Trải nghiệm ăn lẩu view rooftop ngắm trọn thành phố lung linh ánh đèn cực chill cùng người thương. Không gian lãng mạn và đồ ăn ngon hết nấc. Xem ngay bản đầy đủ tại link dưới bình luận nhé! #LẩuRooftop #CheckInThànhPhố #ChillCùngGấu #FoodReview"
+    },
     "vid_TikTok_7708367009888685342": {
       "id": "vid_TikTok_7708367009888685342",
       "title": "Ăn lẩu ngắm hoàng hôn triệu đô đẹp ngất ngây",
@@ -34,29 +46,17 @@
       "posterUrl": "videos/vid_TikTok_7708367009888685342_poster.jpg",
       "description": "Không gian ăn lẩu cực chill ngắm trọn hoàng hôn thành phố rực rỡ siêu lãng mạn. Xem ngay trọn bộ trải nghiệm tại link dưới bình luận nhé. #lauhoanghon #chill #dulich #hoanghon"
     },
-    "vid_TikTok_7708011729371876638": {
-      "id": "vid_TikTok_7708011729371876638",
-      "title": "Ăn nướng ngắm toàn cảnh thành phố cực chill về đêm",
+    "default": {
+      "id": "default",
+      "title": "Quán lẩu ngắm toàn cảnh thành phố cực chill về đêm",
       "duration": "00:08",
-      "views": "269.3K",
-      "likes": "22.6K",
+      "views": "211.7K",
+      "likes": "24.6K",
       "uploadDate": "Vừa xong",
       "category": "🔥 ĐANG THỊNH HÀNH",
       "videoUrl": "videos/vid_TikTok_7708011729371876638.mp4",
       "posterUrl": "videos/vid_TikTok_7708011729371876638_poster.jpg",
-      "description": "Trải nghiệm không gian ăn nướng ngoài trời cực đỉnh ngắm trọn thành phố rực rỡ ánh đèn về đêm. #anluong #chill #dulich #trending #xuhuong Xem trọn vẹn tại link dưới bình luận nhé!"
-    },
-    "default": {
-      "id": "default",
-      "title": "Ăn lẩu ngắm hoàng hôn triệu đô đẹp ngất ngây",
-      "duration": "00:08",
-      "views": "242.3K",
-      "likes": "21.1K",
-      "uploadDate": "Vừa xong",
-      "category": "🔥 ĐANG THỊNH HÀNH",
-      "videoUrl": "videos/vid_TikTok_7708367009888685342.mp4",
-      "posterUrl": "videos/vid_TikTok_7708367009888685342_poster.jpg",
-      "description": "Không gian ăn lẩu cực chill ngắm trọn hoàng hôn thành phố rực rỡ siêu lãng mạn. Xem ngay trọn bộ trải nghiệm tại link dưới bình luận nhé. #lauhoanghon #chill #dulich #hoanghon"
+      "description": "Trải nghiệm ăn lẩu view rooftop ngắm trọn thành phố lung linh ánh đèn cực chill cùng người thương. Không gian lãng mạn và đồ ăn ngon hết nấc. Xem ngay bản đầy đủ tại link dưới bình luận nhé! #LẩuRooftop #CheckInThànhPhố #ChillCùngGấu #FoodReview"
     }
   },
   "deals": [
