@@ -87,6 +87,28 @@ class AdminRequestHandler(BaseHTTPRequestHandler):
                 self._send_json({"ok": True, "threads": saved})
                 return
 
+            if path == "/api/queue/clear":
+                # Xóa sạch các video cũ trong hàng đợi
+                deleted_count = 0
+                for mp in config.FULL_DIR.glob("*_meta.json"):
+                    try:
+                        mp.unlink(missing_ok=True)
+                        deleted_count += 1
+                    except Exception:
+                        pass
+                for tp in config.TEASER_DIR.glob("*.*"):
+                    if tp.name != ".gitkeep":
+                        try:
+                            tp.unlink(missing_ok=True)
+                        except Exception:
+                            pass
+                self._send_json({
+                    "ok": True,
+                    "deleted_count": deleted_count,
+                    "queue": poster.get_social_queue(),
+                })
+                return
+
             if path == "/api/scheduler/save":
                 saved = config.save_scheduler_config(payload)
                 self._send_json({"ok": True, "scheduler": saved})

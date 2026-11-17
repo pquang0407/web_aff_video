@@ -349,7 +349,10 @@
       <section class="card">
         <div class="card-title">
           <span>🎬 HÀNG ĐỢI VIDEO (TỰ ĐỘNG NHẬN TỪ MODULE 2 & 3)</span>
-          <button class="btn btn-surface" onclick="loadState()">🔄 Làm mới Queue</button>
+          <div style="display:flex; gap:6px;">
+            <button class="btn btn-surface" onclick="loadState()">🔄 Làm mới Queue</button>
+            <button class="btn btn-surface" onclick="clearQueue()" style="color:#ff6666; border-color:rgba(255,100,100,0.3)">🗑️ Dọn sạch Queue</button>
+          </div>
         </div>
         <p style="font-size:12px; color:var(--muted); margin-bottom:14px;">
           Các video mới do AI tạo ra sẽ tự động xếp vào đây. Khi bật <strong>Auto-Scheduler 24/7</strong>, hệ thống sẽ tự động lấy lần lượt từng bài đi đăng mỗi khi đến Khung Giờ Vàng, hoặc bạn có thể hẹn giờ riêng cho từng bài.
@@ -477,42 +480,52 @@
       // 4. Render Queue with Per-Video Schedule Picker
       const qBox = document.getElementById("queueContainer");
       const qList = STATE.queue || [];
-      qBox.innerHTML = qList.map(item => {
-        const isPosted = item.status === "posted_to_social";
-        const isScheduled = item.status === "scheduled" && item.scheduled_at;
-        let badgeClass = "badge-ready";
-        let badgeText = "⏳ TRONG HÀNG ĐỢI TỰ ĐỘNG";
-        if (isPosted) {
-          badgeClass = "badge-posted";
-          badgeText = "✓ ĐÃ ĐĂNG SOCIAL";
-        } else if (isScheduled) {
-          badgeClass = "badge-scheduled";
-          badgeText = `⏰ HẸN GIỜ: ${item.scheduled_at.replace("T", " ")}`;
-        }
-
-        const targetUrl = item.target_web_url && !item.target_web_url.includes("zento-web-five") ? item.target_web_url : `https://webaffvideo-web.vercel.app/?v=${item.id}`;
-        return `
-          <div class="queue-item">
-            <div class="queue-info">
-              <div style="display:flex; align-items:center; gap:8px; margin-bottom:5px;">
-                <span class="badge-status ${badgeClass}">${badgeText}</span>
-                <span style="font-size:12px; color:var(--muted)">ID: <strong>${item.id}</strong> • Thời lượng: ${item.duration || '00:10'}</span>
-              </div>
-              <div class="queue-title">${item.title}</div>
-              <div class="queue-meta">Link Auto-Comment: <a class="queue-link" href="${targetUrl}" target="_blank">${targetUrl}</a></div>
-              <div style="display:flex; align-items:center; gap:6px; margin-top:8px;">
-                <span style="font-size:11px; color:var(--muted)">Hẹn giờ riêng:</span>
-                <input type="datetime-local" id="sched_${item.id}" value="${item.scheduled_at || ''}" style="width:175px; padding:4px 8px; font-size:11px;">
-                <button class="btn btn-surface" style="padding:4px 10px; font-size:11px;" onclick="setVideoSchedule('${item.id}')">Đặt lịch</button>
-              </div>
-            </div>
-            <div class="queue-actions">
-              <button class="btn btn-surface" onclick="triggerPost('${item.id}', true)">🧪 Đăng Giả Lập (Test Luồng)</button>
-              <button class="btn btn-accent" onclick="triggerPost('${item.id}', false)">🚀 Đăng Thật Ngay</button>
-            </div>
+      if (!qList.length) {
+        qBox.innerHTML = `
+          <div style="padding: 36px 16px; text-align: center; color: var(--muted); background: var(--surface); border: 1px dashed var(--border); border-radius: 12px; margin-top: 8px;">
+            <div style="font-size: 32px; margin-bottom: 8px;">🎬</div>
+            <div style="font-weight: 600; color: #fff; margin-bottom: 4px;">Hàng đợi (Queue) đang trống</div>
+            <div style="font-size: 12px; max-width: 400px; margin: 0 auto;">Các video mới do AI xử lý hoặc nạp từ link/Telegram Bot sẽ tự động xuất hiện tại đây theo thời gian thực để sẵn sàng đăng theo lịch 24/7.</div>
           </div>
         `;
-      }).join("");
+      } else {
+        qBox.innerHTML = qList.map(item => {
+          const isPosted = item.status === "posted_to_social";
+          const isScheduled = item.status === "scheduled" && item.scheduled_at;
+          let badgeClass = "badge-ready";
+          let badgeText = "⏳ TRONG HÀNG ĐỢI TỰ ĐỘNG";
+          if (isPosted) {
+            badgeClass = "badge-posted";
+            badgeText = "✓ ĐÃ ĐĂNG SOCIAL";
+          } else if (isScheduled) {
+            badgeClass = "badge-scheduled";
+            badgeText = `⏰ HẸN GIỜ: ${item.scheduled_at.replace("T", " ")}`;
+          }
+
+          const targetUrl = item.target_web_url && !item.target_web_url.includes("zento-web-five") ? item.target_web_url : `https://webaffvideo-web.vercel.app/?v=${item.id}`;
+          return `
+            <div class="queue-item">
+              <div class="queue-info">
+                <div style="display:flex; align-items:center; gap:8px; margin-bottom:5px;">
+                  <span class="badge-status ${badgeClass}">${badgeText}</span>
+                  <span style="font-size:12px; color:var(--muted)">ID: <strong>${item.id}</strong> • Thời lượng: ${item.duration || '00:10'}</span>
+                </div>
+                <div class="queue-title">${item.title}</div>
+                <div class="queue-meta">Link Auto-Comment: <a class="queue-link" href="${targetUrl}" target="_blank">${targetUrl}</a></div>
+                <div style="display:flex; align-items:center; gap:6px; margin-top:8px;">
+                  <span style="font-size:11px; color:var(--muted)">Hẹn giờ riêng:</span>
+                  <input type="datetime-local" id="sched_${item.id}" value="${item.scheduled_at || ''}" style="width:175px; padding:4px 8px; font-size:11px;">
+                  <button class="btn btn-surface" style="padding:4px 10px; font-size:11px;" onclick="setVideoSchedule('${item.id}')">Đặt lịch</button>
+                </div>
+              </div>
+              <div class="queue-actions">
+                <button class="btn btn-surface" onclick="triggerPost('${item.id}', true)">🧪 Đăng Giả Lập (Test Luồng)</button>
+                <button class="btn btn-accent" onclick="triggerPost('${item.id}', false)">🚀 Đăng Thật Ngay</button>
+              </div>
+            </div>
+          `;
+        }).join("");
+      }
 
       // 5. Render History
       const hBox = document.getElementById("historyContainer");
@@ -638,6 +651,21 @@
       };
       await fetch("/api/threads/save", { method: "POST", body: JSON.stringify(payload) });
       alert("Đã lưu phiên đăng nhập Threads thành công!");
+    }
+
+    async function clearQueue() {
+      if (!confirm("Bạn có chắc chắn muốn dọn sạch toàn bộ clip cũ trong Hàng Đợi (Queue) để nạp mới hoàn toàn không?")) return;
+      try {
+        const res = await fetch("/api/queue/clear", { method: "POST" });
+        const data = await res.json();
+        if (data.ok) {
+          STATE.queue = data.queue || [];
+          renderUI();
+          alert(`Đã dọn sạch hàng đợi clip thành công! (Đã xóa ${data.deleted_count || 0} mục cũ)`);
+        }
+      } catch (e) {
+        alert("Lỗi kết nối server: " + e.message);
+      }
     }
 
     async function downloadUrlToPipeline() {
