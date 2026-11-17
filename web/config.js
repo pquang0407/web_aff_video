@@ -26,6 +26,18 @@ const CONFIG = {
     ]
   },
   "videos": {
+    "vid_TikTok_7708011729371876638": {
+      "id": "vid_TikTok_7708011729371876638",
+      "title": "Ăn nướng ngắm toàn cảnh thành phố cực chill về đêm",
+      "duration": "00:08",
+      "views": "269.3K",
+      "likes": "22.6K",
+      "uploadDate": "Vừa xong",
+      "category": "🔥 ĐANG THỊNH HÀNH",
+      "videoUrl": "../storage/2_web_full/vid_TikTok_7708011729371876638.mp4",
+      "posterUrl": "../storage/2_web_full/vid_TikTok_7708011729371876638_poster.jpg",
+      "description": "Trải nghiệm không gian ăn nướng ngoài trời cực đỉnh ngắm trọn thành phố rực rỡ ánh đèn về đêm. #anluong #chill #dulich #trending #xuhuong Xem trọn vẹn tại link dưới bình luận nhé!"
+    },
     "sample_test_clip": {
       "id": "sample_test_clip",
       "title": "Cận cảnh bảng màu thử nghiệm phát sóng TV kinh điển và âm thanh đếm ngược",
@@ -148,15 +160,15 @@ const CONFIG = {
     },
     "default": {
       "id": "default",
-      "title": "Cận cảnh bảng màu thử nghiệm phát sóng TV kinh điển và âm thanh đếm ngược",
-      "duration": "00:10",
-      "views": "300.3K",
-      "likes": "21.0K",
+      "title": "Ăn nướng ngắm toàn cảnh thành phố cực chill về đêm",
+      "duration": "00:08",
+      "views": "269.3K",
+      "likes": "22.6K",
       "uploadDate": "Vừa xong",
       "category": "🔥 ĐANG THỊNH HÀNH",
-      "videoUrl": "../storage/2_web_full/sample_test_clip.mp4",
-      "posterUrl": "../storage/2_web_full/sample_test_clip_poster.jpg",
-      "description": "Khám phá lại bảng màu kiểm tra tín hiệu TV cổ điển cùng âm thanh đếm ngược quen thuộc. Xem ngay bản đầy đủ không che tại link dưới bình luận. #testcard #tvclassic #retro #khampha"
+      "videoUrl": "../storage/2_web_full/vid_TikTok_7708011729371876638.mp4",
+      "posterUrl": "../storage/2_web_full/vid_TikTok_7708011729371876638_poster.jpg",
+      "description": "Trải nghiệm không gian ăn nướng ngoài trời cực đỉnh ngắm trọn thành phố rực rỡ ánh đèn về đêm. #anluong #chill #dulich #trending #xuhuong Xem trọn vẹn tại link dưới bình luận nhé!"
     }
   },
   "deals": [
