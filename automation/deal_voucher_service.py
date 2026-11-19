@@ -49,15 +49,17 @@ EVERGREEN_SHOPEE_PAGES = [
 def get_smart_product_image(title: str) -> str:
     """Chọn ảnh sản phẩm tương ứng với danh mục chính xác thay vì chọn ngẫu nhiên"""
     t = title.lower()
-    if any(k in t for k in ["cocoon", "sen", "mỹ phẩm", "kem", "serum", "son", "toner", "sữa rửa mặt", "skincare"]):
+    if any(k in t for k in ["cocoon", "sen", "mỹ phẩm", "kem", "serum", "son", "toner", "sữa rửa mặt", "skincare", "tẩy trang", "bông tẩy"]):
         return "https://images.unsplash.com/photo-1556228720-195a672e8a03?w=200&auto=format&fit=crop&q=80"
+    if any(k in t for k in ["chuột", "bàn phím", "keyboard", "mouse", "laptop"]):
+        return "https://images.unsplash.com/photo-1527814050087-3793815479db?w=200&auto=format&fit=crop&q=80"
     if any(k in t for k in ["nước giặt", "giặt", "ariel", "maxkleen", "omo", "comfort", "xả vải"]):
         return "https://images.unsplash.com/photo-1583947215259-38e31be8751f?w=200&auto=format&fit=crop&q=80"
     if any(k in t for k in ["sạc", "dự phòng", "pin", "cáp"]):
         return "https://images.unsplash.com/photo-1609091839311-d5365f9ff1c5?w=200&auto=format&fit=crop&q=80"
     if any(k in t for k in ["quạt", "mini", "tích điện", "bếp", "ấm", "nồi"]):
         return "https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=200&auto=format&fit=crop&q=80"
-    if any(k in t for k in ["giày", "dép", "áo", "quần", "thời trang", "túi"]):
+    if any(k in t for k in ["giày", "dép", "áo", "quần", "thời trang", "túi xách", "balo"]):
         return "https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=200&auto=format&fit=crop&q=80"
     # Mặc định đồ điện tử / âm thanh
     return "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=200&auto=format&fit=crop&q=80"
@@ -76,8 +78,10 @@ def clean_deal_title(raw_title: str) -> str:
     t = re.sub(r'\s+', ' ', t).strip()
     
     # Chuẩn hóa các từ khóa quan trọng
-    if "25%" in t and "Shopee" in t:
+    if "25%" in t and "shopee" in t.lower():
         return "Voucher Shopee VIP Giảm 25% Đơn 0Đ"
+    if "24%" in t and "shopee" in t.lower():
+        return "Voucher Shopee Giảm 24% Tối Đa 200K"
     if "50%" in t:
         return "Voucher Giảm 50% Tối Đa 100K Toàn Sàn"
     if "freeship" in t.lower() or "0đ" in t.lower():
@@ -87,6 +91,11 @@ def clean_deal_title(raw_title: str) -> str:
     if "lưu hết mã shop" in t.lower():
         return "Voucher Giảm Tới 200K Toàn Sàn Shopee"
     
+    # Nếu chứa phần trăm cụ thể (vd 20%, 30%) thì format gọn đẹp
+    pct_m = re.search(r"(\d{1,2}%)", t)
+    if pct_m and ("back mã" in t.lower() or "mã" in t.lower()):
+        return f"Voucher Shopee Giảm {pct_m.group(1)} Toàn Sàn"
+
     if len(t) > 42:
         t = t[:40].rstrip() + "..."
     return t if len(t) > 5 else "Voucher Giảm Giá Shopee VIP"
@@ -95,7 +104,10 @@ def clean_deal_title(raw_title: str) -> str:
 def clean_product_title(raw_title: str) -> str:
     """Làm sạch tên sản phẩm gọn gàng, hấp dẫn"""
     t = raw_title.strip()
-    t = re.sub(r'^[💥🔥⚡👉🎯⏰✨]+\s*', '', t)
+    if t.startswith("(") or any(b in t.lower() for b in ["gõ ", "tìm kiếm", "giỏ live", "bấm vào", "lưu ý"]):
+        return ""
+    t = re.sub(r'^[💥🔥⚡👉🎯⏰✨•\-]+\s*', '', t)
+    t = re.sub(r'^\d+[\.\)\-]\s*', '', t)
     t = re.sub(r'[💥🔥⚡👉🎯⏰✨>].*$', '', t)
     t = re.sub(r'chỉ\s*\d+.*$', '', t, flags=re.IGNORECASE)
     t = re.sub(r'\s+', ' ', t).strip()
@@ -105,15 +117,14 @@ def clean_product_title(raw_title: str) -> str:
 
 
 def format_price_vnd(price_str: str) -> str:
-    """Đổi giá tiền dạng 269K, 100K sang chuẩn Việt Nam (269.000đ)"""
+    """Đổi giá tiền dạng 269K, 100K, 9.000đ sang chuẩn Việt Nam (269.000đ)"""
     p = price_str.upper().strip()
     if "K" in p:
         num = re.sub(r'[^\d]', '', p)
         if num:
             return f"{num}.000đ"
-    if not p.endswith("đ"):
-        return f"{p}đ"
-    return p
+    p = re.sub(r'[ĐDđd]+$', '', p).strip()
+    return f"{p}đ"
 
 
 def get_user_tracking_code(email: str) -> str:
@@ -305,7 +316,7 @@ def scrape_telegram_deals() -> List[Dict[str, Any]]:
         
         raw_items = []
         for div in msg_divs:
-            text = div.get_text()
+            text = div.get_text(separator="\n")
             # Tìm link và làm sạch sơ bộ
             found_urls = re.findall(r"https?://[^\s<>]+", text)
             cleaned_urls = [clean_url_string(u) for u in found_urls if clean_url_string(u)]
@@ -343,9 +354,18 @@ def parse_and_categorize_deals(raw_items: List[Dict[str, Any]], user_email: str 
                 continue
             
             discount = "Giảm tối đa 100K - 200K"
-            disc_match = re.search(r"(\d+%\s*tối đa\s*[\dKM]+|giảm\s*[\dKM]+)", text, re.IGNORECASE)
+            disc_match = re.search(
+                r"(?:giảm\s+)?\d{1,2}%\s*(?:tối\s*đa\s*[\d,.]+[KMđ]+)?|giảm\s+[\d,.]+[KMđ]+",
+                text,
+                re.IGNORECASE,
+            )
             if disc_match:
-                discount = disc_match.group(0).capitalize()
+                matched_disc = re.sub(r"\s+", " ", disc_match.group(0)).strip()
+                if not matched_disc.lower().startswith("giảm"):
+                    matched_disc = f"Giảm {matched_disc}"
+                else:
+                    matched_disc = matched_disc[0].upper() + matched_disc[1:]
+                discount = matched_disc
 
             # Kiểm tra độ sống của link voucher
             target_link = None
@@ -362,23 +382,28 @@ def parse_and_categorize_deals(raw_items: List[Dict[str, Any]], user_email: str 
 
             aff_res = convert_via_tho_hoantien(target_link, user_email, platform="shopee")
             seen_voucher_titles.add(title)
+            claimed_pct = random.randint(80, 96)
             vouchers.append({
                 "title": title,
-                "badge": "SẮP CHÁY MÃ" if "Back" in title or "0Đ" in title else "HOT NHẤT",
+                "badge": "SẮP CHÁY MÃ" if claimed_pct >= 90 or "0Đ" in title else "HOT NHẤT",
                 "platform": "Shopee",
                 "discount": discount,
-                "claimedPercent": random.randint(78, 96),
-                "exp": f"Đã lưu {random.randint(78, 96)}% • Khung giờ vàng",
+                "claimedPercent": claimed_pct,
+                "exp": f"Đã lưu {claimed_pct}% • Khung giờ vàng",
                 "url": aff_res.get("short") or aff_res["affiliate"]
             })
 
-        # 2. Phát hiện Sản phẩm Flash Sale
-        elif any(kw in text.lower() for kw in ["k/túi", "k/chiếc", "combo", "chỉ ", "k >", "giá"]):
+        # 2. Phát hiện Sản phẩm Flash Sale (loại trừ triệt để tin báo mã voucher)
+        elif any(kw in text.lower() for kw in ["k/túi", "k/chiếc", "combo", "k/chai", "k/hộp", "k/bộ", "k >"]):
+            voucher_noise = ["mã ", "voucher", "lẹ!", "lụm!", "freeship", "hoàn xu", "chỉ còn", "tối đa", "toàn sàn", "sếp nào", "50%", "25%", "24%", "back mã"]
             lines = [l.strip() for l in text.split("\n") if l.strip()]
             for l in lines:
-                if any(sym in l for sym in ["chỉ", "combo", "K", "k"]) and len(l) > 10:
+                l_low = l.lower()
+                if any(bad in l_low for bad in voucher_noise):
+                    continue
+                if any(sym in l for sym in ["combo", "Combo", "chai", "túi", "hộp", "chiếc", "bộ"]) and len(l) > 10:
                     p_title = clean_product_title(l)
-                    if not p_title or p_title in seen_product_titles:
+                    if not p_title or len(p_title) < 8 or p_title in seen_product_titles:
                         continue
                     
                     price_match = re.search(r"(\d+K|\d+k|\d+\.\d+đ|\d+đ)", l)

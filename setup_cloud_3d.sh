@@ -11,13 +11,13 @@ echo "=================================================================="
 echo "🐰🐻 CÀI ĐẶT XƯỞNG PHIM 3D THỎ & GẤU CHẠY ĐỘC LẬP 100% TRÊN CLOUD VM"
 echo "=================================================================="
 
-# 1. Cài đặt Node.js 22 LTS nếu chưa có
-if ! command -v node &> /dev/null; then
-    echo "📦 [1/4] Đang cài đặt Node.js 22 LTS..."
-    curl -fsSL https://deb.nodesource.com/setup_22.x | sudo -E bash -
-    sudo apt-get install -y nodejs
+# 1. Cài đặt Node.js & NPM nếu chưa có
+if ! command -v node &> /dev/null || ! command -v npm &> /dev/null; then
+    echo "📦 [1/4] Đang cài đặt Node.js & NPM..."
+    sudo DEBIAN_FRONTEND=noninteractive apt-get update -y
+    sudo DEBIAN_FRONTEND=noninteractive apt-get install -y nodejs npm
 else
-    echo "✅ [1/4] Node.js đã cài sẵn: $(node -v)"
+    echo "✅ [1/4] Node.js & NPM đã cài sẵn: $(node -v) | npm $(npm -v)"
 fi
 
 # 2. Cài đặt Google Chrome Stable cho Puppeteer 3D Muse.ai
