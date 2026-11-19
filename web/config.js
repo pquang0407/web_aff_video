@@ -26,6 +26,18 @@ const CONFIG = {
     ]
   },
   "videos": {
+    "tho_gau_3d_20261119185546": {
+      "id": "tho_gau_3d_20261119185546",
+      "title": "[3D Thỏ & Gấu] Hơn hai tháng vẫn chưa thể chấp nhận việc vợ bỏ tôi",
+      "duration": "00:46",
+      "views": "197.5K",
+      "likes": "19.8K",
+      "uploadDate": "Vừa xong",
+      "category": "🐰🐻 VŨ TRỤ THỎ & GẤU 3D",
+      "videoUrl": "videos/tho_gau_3d_20261119185546.mp4",
+      "posterUrl": "videos/tho_gau_3d_20261119185546_poster.jpg",
+      "description": "Khi hạnh phúc rời đi, chúng ta học cách đứng dậy. Hãy cùng Thỏ & Gấu chiêm nghiệm về sự buông bỏ và bắt đầu cuộc hành trình mới đầy hy vọng. #ThoVaGau #ChuaLanh #VuotQuaNoiBuon #HanhPhucMoi"
+    },
     "tho_gau_3d_20261119181412": {
       "id": "tho_gau_3d_20261119181412",
       "title": "[3D Thỏ & Gấu] Tin tức",
@@ -112,15 +124,15 @@ const CONFIG = {
     },
     "default": {
       "id": "default",
-      "title": "[3D Thỏ & Gấu] Tin tức",
+      "title": "[3D Thỏ & Gấu] Hơn hai tháng vẫn chưa thể chấp nhận việc vợ bỏ tôi",
       "duration": "00:46",
-      "views": "270.5K",
-      "likes": "18.8K",
+      "views": "197.5K",
+      "likes": "19.8K",
       "uploadDate": "Vừa xong",
       "category": "🐰🐻 VŨ TRỤ THỎ & GẤU 3D",
-      "videoUrl": "videos/tho_gau_3d_20261119181412.mp4",
-      "posterUrl": "videos/tho_gau_3d_20261119181412_poster.jpg",
-      "description": "Cú sốc lớn tại đường chạy marathon thế giới! Vô địch Olympic Peres Jepchirchir vừa nhận án treo giò 3 năm vì chất cấm. Liệu sự thật đằng sau những đường chạy thần tốc này là gì? Cùng Thỏ và Gấu tìm hiểu ngay! #Doping #Marathon #TinTucTheThao #ThoVaGau"
+      "videoUrl": "videos/tho_gau_3d_20261119185546.mp4",
+      "posterUrl": "videos/tho_gau_3d_20261119185546_poster.jpg",
+      "description": "Khi hạnh phúc rời đi, chúng ta học cách đứng dậy. Hãy cùng Thỏ & Gấu chiêm nghiệm về sự buông bỏ và bắt đầu cuộc hành trình mới đầy hy vọng. #ThoVaGau #ChuaLanh #VuotQuaNoiBuon #HanhPhucMoi"
     }
   },
   "deals": [
