@@ -22,6 +22,18 @@
     ]
   },
   "videos": {
+    "tho_gau_3d_20261119181412": {
+      "id": "tho_gau_3d_20261119181412",
+      "title": "[3D Thỏ & Gấu] Tin tức",
+      "duration": "00:46",
+      "views": "270.5K",
+      "likes": "18.8K",
+      "uploadDate": "Vừa xong",
+      "category": "🐰🐻 VŨ TRỤ THỎ & GẤU 3D",
+      "videoUrl": "videos/tho_gau_3d_20261119181412.mp4",
+      "posterUrl": "videos/tho_gau_3d_20261119181412_poster.jpg",
+      "description": "Cú sốc lớn tại đường chạy marathon thế giới! Vô địch Olympic Peres Jepchirchir vừa nhận án treo giò 3 năm vì chất cấm. Liệu sự thật đằng sau những đường chạy thần tốc này là gì? Cùng Thỏ và Gấu tìm hiểu ngay! #Doping #Marathon #TinTucTheThao #ThoVaGau"
+    },
     "tho_gau_3d_20261119131258": {
       "id": "tho_gau_3d_20261119131258",
       "title": "[3D Thỏ & Gấu] CON ĐƯỜNG RỰC RỠ GÂY BÃO",
@@ -96,15 +108,15 @@
     },
     "default": {
       "id": "default",
-      "title": "[3D Thỏ & Gấu] CON ĐƯỜNG RỰC RỠ GÂY BÃO",
+      "title": "[3D Thỏ & Gấu] Tin tức",
       "duration": "00:46",
-      "views": "146.5K",
-      "likes": "20.8K",
+      "views": "270.5K",
+      "likes": "18.8K",
       "uploadDate": "Vừa xong",
       "category": "🐰🐻 VŨ TRỤ THỎ & GẤU 3D",
-      "videoUrl": "videos/tho_gau_3d_20261119131258.mp4",
-      "posterUrl": "videos/tho_gau_3d_20261119131258_poster.jpg",
-      "description": "Đường bích họa rực rỡ ở Đà Lạt khiến Thỏ Đỏ và Gấu Béo tranh cãi nảy lửa vì cảnh quan! Xem ngay chi tiết. #ThoVaGau #Dalat #TinNong #BichHoa"
+      "videoUrl": "videos/tho_gau_3d_20261119181412.mp4",
+      "posterUrl": "videos/tho_gau_3d_20261119181412_poster.jpg",
+      "description": "Cú sốc lớn tại đường chạy marathon thế giới! Vô địch Olympic Peres Jepchirchir vừa nhận án treo giò 3 năm vì chất cấm. Liệu sự thật đằng sau những đường chạy thần tốc này là gì? Cùng Thỏ và Gấu tìm hiểu ngay! #Doping #Marathon #TinTucTheThao #ThoVaGau"
     }
   },
   "deals": [
