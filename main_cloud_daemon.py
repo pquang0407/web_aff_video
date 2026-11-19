@@ -76,25 +76,32 @@ def run_admin_and_scheduler_worker():
             time.sleep(5)
 
 
+def clean_stale_legacy_files():
+    """Tự động dọn sạch các file vid_TikTok cũ còn sót trên Cloud VM khi khởi động"""
+    for rel in ["storage/1_raw", "storage/2_web_full", "storage/3_social_teaser", "web/videos"]:
+        folder = ROOT_DIR / rel
+        if not folder.exists():
+            continue
+        for f in list(folder.iterdir()):
+            if f.name == ".gitkeep" or f.is_dir():
+                continue
+            if not f.name.startswith("tho_gau_"):
+                try:
+                    f.unlink(missing_ok=True)
+                except Exception:
+                    pass
+
+
 def run_cron_scanner_worker():
-    """Luồng quét khoang 1_raw định kỳ phòng khi có video sót"""
-    logger.info("🚀 [Worker 3] Khởi chạy Quét Kho Video Thô định kỳ...")
-    factory_script = ROOT_DIR / "automation" / "2_ai_video_factory" / "factory.py"
+    """[ĐÃ TẮT QUÉT 1_RAW CŨ] Giữ nguyên luồng cho Xưởng 3D Thỏ & Gấu"""
     while IS_RUNNING:
-        try:
-            # Quét mỗi 10 phút kiểm tra xem có video nào trong 1_raw chưa render không
-            time.sleep(600)
-            if not IS_RUNNING:
-                break
-            logger.info("⏰ [Worker 3] Quét định kỳ khoang storage/1_raw...")
-            subprocess.run([sys.executable, str(factory_script)])
-        except Exception as e:
-            logger.error(f"[Worker 3] Lỗi quét định kỳ: {e}")
+        time.sleep(3600)
 
 
 def main():
+    clean_stale_legacy_files()
     print("=" * 70)
-    print("🌟 KHỞI ĐỘNG HỆ THỐNG AUTO VIDEO AFFILIATE 24/7 TRÊN CLOUD 🌟")
+    print("🌟 KHỞI ĐỘNG HỆ THỐNG XƯỞNG PHIM 3D THỎ & GẤU 24/7 TRÊN CLOUD 🌟")
     print("=" * 70)
     print(f"📁 Thư mục gốc dự án: {ROOT_DIR}")
     print(f"🤖 AI Model: Gemini 3.5 Flash Lite")
