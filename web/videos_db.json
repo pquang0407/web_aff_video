@@ -22,6 +22,18 @@
     ]
   },
   "videos": {
+    "tho_gau_3d_20261119131258": {
+      "id": "tho_gau_3d_20261119131258",
+      "title": "[3D Thỏ & Gấu] CON ĐƯỜNG RỰC RỠ GÂY BÃO",
+      "duration": "00:46",
+      "views": "146.5K",
+      "likes": "20.8K",
+      "uploadDate": "Vừa xong",
+      "category": "🐰🐻 VŨ TRỤ THỎ & GẤU 3D",
+      "videoUrl": "videos/tho_gau_3d_20261119131258.mp4",
+      "posterUrl": "videos/tho_gau_3d_20261119131258_poster.jpg",
+      "description": "Đường bích họa rực rỡ ở Đà Lạt khiến Thỏ Đỏ và Gấu Béo tranh cãi nảy lửa vì cảnh quan! Xem ngay chi tiết. #ThoVaGau #Dalat #TinNong #BichHoa"
+    },
     "tho_gau_3d_20261119115320": {
       "id": "tho_gau_3d_20261119115320",
       "title": "[3D Thỏ & Gấu] KHÔNG KHÍ LẠNH TRÀN VỀ",
@@ -84,15 +96,15 @@
     },
     "default": {
       "id": "default",
-      "title": "[3D Thỏ & Gấu] KHÔNG KHÍ LẠNH TRÀN VỀ",
+      "title": "[3D Thỏ & Gấu] CON ĐƯỜNG RỰC RỠ GÂY BÃO",
       "duration": "00:46",
-      "views": "316.5K",
-      "likes": "17.8K",
+      "views": "146.5K",
+      "likes": "20.8K",
       "uploadDate": "Vừa xong",
       "category": "🐰🐻 VŨ TRỤ THỎ & GẤU 3D",
-      "videoUrl": "videos/tho_gau_3d_20261119115320.mp4",
-      "posterUrl": "videos/tho_gau_3d_20261119115320_poster.jpg",
-      "description": "Miền Bắc đón đợt không khí lạnh đầu mùa cực mạnh, nhiệt độ lao dốc không phanh khiến Thỏ Đỏ và Gấu Béo phải co ro mặc áo ấm! #ThoVaGau #TinNong #MienBacRet #ThoiTiet"
+      "videoUrl": "videos/tho_gau_3d_20261119131258.mp4",
+      "posterUrl": "videos/tho_gau_3d_20261119131258_poster.jpg",
+      "description": "Đường bích họa rực rỡ ở Đà Lạt khiến Thỏ Đỏ và Gấu Béo tranh cãi nảy lửa vì cảnh quan! Xem ngay chi tiết. #ThoVaGau #Dalat #TinNong #BichHoa"
     }
   },
   "deals": [

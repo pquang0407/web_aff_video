@@ -1,8 +1,6 @@
 /**
  * CONFIG.JS - Được sinh tự động bởi Module 3 (Web Publisher)
- * Tích hợp toàn bộ Deal, Voucher và Tracking Aff tho-hoan-tien
- * Email liên kết: phuquang04072001@gmail.com (Tracking: vid_30a2abe6e6)
- * Cập nhật lúc: 2026-11-19 19:36:57 (Chu kỳ 15 phút/lần)
+ * Không cần chỉnh sửa thủ công khi thêm video mới.
  */
 const CONFIG = {
   "affiliate": {
@@ -28,6 +26,18 @@ const CONFIG = {
     ]
   },
   "videos": {
+    "tho_gau_3d_20261119131258": {
+      "id": "tho_gau_3d_20261119131258",
+      "title": "[3D Thỏ & Gấu] CON ĐƯỜNG RỰC RỠ GÂY BÃO",
+      "duration": "00:46",
+      "views": "146.5K",
+      "likes": "20.8K",
+      "uploadDate": "Vừa xong",
+      "category": "🐰🐻 VŨ TRỤ THỎ & GẤU 3D",
+      "videoUrl": "videos/tho_gau_3d_20261119131258.mp4",
+      "posterUrl": "videos/tho_gau_3d_20261119131258_poster.jpg",
+      "description": "Đường bích họa rực rỡ ở Đà Lạt khiến Thỏ Đỏ và Gấu Béo tranh cãi nảy lửa vì cảnh quan! Xem ngay chi tiết. #ThoVaGau #Dalat #TinNong #BichHoa"
+    },
     "tho_gau_3d_20261119115320": {
       "id": "tho_gau_3d_20261119115320",
       "title": "[3D Thỏ & Gấu] KHÔNG KHÍ LẠNH TRÀN VỀ",
@@ -90,15 +100,15 @@ const CONFIG = {
     },
     "default": {
       "id": "default",
-      "title": "[3D Thỏ & Gấu] KHÔNG KHÍ LẠNH TRÀN VỀ",
+      "title": "[3D Thỏ & Gấu] CON ĐƯỜNG RỰC RỠ GÂY BÃO",
       "duration": "00:46",
-      "views": "316.5K",
-      "likes": "17.8K",
+      "views": "146.5K",
+      "likes": "20.8K",
       "uploadDate": "Vừa xong",
       "category": "🐰🐻 VŨ TRỤ THỎ & GẤU 3D",
-      "videoUrl": "videos/tho_gau_3d_20261119115320.mp4",
-      "posterUrl": "videos/tho_gau_3d_20261119115320_poster.jpg",
-      "description": "Miền Bắc đón đợt không khí lạnh đầu mùa cực mạnh, nhiệt độ lao dốc không phanh khiến Thỏ Đỏ và Gấu Béo phải co ro mặc áo ấm! #ThoVaGau #TinNong #MienBacRet #ThoiTiet"
+      "videoUrl": "videos/tho_gau_3d_20261119131258.mp4",
+      "posterUrl": "videos/tho_gau_3d_20261119131258_poster.jpg",
+      "description": "Đường bích họa rực rỡ ở Đà Lạt khiến Thỏ Đỏ và Gấu Béo tranh cãi nảy lửa vì cảnh quan! Xem ngay chi tiết. #ThoVaGau #Dalat #TinNong #BichHoa"
     }
   },
   "deals": [
