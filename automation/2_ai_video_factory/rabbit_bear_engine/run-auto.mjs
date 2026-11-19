@@ -153,38 +153,46 @@ Trả về duy nhất định dạng JSON thuần:
     generationConfig: { responseMimeType: 'application/json' }
   });
 
-  const modelsToTry = ['gemini-3.5-flash-lite', 'gemini-2.5-flash', 'gemini-2.0-flash'];
+  const modelsToTry = ['gemini-3.5-flash-lite', 'gemini-3.1-flash-lite', 'gemini-3.1-flash-lite-preview'];
   let parsed = null;
+  const MAX_ROUNDS = 4;
 
-  for (const modelName of modelsToTry) {
-    try {
-      parsed = await new Promise((resolve, reject) => {
-        const req = https.request(`https://generativelanguage.googleapis.com/v1beta/models/${modelName}:generateContent?key=${GEMINI_KEY}`, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json', 'Content-Length': Buffer.byteLength(body) }
-        }, res => {
-          let d = '';
-          res.on('data', c => d += c);
-          res.on('end', () => {
-            try {
-              const r = JSON.parse(d);
-              let t = r.candidates?.[0]?.content?.parts?.[0]?.text;
-              if (!t) return reject(new Error(`Empty response from ${modelName}: ${d.slice(0, 200)}`));
-              t = t.replace(/^```json\s*/i, '').replace(/```\s*$/i, '').trim();
-              resolve(JSON.parse(t));
-            } catch (e) { reject(e); }
+  for (let round = 1; round <= MAX_ROUNDS && !parsed; round++) {
+    for (const modelName of modelsToTry) {
+      try {
+        parsed = await new Promise((resolve, reject) => {
+          const req = https.request(`https://generativelanguage.googleapis.com/v1beta/models/${modelName}:generateContent?key=${GEMINI_KEY}`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json', 'Content-Length': Buffer.byteLength(body) }
+          }, res => {
+            let d = '';
+            res.on('data', c => d += c);
+            res.on('end', () => {
+              try {
+                const r = JSON.parse(d);
+                let t = r.candidates?.[0]?.content?.parts?.[0]?.text;
+                if (!t) return reject(new Error(`Empty response from ${modelName}: ${d.slice(0, 200)}`));
+                t = t.replace(/^```json\s*/i, '').replace(/```\s*$/i, '').trim();
+                resolve(JSON.parse(t));
+              } catch (e) { reject(e); }
+            });
           });
+          req.on('error', reject);
+          req.write(body);
+          req.end();
         });
-        req.on('error', reject);
-        req.write(body);
-        req.end();
-      });
-      if (parsed && parsed.scenes) {
-        console.log(`✅ Đã biên kịch thành công bằng mô hình ${modelName}!`);
-        break;
+        if (parsed && parsed.scenes) {
+          console.log(`✅ Đã biên kịch thành công bằng mô hình ${modelName} (vòng ${round}/${MAX_ROUNDS})!`);
+          break;
+        }
+      } catch (err) {
+        console.warn(`  [Vòng ${round}/${MAX_ROUNDS} - ${modelName}] ${err.message}`);
       }
-    } catch (err) {
-      console.warn(`  [Thử model ${modelName}] ${err.message}`);
+    }
+    if (!parsed && round < MAX_ROUNDS) {
+      const waitSec = round * 6;
+      console.log(`⏳ Gemini đang bận tạm thời (503/network), tự động retry sau ${waitSec} giây...`);
+      await new Promise(r => setTimeout(r, waitSec * 1000));
     }
   }
 
