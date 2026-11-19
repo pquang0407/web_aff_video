@@ -360,9 +360,15 @@ async function renderSceneOnMuse(page, prompt, destPath, seenHashes) {
   for (let attempt = 1; attempt <= 3; attempt++) {
     try {
       console.log(`  -> Mở phiên hội thoại mới sạch 100%: https://muse.ai/thread/new (Lần thử ${attempt}/3)`);
-      await page.goto('https://muse.ai/thread/new', { waitUntil: 'networkidle2', timeout: 45000 });
-      await page.waitForSelector('textarea', { timeout: 25000 });
-      await new Promise(r => setTimeout(r, 2200));
+      await page.goto('https://muse.ai/thread/new', { waitUntil: 'domcontentloaded', timeout: 90000 });
+      try {
+        await page.waitForSelector('textarea', { timeout: 60000 });
+      } catch (selErr) {
+        const curUrl = page.url();
+        const curTitle = await page.title().catch(() => '');
+        throw new Error(`Không thấy ô nhập prompt trên Muse.ai (url=${curUrl}, title="${curTitle}"): ${selErr.message}`);
+      }
+      await new Promise(r => setTimeout(r, 2500));
 
       const initialVideos = await page.evaluate(() => {
         const vids = Array.from(document.querySelectorAll('video')).filter(v => {
@@ -676,6 +682,7 @@ async function main() {
       '--no-sandbox',
       '--disable-setuid-sandbox',
       '--disable-dev-shm-usage',
+      '--disable-gpu',
       '--disable-blink-features=AutomationControlled',
       '--window-size=1280,850'
     ]
