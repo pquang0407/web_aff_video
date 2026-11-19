@@ -68,20 +68,52 @@ function fileSha256(filePath) {
   return crypto.createHash('sha256').update(buf).digest('hex');
 }
 
+function decodeHtmlEntities(str) {
+  return (str || '')
+    .replace(/&nbsp;/gi, ' ')
+    .replace(/&amp;/gi, '&')
+    .replace(/&quot;/gi, '"')
+    .replace(/&#39;|&apos;/gi, "'")
+    .replace(/&lt;/gi, '<')
+    .replace(/&gt;/gi, '>')
+    .replace(/&#(\d+);/g, (_, n) => String.fromCharCode(Number(n)))
+    .replace(/\s+/g, ' ')
+    .trim();
+}
+
+function shortenNewsTitle(rawTitle, maxChars = 72) {
+  let t = decodeHtmlEntities(rawTitle)
+    .replace(/\s*[-–—|]\s*(VnExpress|Báo VnExpress|Dân trí|Báo Dân trí|Tuổi Trẻ Online|Tuổi Trẻ|Thanh Niên|Báo Thanh Niên|Soha|VietnamNet|Kênh 14|Kenh14|24h\.com\.vn|Người Lao Động|Znews).*$/i, '')
+    .trim();
+  if (t.length <= maxChars) return t;
+  const cut = t.slice(0, maxChars).replace(/\s+\S*$/, '').trim();
+  return (cut || t.slice(0, maxChars).trim()) + '...';
+}
+
 async function fetchArticle(url) {
   console.log(`\n📥 [1/6] Đang tải và trích xuất nội dung bài báo từ: ${url}...`);
   const res = await fetch(url, { headers: { 'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64)' } });
   const html = await res.text();
-  const titleMatch = html.match(/<h1[^>]*>([\s\S]*?)<\/h1>/i);
+  const h1Match = html.match(/<h1[^>]*>([\s\S]*?)<\/h1>/i);
+  const ogMatch = html.match(/<meta[^>]+property=["']og:title["'][^>]+content=["']([^"']+)["']/i)
+    || html.match(/<meta[^>]+content=["']([^"']+)["'][^>]+property=["']og:title["']/i);
+  const titleTagMatch = html.match(/<title[^>]*>([\s\S]*?)<\/title>/i);
+
+  const rawH1 = h1Match ? h1Match[1].replace(/<[^>]+>/g, ' ') : '';
+  const rawOg = ogMatch ? ogMatch[1] : '';
+  const rawTag = titleTagMatch ? titleTagMatch[1] : '';
+  const articleTitle = shortenNewsTitle(rawH1 || rawOg || rawTag || 'Bản Tin 3D Thỏ & Gấu', 80);
+
   const articleMatch = html.match(/<article[\s\S]*?<\/article>/i);
-  const rawBlock = (titleMatch ? titleMatch[0] + ' ' : '') + (articleMatch ? articleMatch[0] : html);
+  const rawBlock = (h1Match ? h1Match[0] + ' ' : '') + (articleMatch ? articleMatch[0] : html);
   const clean = rawBlock
     .replace(/<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi, '')
     .replace(/<style\b[^<]*(?:(?!<\/style>)<[^<]*)*<\/style>/gi, '')
     .replace(/<[^>]+>/g, ' ')
     .replace(/\s+/g, ' ')
     .trim();
-  return clean.slice(0, 12000);
+  console.log(`📰 Tiêu đề báo gốc: "${articleTitle}"`);
+  return { title: articleTitle, text: clean.slice(0, 12000) };
 }
 
 function ensureRichVoiceText(text, sceneIdx) {
@@ -96,15 +128,18 @@ function ensureRichVoiceText(text, sceneIdx) {
   return `${text.trim()} ${fillers[sceneIdx] || fillers[4]}`;
 }
 
-async function generateScript(articleText) {
+async function generateScript(articleText, articleTitle = '') {
   console.log(`\n🤖 [2/6] AI Director: Biên kịch cốt truyện 4 hồi liền mạch trong Vũ trụ Thỏ & Gấu 3D...`);
   const prompt = `Bạn là Tổng Đạo diễn kiêm Biên tập viên cho kênh video hoạt hình tin tức 3D Pixar triệu view "Vũ trụ Thỏ & Gấu".
+Tiêu đề gốc của bài báo: "${articleTitle}"
 Dưới đây là nội dung bài báo nguồn:
 """
 ${articleText}
 """
 
 HÃY CHUYỂN THỂ BÀI BÁO THÀNH KỊCH BẢN 4 PHÂN CẢNH LIỀN MẠCH (4-ACT CONTINUOUS STORY) VỚI CÁC QUY TẮC BẮT BUỘC SAU:
+0. QUY TẮC TIÊU ĐỀ (BẮT BUỘC):
+   - Tiêu đề (headline cảnh 1 và ticker) PHẢI LẤY TRỰC TIẾP TỪ TIÊU ĐỀ BÁO GỐC ("${articleTitle}"), nếu dài quá thì chỉ rút gọn cho vừa khung, TUYỆT ĐỐI KHÔNG tự sáng tạo/bịa ra tiêu đề khác lệch với bài báo!
 1. VŨ TRỤ NHÂN VẬT THỎ & GẤU CỐ ĐỊNH 100%:
    - Nhân vật chính: Luôn là THỎ ĐỎ (Cute agile bunny rabbit wearing a bright red hoodie or red jersey, long expressive ears, witty and energetic).
    - Nhân vật đồng hành / đối thủ: Luôn là GẤU BÉO (Chubby fluffy white bear companion/rival, round belly, clumsy, lovable and funny).
@@ -200,6 +235,12 @@ Trả về duy nhất định dạng JSON thuần:
     throw new Error('Không thể tạo kịch bản từ Gemini API!');
   }
 
+  if (articleTitle) {
+    parsed.articleTitle = articleTitle;
+    if (parsed.scenes?.[0]) {
+      parsed.scenes[0].headline = shortenNewsTitle(articleTitle, 52).toUpperCase();
+    }
+  }
   for (const sc of parsed.scenes) {
     sc.voiceText = ensureRichVoiceText(sc.voiceText, sc.index);
   }
@@ -556,9 +597,12 @@ function publishToWebAffEcosystem(videoId, finalVideoPath, scriptData, sourceUrl
   const secs = String(durSec % 60).padStart(2, '0');
   const durationFormatted = `${mins}:${secs}`;
 
-  const firstHeadline = scriptData.scenes?.[0]?.headline || scriptData.matchTitle || 'Bản Tin Hoạt Hình 3D Thỏ & Gấu';
-  const titleClean = `[3D Thỏ & Gấu] ${firstHeadline}`;
-  const socialCaption = scriptData.socialCaption || `${titleClean} - Xem trọn bộ bản tin hoạt hình 3D cực vui nhộn tại link dưới bình luận nhé! #ThoVaGau3D #BanTinVui #Hoathinh3D #Trending`;
+  const baseTitle = shortenNewsTitle(
+    scriptData.articleTitle || scriptData.scenes?.[0]?.headline || scriptData.matchTitle || 'Bản Tin 3D Thỏ & Gấu',
+    72
+  );
+  const titleClean = `[3D Thỏ & Gấu] ${baseTitle}`;
+  const socialCaption = scriptData.socialCaption || `${titleClean} - Xem trọn bộ bản tin hoạt hình 3D tại link dưới bình luận nhé! #ThoVaGau3D #BanTin3D #TinTuc24H #Trending`;
 
   fs.writeFileSync(captionTxt, socialCaption, 'utf8');
 
@@ -577,7 +621,7 @@ function publishToWebAffEcosystem(videoId, finalVideoPath, scriptData, sourceUrl
     teaser_video_path: teaserMp4,
     web_video_url: `videos/${videoId}.mp4`,
     web_poster_url: `videos/${videoId}_poster.jpg`,
-    target_web_url: `https://webaffvideo-web.vercel.app/?v=${videoId}`,
+    target_web_url: `https://tho-news.com/?v=${videoId}`,
     social_caption: socialCaption,
     status: 'published_to_web',
     published_at: new Date().toISOString()
@@ -624,12 +668,15 @@ function sendTelegramCompletionNotice(chatId, videoId, scriptData) {
   }
   if (!botToken) return;
 
-  const firstHeadline = scriptData.scenes?.[0]?.headline || scriptData.matchTitle || 'Bản Tin 3D Thỏ & Gấu';
+  const displayTitle = shortenNewsTitle(
+    scriptData.articleTitle || scriptData.scenes?.[0]?.headline || scriptData.matchTitle || 'Bản Tin 3D Thỏ & Gấu',
+    72
+  );
   const webUrl = `https://tho-news.com/?v=${videoId}`;
   const msgText = [
     `🎉 <b>HOÀN TẤT DỰNG VIDEO 3D THỎ & GẤU TRÊN CLOUD!</b>`,
     `━━━━━━━━━━━━━━━━━━━━━━━━━━`,
-    `🎬 <b>Tiêu đề:</b> [3D Thỏ & Gấu] ${firstHeadline}`,
+    `🎬 <b>Tiêu đề:</b> [3D Thỏ & Gấu] ${displayTitle}`,
     `🆔 <b>Mã Video:</b> <code>${videoId}</code>`,
     `🌐 <b>Xem trực tiếp trên Web Player:</b>`,
     `${webUrl}`,
@@ -668,8 +715,8 @@ async function main() {
   const outDir = path.join(ENGINE_ROOT, 'output', `auto-${timestamp}`);
   fs.mkdirSync(outDir, { recursive: true });
 
-  const articleText = await fetchArticle(urlArg);
-  const scriptData = await generateScript(articleText);
+  const article = await fetchArticle(urlArg);
+  const scriptData = await generateScript(article.text, article.title);
   fs.writeFileSync(path.join(outDir, 'script.json'), JSON.stringify(scriptData, null, 2));
 
   generateSceneAudios(scriptData.scenes, outDir);
