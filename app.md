@@ -128,6 +128,31 @@ Hệ thống hỗ trợ nạp video tự động từ bất kỳ liên kết nà
 
 ## 5. NHẬT KÝ CẬP NHẬT & SỬA ĐỔI (CHANGELOG)
 
+### [2026-11-19 20:28] - Chạy Độc Lập 100% Xưởng 3D Trên Cloud VM, Nâng Cấp UI/Avatar 3D & Fix Bộ Lọc Deal
+* **1. Đưa toàn bộ Xưởng 3D Thỏ & Gấu chạy 100% độc lập trên Google Cloud VM (`auto-affiliate-vm`, Ubuntu 22.04 `e2-micro`):**
+  * Đóng gói portable engine vào [rabbit_bear_engine/](file:///d:/web_aff/automation/2_ai_video_factory/rabbit_bear_engine) (`run-auto.mjs`, `package.json`, `muse_session.b64`, `shared_assets/fixed_outro_formatted_916.mp4`) — tự động đọc `GEMINI_API_KEY` từ `.env` (không hardcode key trong repo).
+  * Tạo [setup_cloud_3d.sh](file:///d:/web_aff/setup_cloud_3d.sh) và cấu hình môi trường thực tế trên Cloud VM:
+    * Nâng cấp Node.js từ v12 lên **Node 20 LTS (`v20.20.2`)** (đã gỡ xung đột `libnode-dev`).
+    * Rút gọn [package.json](file:///d:/web_aff/automation/2_ai_video_factory/rabbit_bear_engine/package.json) chỉ giữ duy nhất `puppeteer-core@^23.11.1` (bỏ toàn bộ gói thừa như `hyperframes`, `vitest`, `typescript`) để không bị OOM trên VM 1GB RAM.
+    * Tạo **2GB Swap (`/swapfile`)** và thêm `127.0.0.1 auto-affiliate-vm` vào `/etc/hosts` giúp `sudo`, Chrome Headless và FFmpeg chạy mượt không bị `Killed`.
+    * Sửa lỗi `Navigation timeout 45000ms` khi mở `https://muse.ai/thread/new` trong [run-auto.mjs](file:///d:/web_aff/automation/2_ai_video_factory/rabbit_bear_engine/run-auto.mjs): đổi `waitUntil: 'networkidle2'` $\rightarrow$ `waitUntil: 'domcontentloaded'` (`timeout: 90000`), thêm `--disable-gpu` và log URL/Title chi tiết nếu thiếu ô nhập prompt.
+    * Dịch vụ `auto-affiliate.service` đang chạy `Active (running)` 24/7; gửi link báo vào Telegram Bot tự kích hoạt trực tiếp tiến trình 3D trên Cloud VM (xem log live tại `~/web_aff_video/storage/rabbit_bear_3d_build.log`).
+* **2. Kho Video 3D Chuẩn 100% Giữ Nguyên Bản (`KEEP ORIGINAL`):**
+  * Tắt chế độ cắt/lật gương/đè banner cũ (`LEGACY_EDIT_OVERLAY_MODE = False` trong [factory.py](file:///d:/web_aff/automation/2_ai_video_factory/factory.py)), tắt scanner thư mục `1_raw` cũ và tự động dọn file `vid_TikTok_*` tồn đọng trên Cloud VM trong [main_cloud_daemon.py](file:///d:/web_aff/main_cloud_daemon.py).
+  * Đã xuất bản **5 video 3D Thỏ & Gấu Full HD 9:16 (46.04s, đồng bộ giọng đọc `9.43s/10s` bằng `vi-VN-NamMinhNeural` + `gemini-3.5-flash-lite`)** lên `https://webaffvideo-web.vercel.app`:
+    1. `tho_gau_3d_20261119115320` — *KHÔNG KHÍ LẠNH TRÀN VỀ*
+    2. `tho_gau_3d_20261119112320` — *CÚ RẼ TỬ THẦN TRÊN PHỐ*
+    3. `tho_gau_3d_20261119045839` — *CHỒNG HAY ĐI KỂ TỘI VỢ*
+    4. `tho_gau_3d_a_dinh_tu_xuyen` — *Lạc Vào Tiên Cảnh Á Đinh Tứ Xuyên*
+    5. `tho_gau_3d_bong_da_vietnam` — *Đại Chiến Sân Cỏ 3D*
+* **3. Đổi Toàn Bộ Avatar Sang 3D Thỏ & Gấu + Dọn Lỗi UI & Voucher/Flash Sale:**
+  * Thay toàn bộ ảnh người thật Unsplash trong [index.html](file:///d:/web_aff/web/index.html) bằng bộ Avatar 3D cắt trực tiếp từ video gốc: [rabbit_bear_avatar.jpg](file:///d:/web_aff/web/videos/rabbit_bear_avatar.jpg) (kênh chính) và `avatar_bunny.jpg`, `avatar_bear.jpg`, `avatar_sport.jpg` (mục bình luận).
+  * Đồng bộ tiêu đề web, Header, mục *Cập nhật nhanh 24H* (sửa lỗi chữ `"Lebih 18.000"` $\rightarrow$ `"Hơn 18.000"`), Live Chat và *Từ khóa xu hướng* (`#VuTruThoVaGau3D`, `#BanTin3DPixar`, `#24hTinNong`, `#24hKhamPha`, `#SanVoucher0D`, `#FullHD1080P`).
+  * Nâng cấp bộ lọc trong [deal_voucher_service.py](file:///d:/web_aff/automation/deal_voucher_service.py):
+    * Dùng `get_text(separator="\n")` và regex mức giảm mới để hết lỗi dính dòng / cụt số (`"Giảm 24"` $\rightarrow$ `"Giảm 24%"`), đồng bộ `% đã lưu` với thanh tiến trình.
+    * Lọc sạch tin báo mã (`"⚠️LẸ! MÃ 50%..."`, `(gõ "Karo"...)`) khỏi cột Flash Sale, sửa lỗi giá `9.000Đđ` $\rightarrow$ `9.000đ`, gán đúng ảnh từng ngành hàng (chuột/bàn phím, mỹ phẩm, tai nghe).
+  * **Xác nhận Affiliate Tracking:** 100% link rút gọn `shp.tho-hoantien.com` đều bung ra `mmp_pid=an_17395210573` & `utm_content=...-vid_30a2abe6e6-...` (cookie Shopee 7 ngày theo luật Last Click, chuẩn tài khoản `phuquang04072001@gmail.com`).
+
 ### [2026-11-19 11:42] - Tích Hợp Xưởng Phim Tin Tức 3D Pixar (Vũ Trụ Thỏ & Gấu) & Đồng Bộ Âm Thanh Chính Xác 9.35s/10s
 * **Chuyển đổi động cơ sản xuất video sang Pipeline 3D Vũ trụ Thỏ & Gấu (`D:\nckh\auto-video-gen` $\rightarrow$ `D:\web_aff`):**
   1. **Ẩn các tính năng dán link tải video thô / dọn clip cũ (bảo toàn mã nguồn để tái sử dụng sau này):**
