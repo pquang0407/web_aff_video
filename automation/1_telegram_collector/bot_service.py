@@ -142,11 +142,18 @@ async def handle_callback_query(update: Update, context: ContextTypes.DEFAULT_TY
     elif data.startswith("vid_detail_"):
         vid_id = data.replace("vid_detail_", "")
         caption_file = SOCIAL_DIR / f"{vid_id}_caption.txt"
+        meta_file = WEB_FULL_DIR / f"{vid_id}_meta.json"
         caption_text = ""
         if caption_file.exists():
             try:
                 with open(caption_file, "r", encoding="utf-8") as f:
                     caption_text = f.read().strip()
+            except Exception:
+                pass
+        if not caption_text and meta_file.exists():
+            try:
+                mdata = json.loads(meta_file.read_text(encoding="utf-8"))
+                caption_text = mdata.get("social_caption") or mdata.get("title") or ""
             except Exception:
                 pass
 
@@ -155,7 +162,7 @@ async def handle_callback_query(update: Update, context: ContextTypes.DEFAULT_TY
 
         web_url = f"{WEB_BASE_URL}/?v={vid_id}"
         text = (
-            f"🎬 <b>CHI TIẾT VIDEO TEASER:</b> <code>{vid_id}</code>\n"
+            f"🎬 <b>CHI TIẾT VIDEO 3D THỎ & GẤU:</b> <code>{vid_id}</code>\n"
             f"━━━━━━━━━━━━━━━━━━━━━━━━━━\n"
             f"📝 <b>Caption AI (Facebook / Threads):</b>\n<i>{caption_text}</i>\n\n"
             f"🔗 <b>Link đích Web Player:</b>\n<code>{web_url}</code>\n\n"
@@ -164,11 +171,46 @@ async def handle_callback_query(update: Update, context: ContextTypes.DEFAULT_TY
         keyboard = build_video_action_keyboard(vid_id)
         await safe_edit_message_text(query, text=text, reply_markup=keyboard)
 
+    elif data.startswith("act_post_social_"):
+        vid_id = data.replace("act_post_social_", "")
+        await safe_edit_message_text(query, f"⏳ <b>Đang đăng video <code>{vid_id}</code> lên Facebook Fanpage & Threads + Tự động thả Comment Link...</b>")
+        try:
+            poster_dir = ROOT_DIR / "automation" / "4_social_poster"
+            if str(poster_dir) not in sys.path:
+                sys.path.insert(0, str(poster_dir))
+            import poster
+            res = poster.post_video_to_social(video_id=vid_id, simulate=False)
+            await safe_edit_message_text(
+                query,
+                text=(
+                    f"✅ <b>ĐÃ ĐĂNG VIDEO 3D LÊN SOCIAL & THẢ COMMENT LINK!</b>\n"
+                    f"━━━━━━━━━━━━━━━━━━━━━━━━━━\n"
+                    f"🎬 <b>Mã Video:</b> <code>{vid_id}</code>\n"
+                    f"🔗 <b>Link Auto-Comment:</b> <code>{WEB_BASE_URL}/?v={vid_id}</code>\n"
+                    f"📊 <b>Kết quả:</b> <code>{json.dumps(res, ensure_ascii=False)[:250]}</code>"
+                ),
+                reply_markup=InlineKeyboardMarkup([[InlineKeyboardButton("🔙 Quay lại hàng đợi", callback_data="cmd_view_social", style="primary")]])
+            )
+        except Exception as e:
+            await safe_edit_message_text(
+                query,
+                text=f"❌ <b>Lỗi khi đăng Social:</b> <code>{str(e)}</code>",
+                reply_markup=InlineKeyboardMarkup([[InlineKeyboardButton("🔙 Quay lại", callback_data=f"vid_detail_{vid_id}")]])
+            )
+
     elif data.startswith("act_post_channel_"):
         vid_id = data.replace("act_post_channel_", "")
-        teaser_path = SOCIAL_DIR / f"{vid_id}_teaser.mp4"
-        if not teaser_path.exists():
-            teaser_path = SOCIAL_DIR / f"{vid_id}.mp4"
+        candidates = [
+            SOCIAL_DIR / f"{vid_id}_teaser.mp4",
+            SOCIAL_DIR / f"{vid_id}.mp4",
+            WEB_FULL_DIR / f"{vid_id}.mp4",
+            ROOT_DIR / "web" / "videos" / f"{vid_id}.mp4",
+        ]
+        teaser_path = candidates[0]
+        for cand in candidates:
+            if cand.exists():
+                teaser_path = cand
+                break
 
         if not TELEGRAM_CHANNEL_ID:
             await safe_edit_message_text(

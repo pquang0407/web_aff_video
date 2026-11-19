@@ -132,21 +132,35 @@ def build_dashboard_text() -> str:
 
 
 def build_social_queue_keyboard() -> InlineKeyboardMarkup:
-    """Hiển thị danh sách video trong Hàng đợi Social Teasers có màu sắc trực quan"""
-    social_files = sorted(list(SOCIAL_DIR.glob("*_teaser.mp4")))
+    """Hiển thị danh sách video 3D Thỏ & Gấu trong Hàng đợi Social (đồng bộ cả Local & Cloud VM)"""
+    meta_files = sorted(
+        list(WEB_FULL_DIR.glob("*_meta.json")),
+        key=lambda p: p.stat().st_mtime,
+        reverse=True,
+    )
     keyboard = []
 
-    if not social_files:
-        social_files = sorted(list(SOCIAL_DIR.glob("*.mp4")))
-
-    for f in social_files[:6]:
-        vid_id = f.stem.replace("_teaser", "")
-        # Rút ngắn tên để không bị cắt trên màn hình mobile
-        short_name = vid_id if len(vid_id) <= 22 else vid_id[:20] + ".."
-        btn_text = f"▶️ {short_name}"
-        keyboard.append([
-            InlineKeyboardButton(btn_text, callback_data=f"vid_detail_{vid_id}", style="success")
-        ])
+    if meta_files:
+        for mf in meta_files[:8]:
+            vid_id = mf.stem.replace("_meta", "")
+            label = vid_id
+            try:
+                mdata = json.loads(mf.read_text(encoding="utf-8"))
+                label = mdata.get("title") or vid_id
+            except Exception:
+                pass
+            short_name = label if len(label) <= 32 else label[:30] + ".."
+            keyboard.append([
+                InlineKeyboardButton(f"▶️ {short_name}", callback_data=f"vid_detail_{vid_id}", style="success")
+            ])
+    else:
+        social_files = sorted(list(SOCIAL_DIR.glob("*_teaser.mp4")))
+        for f in social_files[:6]:
+            vid_id = f.stem.replace("_teaser", "")
+            short_name = vid_id if len(vid_id) <= 22 else vid_id[:20] + ".."
+            keyboard.append([
+                InlineKeyboardButton(f"▶️ {short_name}", callback_data=f"vid_detail_{vid_id}", style="success")
+            ])
 
     keyboard.append([
         InlineKeyboardButton("🚀 ĐĂNG TẤT CẢ LÊN SOCIAL", callback_data="cmd_post_all_social", style="danger")

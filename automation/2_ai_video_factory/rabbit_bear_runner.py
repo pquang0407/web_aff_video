@@ -27,8 +27,15 @@ logger = logging.getLogger("RabbitBear3DRunner")
 
 CURRENT_DIR = Path(__file__).resolve().parent
 WEB_AFF_ROOT = CURRENT_DIR.parent.parent
-AUTO_VIDEO_GEN_ROOT = Path("d:/nckh/auto-video-gen")
-RUN_AUTO_SCRIPT = AUTO_VIDEO_GEN_ROOT / "scripts" / "run-auto.mjs"
+LOCAL_AUTO_VIDEO_GEN = Path("d:/nckh/auto-video-gen")
+BUNDLED_ENGINE_DIR = CURRENT_DIR / "rabbit_bear_engine"
+
+if LOCAL_AUTO_VIDEO_GEN.exists():
+    AUTO_VIDEO_GEN_ROOT = LOCAL_AUTO_VIDEO_GEN
+    RUN_AUTO_SCRIPT = AUTO_VIDEO_GEN_ROOT / "scripts" / "run-auto.mjs"
+else:
+    AUTO_VIDEO_GEN_ROOT = BUNDLED_ENGINE_DIR
+    RUN_AUTO_SCRIPT = BUNDLED_ENGINE_DIR / "run-auto.mjs"
 
 STORAGE_RAW_DIR = WEB_AFF_ROOT / "storage" / "1_raw"
 STORAGE_FULL_DIR = WEB_AFF_ROOT / "storage" / "2_web_full"

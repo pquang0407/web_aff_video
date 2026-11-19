@@ -66,16 +66,18 @@ def save_settings(settings: dict):
 
 
 def get_video_stats() -> dict:
-    """Lấy số lượng video thực tế trong các khoang"""
+    """Lấy số lượng video thực tế trong các khoang (đồng bộ cả Local & Cloud VM)"""
     raw_files = list(RAW_STORAGE_DIR.glob("*.mp4"))
-    web_files = list(WEB_FULL_DIR.glob("*.mp4"))
-    social_files = list(SOCIAL_DIR.glob("*.mp4"))
+    meta_files = list(WEB_FULL_DIR.glob("*_meta.json"))
+    web_videos_dir = ROOT_DIR / "web" / "videos"
+    web_mp4s = list(web_videos_dir.glob("*.mp4")) if web_videos_dir.exists() else list(WEB_FULL_DIR.glob("*.mp4"))
+    count_published = max(len(meta_files), len(web_mp4s))
     return {
         "raw_count": len(raw_files),
-        "web_count": len(web_files),
-        "social_count": len(social_files),
+        "web_count": count_published,
+        "social_count": count_published,
         "raw_files": [f.name for f in raw_files],
-        "social_files": [f.name for f in social_files]
+        "social_files": [f.stem.replace("_meta", "") for f in meta_files]
     }
 
 

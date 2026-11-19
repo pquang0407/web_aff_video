@@ -68,9 +68,18 @@ def post_video_to_social(
         raise FileNotFoundError(f"Không tìm thấy metadata cho video '{video_id}' tại {meta_path}")
 
     meta = json.loads(meta_path.read_text(encoding="utf-8"))
-    teaser_path = Path(meta.get("teaser_video_path", config.TEASER_DIR / f"{video_id}_teaser.mp4"))
-    if not teaser_path.exists():
-        teaser_path = Path(meta.get("full_video_path", config.FULL_DIR / f"{video_id}.mp4"))
+    candidates = [
+        config.TEASER_DIR / f"{video_id}_teaser.mp4",
+        config.FULL_DIR / f"{video_id}.mp4",
+        config.BASE_DIR / "web" / "videos" / f"{video_id}.mp4",
+        Path(meta.get("teaser_video_path", "")),
+        Path(meta.get("full_video_path", "")),
+    ]
+    teaser_path = candidates[0]
+    for cand in candidates:
+        if cand and cand.is_file() and cand.exists():
+            teaser_path = cand
+            break
 
     caption = (custom_caption or meta.get("social_caption") or meta.get("title") or "").strip()
     base_web_url = os.getenv("WEB_BASE_URL", "https://webaffvideo-web.vercel.app").rstrip("/")
