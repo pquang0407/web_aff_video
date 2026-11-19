@@ -22,41 +22,29 @@
     ]
   },
   "videos": {
-    "vid_TikTok_7708011729371876638": {
-      "id": "vid_TikTok_7708011729371876638",
-      "title": "Quán lẩu ngắm toàn cảnh thành phố cực chill về đêm",
-      "duration": "00:08",
-      "views": "211.7K",
-      "likes": "24.6K",
+    "tho_gau_3d_bong_da_vietnam": {
+      "id": "tho_gau_3d_bong_da_vietnam",
+      "title": "🐰🐻 [Bản Tin 3D] Đại Chiến Sân Cỏ: Tiền Đạo Thỏ Đỏ Nã Đại Bác & Cú Sút Giữa Sân Của Gấu Béo",
+      "duration": "00:46",
+      "views": "268.4K",
+      "likes": "29.5K",
       "uploadDate": "Vừa xong",
-      "category": "🔥 ĐANG THỊNH HÀNH",
-      "videoUrl": "videos/vid_TikTok_7708011729371876638.mp4",
-      "posterUrl": "videos/vid_TikTok_7708011729371876638_poster.jpg",
-      "description": "Trải nghiệm ăn lẩu view rooftop ngắm trọn thành phố lung linh ánh đèn cực chill cùng người thương. Không gian lãng mạn và đồ ăn ngon hết nấc. Xem ngay bản đầy đủ tại link dưới bình luận nhé! #LẩuRooftop #CheckInThànhPhố #ChillCùngGấu #FoodReview"
-    },
-    "vid_TikTok_7708367009888685342": {
-      "id": "vid_TikTok_7708367009888685342",
-      "title": "Ăn lẩu ngắm hoàng hôn triệu đô đẹp ngất ngây",
-      "duration": "00:08",
-      "views": "242.3K",
-      "likes": "21.1K",
-      "uploadDate": "Vừa xong",
-      "category": "🔥 ĐANG THỊNH HÀNH",
-      "videoUrl": "videos/vid_TikTok_7708367009888685342.mp4",
-      "posterUrl": "videos/vid_TikTok_7708367009888685342_poster.jpg",
-      "description": "Không gian ăn lẩu cực chill ngắm trọn hoàng hôn thành phố rực rỡ siêu lãng mạn. Xem ngay trọn bộ trải nghiệm tại link dưới bình luận nhé. #lauhoanghon #chill #dulich #hoanghon"
+      "category": "⚽ 24H BÓNG ĐÁ • THỎ & GẤU 3D",
+      "videoUrl": "videos/tho_gau_3d_bong_da_vietnam.mp4",
+      "posterUrl": "videos/tho_gau_3d_bong_da_vietnam_poster.jpg",
+      "description": "⚽🔥 ĐẠI CHIẾN SÂN CỎ 3D: TIỀN ĐẠO THỎ ĐỎ SỐ 7 ĐỐI ĐẦU BẦY GẤU TRẮNG!"
     },
     "default": {
       "id": "default",
-      "title": "Quán lẩu ngắm toàn cảnh thành phố cực chill về đêm",
-      "duration": "00:08",
-      "views": "211.7K",
-      "likes": "24.6K",
+      "title": "🐰🐻 [Bản Tin 3D] Đại Chiến Sân Cỏ: Tiền Đạo Thỏ Đỏ Nã Đại Bác & Cú Sút Giữa Sân Của Gấu Béo",
+      "duration": "00:46",
+      "views": "268.4K",
+      "likes": "29.5K",
       "uploadDate": "Vừa xong",
-      "category": "🔥 ĐANG THỊNH HÀNH",
-      "videoUrl": "videos/vid_TikTok_7708011729371876638.mp4",
-      "posterUrl": "videos/vid_TikTok_7708011729371876638_poster.jpg",
-      "description": "Trải nghiệm ăn lẩu view rooftop ngắm trọn thành phố lung linh ánh đèn cực chill cùng người thương. Không gian lãng mạn và đồ ăn ngon hết nấc. Xem ngay bản đầy đủ tại link dưới bình luận nhé! #LẩuRooftop #CheckInThànhPhố #ChillCùngGấu #FoodReview"
+      "category": "⚽ 24H BÓNG ĐÁ • THỎ & GẤU 3D",
+      "videoUrl": "videos/tho_gau_3d_bong_da_vietnam.mp4",
+      "posterUrl": "videos/tho_gau_3d_bong_da_vietnam_poster.jpg",
+      "description": "⚽🔥 ĐẠI CHIẾN SÂN CỎ 3D: TIỀN ĐẠO THỎ ĐỎ SỐ 7 ĐỐI ĐẦU BẦY GẤU TRẮNG!"
     }
   },
   "deals": [
