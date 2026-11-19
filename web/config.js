@@ -26,6 +26,18 @@ const CONFIG = {
     ]
   },
   "videos": {
+    "tho_gau_3d_20261119045839": {
+      "id": "tho_gau_3d_20261119045839",
+      "title": "[3D Thỏ & Gấu] CHỒNG HAY ĐI KỂ TỘI VỢ",
+      "duration": "00:46",
+      "views": "134.5K",
+      "likes": "30.8K",
+      "uploadDate": "Vừa xong",
+      "category": "🐰🐻 VŨ TRỤ THỎ & GẤU 3D",
+      "videoUrl": "videos/tho_gau_3d_20261119045839.mp4",
+      "posterUrl": "videos/tho_gau_3d_20261119045839_poster.jpg",
+      "description": "Khi chồng có tính hay đi kể tội vợ với họ hàng thay vì trực tiếp trao đổi và cái kết cười ra nước mắt của cặp đôi Thỏ Gấu! #ThoVaGau #HoGiaDinh #Pixar3D #TinTuc"
+    },
     "tho_gau_3d_a_dinh_tu_xuyen": {
       "id": "tho_gau_3d_a_dinh_tu_xuyen",
       "title": "🐰🐻 [Bản Tin 3D] Thỏ Đỏ & Gấu Béo Lạc Vào Tiên Cảnh Á Đinh Tứ Xuyên: Vừa Leo Núi Vừa Ôm Bình Oxy",
@@ -52,15 +64,15 @@ const CONFIG = {
     },
     "default": {
       "id": "default",
-      "title": "🐰🐻 [Bản Tin 3D] Thỏ Đỏ & Gấu Béo Lạc Vào Tiên Cảnh Á Đinh Tứ Xuyên: Vừa Leo Núi Vừa Ôm Bình Oxy",
+      "title": "[3D Thỏ & Gấu] CHỒNG HAY ĐI KỂ TỘI VỢ",
       "duration": "00:46",
-      "views": "268.4K",
-      "likes": "29.5K",
+      "views": "134.5K",
+      "likes": "30.8K",
       "uploadDate": "Vừa xong",
-      "category": "🏔️ 24H KHÁM PHÁ • THỎ & GẤU 3D",
-      "videoUrl": "videos/tho_gau_3d_a_dinh_tu_xuyen.mp4",
-      "posterUrl": "videos/tho_gau_3d_a_dinh_tu_xuyen_poster.jpg",
-      "description": "🏔️✨ THỎ ĐỎ & GẤU BÉO CHECK-IN THIÊN ĐƯỜNG HẠ GIỚI Á ĐINH (TỨ XUYÊN)!"
+      "category": "🐰🐻 VŨ TRỤ THỎ & GẤU 3D",
+      "videoUrl": "videos/tho_gau_3d_20261119045839.mp4",
+      "posterUrl": "videos/tho_gau_3d_20261119045839_poster.jpg",
+      "description": "Khi chồng có tính hay đi kể tội vợ với họ hàng thay vì trực tiếp trao đổi và cái kết cười ra nước mắt của cặp đôi Thỏ Gấu! #ThoVaGau #HoGiaDinh #Pixar3D #TinTuc"
     }
   },
   "deals": [
