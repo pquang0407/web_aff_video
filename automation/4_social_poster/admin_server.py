@@ -214,7 +214,7 @@ class AdminRequestHandler(BaseHTTPRequestHandler):
 
                 # Gửi thông báo hoàn tất trực tiếp về Telegram cho người dùng
                 bot_token = os.getenv("TELEGRAM_BOT_TOKEN", "").strip()
-                web_base = os.getenv("WEB_BASE_URL", "https://webaffvideo-web.vercel.app").rstrip("/")
+                web_base = os.getenv("WEB_BASE_URL", "https://tho-news.com").rstrip("/")
                 if bot_token and chat_id and video_id:
                     tg_url = f"https://api.telegram.org/bot{bot_token}/sendMessage"
                     msg_text = (

@@ -49,7 +49,7 @@ R2_BUCKET_NAME = _get_env("R2_BUCKET_NAME", "web-aff-videos")
 R2_PUBLIC_DOMAIN = _get_env("R2_PUBLIC_DOMAIN", "https://media.ten-mien-cua-ban.com").rstrip("/")
 
 # Tên miền trang Web Player đích (dùng để tạo link ?v=ID gửi sang Module 4)
-WEB_PUBLIC_URL = _get_env("WEB_PUBLIC_URL", _get_env("WEB_BASE_URL", "https://webaffvideo-web.vercel.app")).rstrip("/")
+WEB_PUBLIC_URL = _get_env("WEB_PUBLIC_URL", _get_env("WEB_BASE_URL", "https://tho-news.com")).rstrip("/")
 
 # Tự động Git Push để Vercel / Cloudflare Pages tự deploy khi cập nhật config.js
 AUTO_GIT_PUSH = _get_env("AUTO_GIT_PUSH", "true").lower() in ("true", "1", "yes")

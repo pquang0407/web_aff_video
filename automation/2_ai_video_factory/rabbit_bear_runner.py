@@ -11,9 +11,14 @@ Hỗ trợ:
 
 import json
 import logging
+import os
 import shutil
 import subprocess
 import sys
+import threading
+import time
+import urllib.request
+import uuid
 from datetime import datetime
 from pathlib import Path
 from typing import Any, Dict, List, Optional
@@ -163,7 +168,7 @@ def publish_3d_master_video(
         "teaser_video_path": str(teaser_mp4),
         "web_video_url": f"videos/{video_id}.mp4",
         "web_poster_url": f"videos/{video_id}_poster.jpg",
-        "target_web_url": f"https://webaffvideo-web.vercel.app/?v={video_id}",
+        "target_web_url": f"https://tho-news.com/?v={video_id}",
         "social_caption": social_caption,
         "status": "published_to_web",
         "published_at": datetime.now().isoformat(),
@@ -293,6 +298,282 @@ def enqueue_cloud_3d_job(article_url: str, chat_id: Optional[str] = None) -> Dic
     return job
 
 
+FIFO_QUEUE_FILE = WEB_AFF_ROOT / "storage" / "rabbit_bear_fifo_queue.json"
+_FIFO_LOCK = threading.Lock()
+_FIFO_WORKER_THREAD: Optional[threading.Thread] = None
+
+
+def _get_telegram_bot_token() -> str:
+    token = os.getenv("TELEGRAM_BOT_TOKEN", "").strip()
+    if token:
+        return token
+    for env_path in [WEB_AFF_ROOT / ".env", AUTO_VIDEO_GEN_ROOT / ".env"]:
+        if env_path.exists():
+            try:
+                for line in env_path.read_text(encoding="utf-8").splitlines():
+                    if line.startswith("TELEGRAM_BOT_TOKEN="):
+                        return line.split("=", 1)[1].strip()
+            except Exception:
+                pass
+    return ""
+
+
+def _send_telegram_text(chat_id: str, html_text: str) -> None:
+    if not chat_id:
+        return
+    token = _get_telegram_bot_token()
+    if not token:
+        return
+    try:
+        payload = json.dumps({
+            "chat_id": str(chat_id),
+            "text": html_text,
+            "parse_mode": "HTML",
+            "disable_web_page_preview": True,
+        }).encode("utf-8")
+        req = urllib.request.Request(
+            f"https://api.telegram.org/bot{token}/sendMessage",
+            data=payload,
+            headers={"Content-Type": "application/json"},
+            method="POST",
+        )
+        with urllib.request.urlopen(req, timeout=15) as _:
+            pass
+    except Exception as e:
+        logger.warning(f"Không thể gửi thông báo Telegram tới {chat_id}: {e}")
+
+
+def _load_fifo_state() -> Dict[str, Any]:
+    if not FIFO_QUEUE_FILE.exists():
+        return {"current": None, "queue": []}
+    try:
+        data = json.loads(FIFO_QUEUE_FILE.read_text(encoding="utf-8"))
+        if isinstance(data, dict):
+            return {
+                "current": data.get("current"),
+                "queue": data.get("queue") if isinstance(data.get("queue"), list) else [],
+            }
+    except Exception:
+        pass
+    return {"current": None, "queue": []}
+
+
+def _save_fifo_state(state: Dict[str, Any]) -> None:
+    FIFO_QUEUE_FILE.parent.mkdir(parents=True, exist_ok=True)
+    FIFO_QUEUE_FILE.write_text(json.dumps(state, ensure_ascii=False, indent=2), encoding="utf-8")
+
+
+def get_fifo_queue_status() -> Dict[str, Any]:
+    with _FIFO_LOCK:
+        state = _load_fifo_state()
+        return {
+            "current": state.get("current"),
+            "queue": list(state.get("queue", [])),
+            "pending_count": len(state.get("queue", [])),
+            "is_busy": state.get("current") is not None,
+        }
+
+
+def _fifo_worker_loop() -> None:
+    global _FIFO_WORKER_THREAD
+    log_file = WEB_AFF_ROOT / "storage" / "rabbit_bear_3d_build.log"
+    log_file.parent.mkdir(parents=True, exist_ok=True)
+
+    while True:
+        with _FIFO_LOCK:
+            state = _load_fifo_state()
+            queue = state.get("queue", [])
+            if not queue:
+                state["current"] = None
+                _save_fifo_state(state)
+                _FIFO_WORKER_THREAD = None
+                logger.info("✅ [FIFO QUEUE] Đã xử lý xong toàn bộ hàng đợi 3D Thỏ & Gấu.")
+                return
+            job = queue.pop(0)
+            job["status"] = "processing"
+            job["started_at"] = datetime.now().isoformat()
+            state["current"] = job
+            state["queue"] = queue
+            _save_fifo_state(state)
+            remaining_after = len(queue)
+
+        article_url = job["article_url"]
+        chat_id = job.get("chat_id", "")
+        notify_on_start = job.get("notify_on_start", True)
+
+        logger.info(
+            f"🎬 [FIFO WORKER] Bắt đầu dựng job {job['job_id']}: {article_url} (còn {remaining_after} link chờ)"
+        )
+        if notify_on_start and chat_id:
+            _send_telegram_text(
+                chat_id,
+                (
+                    "🎬 <b>ĐẾN LƯỢT BÀI BÁO CỦA BẠN TRONG HÀNG ĐỢI FIFO!</b>\n"
+                    f"📰 <code>{article_url}</code>\n"
+                    f"⏳ <i>Đang bắt đầu dựng 3D Thỏ & Gấu (còn {remaining_after} link xếp sau)...</i>"
+                ),
+            )
+
+        cmd = ["node", str(RUN_AUTO_SCRIPT), article_url]
+        if chat_id:
+            cmd.extend(["--chat-id", str(chat_id)])
+
+        exit_code = -1
+        tail_err = ""
+        try:
+            with open(log_file, "a", encoding="utf-8") as out_f:
+                out_f.write(
+                    f"\n==================== [FIFO JOB {job['job_id']}] {datetime.now().isoformat()} ====================\n"
+                )
+                out_f.flush()
+                proc = subprocess.Popen(
+                    cmd,
+                    cwd=str(AUTO_VIDEO_GEN_ROOT),
+                    stdout=out_f,
+                    stderr=subprocess.STDOUT,
+                )
+                with _FIFO_LOCK:
+                    st = _load_fifo_state()
+                    if st.get("current") and st["current"].get("job_id") == job["job_id"]:
+                        st["current"]["pid"] = proc.pid
+                        _save_fifo_state(st)
+                exit_code = proc.wait()
+        except Exception as e:
+            tail_err = str(e)
+            logger.error(f"❌ [FIFO WORKER] Lỗi chạy job {job['job_id']}: {e}")
+
+        if exit_code != 0:
+            if not tail_err and log_file.exists():
+                try:
+                    lines = log_file.read_text(encoding="utf-8", errors="ignore").splitlines()
+                    err_lines = [ln for ln in lines[-20:] if "error" in ln.lower() or "fatal" in ln.lower() or "⚠️" in ln]
+                    tail_err = (err_lines[-1] if err_lines else (lines[-1] if lines else f"Exit code {exit_code}"))[:260]
+                except Exception:
+                    tail_err = f"Exit code {exit_code}"
+            logger.warning(f"⚠️ [FIFO WORKER] Job {job['job_id']} thất bại (exit={exit_code}): {tail_err}")
+            if chat_id:
+                _send_telegram_text(
+                    chat_id,
+                    (
+                        "⚠️ <b>KHÔNG THỂ DỰNG VIDEO CHO BÀI BÁO NÀY</b>\n"
+                        f"📰 <code>{article_url}</code>\n"
+                        f"📌 <b>Lý do:</b> <code>{tail_err}</code>\n"
+                        "➡️ <i>Hệ thống sẽ tự động chuyển sang link tiếp theo trong hàng đợi (nếu có).</i>"
+                    ),
+                )
+        else:
+            logger.info(f"✅ [FIFO WORKER] Hoàn tất job {job['job_id']} thành công!")
+
+        with _FIFO_LOCK:
+            st = _load_fifo_state()
+            st["current"] = None
+            _save_fifo_state(st)
+        time.sleep(2)
+
+
+def _ensure_fifo_worker_running() -> None:
+    global _FIFO_WORKER_THREAD
+    if _FIFO_WORKER_THREAD is not None and _FIFO_WORKER_THREAD.is_alive():
+        return
+    _FIFO_WORKER_THREAD = threading.Thread(target=_fifo_worker_loop, daemon=True, name="RabbitBearFIFOWorker")
+    _FIFO_WORKER_THREAD.start()
+
+
+def start_fifo_worker_if_needed() -> None:
+    """Khôi phục hàng đợi FIFO nếu Cloud VM vừa khởi động lại khi đang dở job"""
+    if not can_run_3d_locally():
+        return
+    with _FIFO_LOCK:
+        state = _load_fifo_state()
+        current = state.get("current")
+        queue = state.get("queue", [])
+        if current:
+            current["status"] = "queued"
+            current["notify_on_start"] = True
+            queue.insert(0, current)
+            state["current"] = None
+            state["queue"] = queue
+            _save_fifo_state(state)
+            logger.info(f"♻️ [FIFO QUEUE] Khôi phục job đang chạy dở về đầu hàng đợi: {current.get('article_url')}")
+        has_work = len(queue) > 0
+    if has_work:
+        _ensure_fifo_worker_running()
+
+
+def enqueue_fifo_3d_jobs(
+    article_urls: List[str],
+    chat_id: Optional[str] = None,
+    sender_name: str = "",
+) -> Dict[str, Any]:
+    """
+    Nạp 1 hoặc hàng loạt link bài báo vào Hàng đợi FIFO tuần tự (1 video/lần).
+    - Nếu Worker đang rảnh: link đầu tiên chạy ngay lập tức, các link sau xếp hàng chờ.
+    - Nếu Worker đang bận: tất cả link mới xếp hàng theo thứ tự FIFO (đến trước làm trước).
+    """
+    clean_urls: List[str] = []
+    seen = set()
+    for u in article_urls:
+        u_clean = u.strip()
+        if len(u_clean) > 10 and u_clean not in seen:
+            seen.add(u_clean)
+            clean_urls.append(u_clean)
+
+    if not can_run_3d_locally():
+        jobs = [enqueue_cloud_3d_job(u, chat_id=chat_id) for u in clean_urls]
+        return {
+            "ok": True,
+            "mode": "cloud_bridge_queue",
+            "was_busy": False,
+            "started_immediately": False,
+            "items": [{"article_url": j["article_url"], "job_id": j["job_id"], "position": i + 1} for i, j in enumerate(jobs)],
+            "current_job": None,
+            "total_pending": len(jobs),
+        }
+
+    with _FIFO_LOCK:
+        state = _load_fifo_state()
+        was_busy = state.get("current") is not None or len(state.get("queue", [])) > 0
+        current_job = state.get("current")
+        queue = state.get("queue", [])
+        added_items = []
+
+        for idx, url in enumerate(clean_urls):
+            starts_now = (not was_busy) and (idx == 0)
+            job = {
+                "job_id": f"fifo_{datetime.now().strftime('%H%M%S')}_{uuid.uuid4().hex[:4]}",
+                "article_url": url,
+                "chat_id": str(chat_id) if chat_id else "",
+                "sender_name": sender_name or "",
+                "status": "queued",
+                "notify_on_start": not starts_now,
+                "created_at": datetime.now().isoformat(),
+            }
+            queue.append(job)
+            # Nếu bắt đầu ngay (position=0), ngược lại tính vị trí chờ thực tế trong hàng đợi
+            wait_pos = 0 if starts_now else (len(queue) if state.get("current") is not None else len(queue) - 1)
+            added_items.append({
+                "job_id": job["job_id"],
+                "article_url": url,
+                "starts_now": starts_now,
+                "position": wait_pos,
+            })
+
+        state["queue"] = queue
+        _save_fifo_state(state)
+        total_pending = len(queue)
+
+    _ensure_fifo_worker_running()
+    return {
+        "ok": True,
+        "mode": "fifo_queue",
+        "was_busy": was_busy,
+        "started_immediately": (not was_busy) and len(added_items) > 0,
+        "items": added_items,
+        "current_job": current_job,
+        "total_pending": total_pending,
+    }
+
+
 def trigger_3d_pipeline_from_article(
     article_url: str,
     async_mode: bool = True,
@@ -300,51 +581,47 @@ def trigger_3d_pipeline_from_article(
 ) -> Dict[str, Any]:
     """
     Kích hoạt tiến trình sản xuất Video 3D Thỏ & Gấu từ link bài báo (run-auto.mjs).
-    - Nếu chạy trên máy có Node + Chrome + Muse Cookie: Chạy trực tiếp run-auto.mjs.
-    - Nếu chạy trên Cloud VM mỏng (e2-micro headless): Đưa vào hàng đợi Cloud-Bridge để Worker 3D xử lý và tự động đồng bộ về VM.
+    - Ở chế độ async_mode=True: Tự động đi qua Hàng đợi FIFO tuần tự (1 video/lần) để chống tràn RAM.
     """
+    if async_mode:
+        res = enqueue_fifo_3d_jobs([article_url], chat_id=chat_id)
+        first = res["items"][0] if res.get("items") else {}
+        return {
+            "ok": True,
+            "mode": res.get("mode", "fifo_queue"),
+            "pid": first.get("job_id", "fifo"),
+            "was_busy": res.get("was_busy", False),
+            "position": first.get("position", 0),
+            "current_job": res.get("current_job"),
+            "article_url": article_url,
+            "message": (
+                "Đang xử lý ngay trên Xưởng 3D Thỏ & Gấu!"
+                if first.get("starts_now")
+                else f"Đã xếp vào Hàng đợi FIFO (Vị trí #{first.get('position', 1)})!"
+            ),
+        }
+
     if not can_run_3d_locally():
         job = enqueue_cloud_3d_job(article_url, chat_id=chat_id)
-        logger.info(f"☁️ [CLOUD QUEUE] Đã xếp bài báo vào hàng đợi Worker 3D: {job['job_id']} ({article_url})")
         return {
             "ok": True,
             "mode": "cloud_bridge_queue",
             "pid": job["job_id"],
             "job": job,
             "article_url": article_url,
-            "message": "Đã tiếp nhận bài báo trên Cloud VM và chuyển tới Worker 3D Thỏ & Gấu! Video sẽ tự động đẩy lên Vercel & đồng bộ về Bot ngay khi dựng xong.",
+            "message": "Đã xếp vào hàng đợi Cloud-Bridge!",
         }
 
     cmd = ["node", str(RUN_AUTO_SCRIPT), article_url.strip()]
     if chat_id:
         cmd.extend(["--chat-id", str(chat_id)])
-    logger.info(f"🚀 Kích hoạt 3D Rabbit & Bear Pipeline cho bài báo: {article_url}")
-
-    if async_mode:
-        log_file = WEB_AFF_ROOT / "storage" / "rabbit_bear_3d_build.log"
-        out_f = open(log_file, "a", encoding="utf-8")
-        proc = subprocess.Popen(
-            cmd,
-            cwd=str(AUTO_VIDEO_GEN_ROOT),
-            stdout=out_f,
-            stderr=subprocess.STDOUT,
-        )
-        return {
-            "ok": True,
-            "mode": "async",
-            "pid": proc.pid,
-            "article_url": article_url,
-            "log_file": str(log_file),
-            "message": "Đã kích hoạt Xưởng Phim 3D Thỏ & Gấu chạy ngầm! Video sẽ tự động xuất bản lên Web & Queue sau khi render xong.",
-        }
-    else:
-        res = subprocess.run(cmd, cwd=str(AUTO_VIDEO_GEN_ROOT), capture_output=True, text=True, check=True)
-        return {
-            "ok": True,
-            "mode": "sync",
-            "article_url": article_url,
-            "output": res.stdout[-1500:],
-        }
+    res = subprocess.run(cmd, cwd=str(AUTO_VIDEO_GEN_ROOT), capture_output=True, text=True, check=True)
+    return {
+        "ok": True,
+        "mode": "sync",
+        "article_url": article_url,
+        "output": res.stdout[-1500:],
+    }
 
 
 if __name__ == "__main__":

@@ -38,7 +38,7 @@ TELEGRAM_SOURCE_CHANNELS = [
 ]
 
 # Base URL Web Player
-WEB_BASE_URL = os.getenv("WEB_BASE_URL", "https://webaffvideo-web.vercel.app").rstrip("/")
+WEB_BASE_URL = os.getenv("WEB_BASE_URL", "https://tho-news.com").rstrip("/")
 
 
 def load_settings() -> dict:

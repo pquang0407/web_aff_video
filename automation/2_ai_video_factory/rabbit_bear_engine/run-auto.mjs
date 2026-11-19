@@ -155,7 +155,7 @@ Trả về duy nhất định dạng JSON thuần:
 
   const modelsToTry = ['gemini-3.5-flash-lite', 'gemini-3.1-flash-lite', 'gemini-3.1-flash-lite-preview'];
   let parsed = null;
-  const MAX_ROUNDS = 4;
+  const MAX_ROUNDS = 3;
 
   for (let round = 1; round <= MAX_ROUNDS && !parsed; round++) {
     for (const modelName of modelsToTry) {
@@ -625,7 +625,7 @@ function sendTelegramCompletionNotice(chatId, videoId, scriptData) {
   if (!botToken) return;
 
   const firstHeadline = scriptData.scenes?.[0]?.headline || scriptData.matchTitle || 'Bản Tin 3D Thỏ & Gấu';
-  const webUrl = `https://webaffvideo-web.vercel.app/?v=${videoId}`;
+  const webUrl = `https://tho-news.com/?v=${videoId}`;
   const msgText = [
     `🎉 <b>HOÀN TẤT DỰNG VIDEO 3D THỎ & GẤU TRÊN CLOUD!</b>`,
     `━━━━━━━━━━━━━━━━━━━━━━━━━━`,
@@ -714,6 +714,12 @@ async function main() {
 
   publishToWebAffEcosystem(videoId, finalVideo, scriptData, urlArg);
   sendTelegramCompletionNotice(chatId, videoId, scriptData);
+
+  // Tự động dọn thư mục tạm sau khi xuất bản xong để không đầy ổ cứng Cloud VM
+  try {
+    fs.rmSync(outDir, { recursive: true, force: true });
+    console.log(`🧹 Đã dọn thư mục tạm: ${outDir}`);
+  } catch (e) {}
 }
 
 main().catch(err => {

@@ -291,6 +291,39 @@ async def handle_callback_query(update: Update, context: ContextTypes.DEFAULT_TY
         if factory_script.exists():
             subprocess.Popen([sys.executable, str(factory_script)])
 
+    elif data == "cmd_view_fifo_queue":
+        factory_dir = ROOT_DIR / "automation" / "2_ai_video_factory"
+        if str(factory_dir) not in sys.path:
+            sys.path.insert(0, str(factory_dir))
+        import rabbit_bear_runner
+        st = rabbit_bear_runner.get_fifo_queue_status()
+        cur = st.get("current")
+        q = st.get("queue", [])
+        lines = [
+            "📋 <b>HÀNG ĐỢI DỰNG 3D THỎ & GẤU (FIFO)</b>",
+            "━━━━━━━━━━━━━━━━━━━━━━━━━━",
+        ]
+        if cur:
+            lines.append(f"🎬 <b>Đang xử lý:</b>\n<code>{cur.get('article_url', '')}</code>")
+        else:
+            lines.append("🟢 <b>Trạng thái:</b> Xưởng 3D đang rảnh (gửi link là dựng ngay!)")
+        if q:
+            lines.append(f"\n⏳ <b>Đang xếp hàng chờ ({len(q)} link):</b>")
+            for idx, item in enumerate(q[:12], start=1):
+                lines.append(f"  {idx}. <code>{item.get('article_url', '')}</code>")
+            if len(q) > 12:
+                lines.append(f"  <i>... và {len(q) - 12} link khác</i>")
+        else:
+            lines.append("\n📭 <i>Không có link nào đang chờ.</i>")
+        await safe_edit_message_text(
+            query,
+            text="\n".join(lines),
+            reply_markup=InlineKeyboardMarkup([
+                [InlineKeyboardButton("🔄 Làm mới hàng đợi", callback_data="cmd_view_fifo_queue", style="primary")],
+                [InlineKeyboardButton("🏠 Về Bảng Điều Khiển", callback_data="cmd_back_home", style="primary")],
+            ]),
+        )
+
     elif data == "cmd_system_stats":
         stats = get_video_stats()
         text = (
@@ -327,14 +360,14 @@ async def handle_url_message(update: Update, context: ContextTypes.DEFAULT_TYPE)
     total_links = len(valid_urls)
     logger.info(f"Nhận được {total_links} link từ người dùng")
 
-    # CHẾ ĐỘ MỚI: PIPELINE VIDEO TIN TỨC 3D VŨ TRỤ THỎ & GẤU TỪ LINK BÀI BÁO
+    # CHẾ ĐỘ MỚI: PIPELINE VIDEO TIN TỨC 3D VŨ TRỤ THỎ & GẤU (HỖ TRỢ FIFO QUEUE & GỬI HÀNG LOẠT LINK)
     if not ENABLE_LEGACY_RAW_COLLECTOR:
-        article_url = valid_urls[0]
         chat_id = str(update.effective_chat.id) if update.effective_chat else ""
+        user_obj = update.effective_user
+        sender_name = (user_obj.full_name if user_obj else "") or chat_id
         status_msg = await update.message.reply_text(
             text=(
-                "⏳ <b>ĐANG TIẾP NHẬN BÀI BÁO VÀO XƯỞNG PHIM 3D THỎ & GẤU...</b>\n"
-                f"🔗 <code>{article_url}</code>"
+                f"⏳ <b>ĐANG TIẾP NHẬN {len(valid_urls)} LINK BÀI BÁO VÀO HÀNG ĐỢI FIFO 3D...</b>"
             ),
             parse_mode=ParseMode.HTML
         )
@@ -344,36 +377,65 @@ async def handle_url_message(update: Update, context: ContextTypes.DEFAULT_TYPE)
                 sys.path.insert(0, str(factory_dir))
             import rabbit_bear_runner
 
-            res = rabbit_bear_runner.trigger_3d_pipeline_from_article(
-                article_url,
-                async_mode=True,
+            res = rabbit_bear_runner.enqueue_fifo_3d_jobs(
+                valid_urls,
                 chat_id=chat_id,
+                sender_name=sender_name,
             )
-            await status_msg.edit_text(
-                text=(
-                    "🐰🐻 <b>ĐÃ KÍCH HOẠT XƯỞNG PHIM 3D VŨ TRỤ THỎ & GẤU!</b>\n"
+            items = res.get("items", [])
+            cur_job = res.get("current_job")
+
+            if len(items) == 1:
+                it = items[0]
+                if it.get("starts_now"):
+                    reply_text = (
+                        "🐰🐻 <b>ĐANG XỬ LÝ NGAY TRÊN XƯỞNG 3D THỎ & GẤU!</b>\n"
+                        "━━━━━━━━━━━━━━━━━━━━━━━━━━\n"
+                        f"📰 <b>Bài báo:</b> <code>{it['article_url']}</code>\n"
+                        f"🆔 <b>Mã Job:</b> <code>{it['job_id']}</code>\n\n"
+                        "🎬 <b>Quy trình 6 bước đang chạy:</b>\n"
+                        "1. Cào bài báo → 2. Gemini 3.5/3.1 Flash Lite (retry 3 lần)\n"
+                        "3. Thu âm NamMinhNeural (9.43s/10s) → 4. Render đồ họa 9:16\n"
+                        "5. Render 4 cảnh 3D Muse.ai + Outro → 6. Đẩy thẳng lên tho-news.com!\n\n"
+                        "💡 <i>Bạn hoặc khách có thể gửi thêm 1 hoặc nhiều link (mỗi link 1 dòng), Bot sẽ tự xếp vào Hàng đợi FIFO chạy lần lượt không sợ tràn RAM!</i>"
+                    )
+                else:
+                    cur_line = f"\n🎬 <b>Clip đang dựng hiện tại:</b>\n<code>{cur_job.get('article_url', '')}</code>\n" if cur_job else ""
+                    reply_text = (
+                        f"⏳ <b>ĐÃ XẾP VÀO HÀNG ĐỢI FIFO (VỊ TRÍ #{it.get('position', 1)})!</b>\n"
+                        "━━━━━━━━━━━━━━━━━━━━━━━━━━\n"
+                        f"📰 <b>Bài báo của bạn:</b> <code>{it['article_url']}</code>\n"
+                        f"🆔 <b>Mã Job:</b> <code>{it['job_id']}</code>\n"
+                        f"{cur_line}\n"
+                        "✅ <i>Hệ thống đang chạy tuần tự từng clip một để đảm bảo an toàn RAM. Tới lượt bài của bạn, Bot sẽ tự báo và trả link <b>tho-news.com</b> ngay khi xong!</i>"
+                    )
+            else:
+                item_lines = []
+                for idx, it in enumerate(items[:15], start=1):
+                    tag = "🚀 Đang xử lý ngay" if it.get("starts_now") else f"⏳ Chờ lượt #{it.get('position', idx)}"
+                    item_lines.append(f"{idx}. <b>{tag}</b>\n   <code>{it['article_url']}</code>")
+                if len(items) > 15:
+                    item_lines.append(f"<i>... và {len(items) - 15} link khác</i>")
+                reply_text = (
+                    f"📥 <b>ĐÃ TIẾP NHẬN HÀNG LOẠT {len(items)} LINK VÀO HÀNG ĐỢI FIFO!</b>\n"
                     "━━━━━━━━━━━━━━━━━━━━━━━━━━\n"
-                    f"📰 <b>Bài báo nguồn:</b> <code>{article_url}</code>\n"
-                    f"⚙️ <b>Mã tiến trình:</b> <code>{res.get('pid')}</code>\n\n"
-                    "🎬 <b>Quy trình tự động 6 bước đang chạy:</b>\n"
-                    "1. Cào nội dung bài báo tin tức\n"
-                    "2. Gemini 3.5 Flash Lite biên kịch 4 cảnh Thỏ Đỏ & Gấu Béo (42-50 từ/cảnh)\n"
-                    "3. Thu âm đồng nhất 100% <code>vi-VN-NamMinhNeural</code> (khớp 9.43s/10s)\n"
-                    "4. Render khung đồ họa tin tức 24H (1080x1920)\n"
-                    "5. Render 4 cảnh 3D Pixar trên Muse.ai + Ghép Outro Like/Follow\n"
-                    "6. Tự động xuất bản lên Web Player & Hàng đợi Social!\n\n"
-                    "💡 <i>Bot sẽ tự động nhắn tin báo link Vercel ngay khi video 3D dựng xong!</i>"
-                ),
+                    + "\n".join(item_lines)
+                    + "\n\n✅ <i>Bot sẽ tự động dựng tuần tự từng video 1 (100% an toàn RAM) và nhắn tin trả link <b>tho-news.com</b> cho từng clip ngay khi hoàn tất!</i>"
+                )
+
+            await status_msg.edit_text(
+                text=reply_text,
                 reply_markup=InlineKeyboardMarkup([
+                    [InlineKeyboardButton("📋 Xem Hàng Đợi FIFO", callback_data="cmd_view_fifo_queue", style="primary")],
                     [InlineKeyboardButton("📱 Xem Hàng Đợi Social", callback_data="cmd_view_social", style="success")],
                     [InlineKeyboardButton("🏠 Về Bảng Điều Khiển", callback_data="cmd_back_home", style="primary")]
                 ]),
                 parse_mode=ParseMode.HTML
             )
         except Exception as e:
-            logger.error(f"Lỗi kích hoạt 3D pipeline: {e}")
+            logger.error(f"Lỗi kích hoạt 3D pipeline FIFO: {e}")
             await status_msg.edit_text(
-                text=f"❌ <b>Lỗi khởi chạy pipeline 3D:</b> <code>{str(e)}</code>",
+                text=f"❌ <b>Lỗi xếp hàng pipeline 3D:</b> <code>{str(e)}</code>",
                 parse_mode=ParseMode.HTML
             )
         return
@@ -565,6 +627,41 @@ async def handle_video_message(update: Update, context: ContextTypes.DEFAULT_TYP
         await status_reply.edit_text(f"❌ Lỗi tiếp nhận video: <code>{str(e)}</code>", parse_mode=ParseMode.HTML)
 
 
+async def queue_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    """Lệnh /queue - Xem trạng thái Hàng đợi FIFO 3D Thỏ & Gấu"""
+    factory_dir = ROOT_DIR / "automation" / "2_ai_video_factory"
+    if str(factory_dir) not in sys.path:
+        sys.path.insert(0, str(factory_dir))
+    import rabbit_bear_runner
+    st = rabbit_bear_runner.get_fifo_queue_status()
+    cur = st.get("current")
+    q = st.get("queue", [])
+    lines = [
+        "📋 <b>HÀNG ĐỢI DỰNG 3D THỎ & GẤU (FIFO)</b>",
+        "━━━━━━━━━━━━━━━━━━━━━━━━━━",
+    ]
+    if cur:
+        lines.append(f"🎬 <b>Đang xử lý:</b>\n<code>{cur.get('article_url', '')}</code>")
+    else:
+        lines.append("🟢 <b>Trạng thái:</b> Xưởng 3D đang rảnh (gửi link là dựng ngay!)")
+    if q:
+        lines.append(f"\n⏳ <b>Đang xếp hàng chờ ({len(q)} link):</b>")
+        for idx, item in enumerate(q[:12], start=1):
+            lines.append(f"  {idx}. <code>{item.get('article_url', '')}</code>")
+        if len(q) > 12:
+            lines.append(f"  <i>... và {len(q) - 12} link khác</i>")
+    else:
+        lines.append("\n📭 <i>Không có link nào đang chờ.</i>")
+    await update.message.reply_text(
+        text="\n".join(lines),
+        reply_markup=InlineKeyboardMarkup([
+            [InlineKeyboardButton("🔄 Làm mới hàng đợi", callback_data="cmd_view_fifo_queue", style="primary")],
+            [InlineKeyboardButton("🏠 Về Bảng Điều Khiển", callback_data="cmd_back_home", style="primary")],
+        ]),
+        parse_mode=ParseMode.HTML,
+    )
+
+
 def run_telegram_bot():
     """Chạy Telegram Bot lâu dài"""
     if not TELEGRAM_BOT_TOKEN:
@@ -582,12 +679,23 @@ def run_telegram_bot():
 
     app.add_handler(CommandHandler("start", start_command))
     app.add_handler(CommandHandler("menu", start_command))
+    app.add_handler(CommandHandler("queue", queue_command))
     app.add_handler(CallbackQueryHandler(handle_callback_query))
     app.add_handler(MessageHandler(filters.TEXT & ~filters.COMMAND, handle_url_message))
     app.add_handler(MessageHandler(filters.VIDEO | filters.Document.VIDEO, handle_video_message))
 
     print("🚀 Telegram Auto Video Affiliate Bot đang chạy...")
     print(f"📂 Thư mục tiếp nhận video: {RAW_STORAGE_DIR}")
+
+    # Khôi phục Hàng đợi FIFO 3D nếu VM vừa restart giữa chừng
+    try:
+        factory_dir = ROOT_DIR / "automation" / "2_ai_video_factory"
+        if str(factory_dir) not in sys.path:
+            sys.path.insert(0, str(factory_dir))
+        import rabbit_bear_runner
+        rabbit_bear_runner.start_fifo_worker_if_needed()
+    except Exception as e:
+        logger.warning(f"Không thể khôi phục hàng đợi FIFO 3D: {e}")
 
     # Tự động khởi động luồng cào và cập nhật Voucher/Deal mỗi 15 phút (Đã lọc sạch 100% link die)
     try:

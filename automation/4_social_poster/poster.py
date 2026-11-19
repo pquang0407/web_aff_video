@@ -90,9 +90,9 @@ def post_video_to_social(
             break
 
     caption = (custom_caption or meta.get("social_caption") or meta.get("title") or "").strip()
-    base_web_url = os.getenv("WEB_BASE_URL", "https://webaffvideo-web.vercel.app").rstrip("/")
+    base_web_url = os.getenv("WEB_BASE_URL", "https://tho-news.com").rstrip("/")
     target_web_url = meta.get("target_web_url") or f"{base_web_url}/?v={video_id}"
-    if "zento-web-five" in target_web_url:
+    if "zento-web-five" in target_web_url or "webaffvideo-web.vercel.app" in target_web_url:
         target_web_url = f"{base_web_url}/?v={video_id}"
 
     sched_cfg = config.get_scheduler_config()
