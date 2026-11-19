@@ -329,33 +329,53 @@ async def handle_url_message(update: Update, context: ContextTypes.DEFAULT_TYPE)
 
     # CHẾ ĐỘ MỚI: PIPELINE VIDEO TIN TỨC 3D VŨ TRỤ THỎ & GẤU TỪ LINK BÀI BÁO
     if not ENABLE_LEGACY_RAW_COLLECTOR:
-        factory_dir = ROOT_DIR / "automation" / "2_ai_video_factory"
-        if str(factory_dir) not in sys.path:
-            sys.path.insert(0, str(factory_dir))
-        import rabbit_bear_runner
-
         article_url = valid_urls[0]
-        res = rabbit_bear_runner.trigger_3d_pipeline_from_article(article_url, async_mode=True)
-        await update.message.reply_text(
+        chat_id = str(update.effective_chat.id) if update.effective_chat else ""
+        status_msg = await update.message.reply_text(
             text=(
-                "🐰🐻 <b>ĐÃ KÍCH HOẠT XƯỞNG PHIM 3D VŨ TRỤ THỎ & GẤU!</b>\n"
-                "━━━━━━━━━━━━━━━━━━━━━━━━━━\n"
-                f"📰 <b>Bài báo nguồn:</b> <code>{article_url}</code>\n"
-                f"⚙️ <b>PID tiến trình:</b> <code>{res.get('pid')}</code>\n\n"
-                "🎬 <b>Quy trình tự động 6 bước đang chạy:</b>\n"
-                "1. Cào nội dung bài báo tin tức\n"
-                "2. Gemini 2.5 Flash biên kịch 4 cảnh Thỏ Đỏ & Gấu Béo (42-50 từ/cảnh)\n"
-                "3. Thu âm đồng nhất 100% <code>vi-VN-NamMinhNeural</code> (khớp 9.35s/10s)\n"
-                "4. Render khung đồ họa tin tức 24H (1080x1920)\n"
-                "5. Render 4 cảnh 3D Pixar trên Muse.ai + Ghép Outro Like/Follow\n"
-                "6. Tự động xuất bản lên Web Player & Hàng đợi Social!"
+                "⏳ <b>ĐANG TIẾP NHẬN BÀI BÁO VÀO XƯỞNG PHIM 3D THỎ & GẤU...</b>\n"
+                f"🔗 <code>{article_url}</code>"
             ),
-            reply_markup=InlineKeyboardMarkup([
-                [InlineKeyboardButton("📱 Xem Hàng Đợi Social", callback_data="cmd_view_social", style="success")],
-                [InlineKeyboardButton("🏠 Về Bảng Điều Khiển", callback_data="cmd_back_home", style="primary")]
-            ]),
             parse_mode=ParseMode.HTML
         )
+        try:
+            factory_dir = ROOT_DIR / "automation" / "2_ai_video_factory"
+            if str(factory_dir) not in sys.path:
+                sys.path.insert(0, str(factory_dir))
+            import rabbit_bear_runner
+
+            res = rabbit_bear_runner.trigger_3d_pipeline_from_article(
+                article_url,
+                async_mode=True,
+                chat_id=chat_id,
+            )
+            await status_msg.edit_text(
+                text=(
+                    "🐰🐻 <b>ĐÃ KÍCH HOẠT XƯỞNG PHIM 3D VŨ TRỤ THỎ & GẤU!</b>\n"
+                    "━━━━━━━━━━━━━━━━━━━━━━━━━━\n"
+                    f"📰 <b>Bài báo nguồn:</b> <code>{article_url}</code>\n"
+                    f"⚙️ <b>Mã tiến trình:</b> <code>{res.get('pid')}</code>\n\n"
+                    "🎬 <b>Quy trình tự động 6 bước đang chạy:</b>\n"
+                    "1. Cào nội dung bài báo tin tức\n"
+                    "2. Gemini 3.5 Flash Lite biên kịch 4 cảnh Thỏ Đỏ & Gấu Béo (42-50 từ/cảnh)\n"
+                    "3. Thu âm đồng nhất 100% <code>vi-VN-NamMinhNeural</code> (khớp 9.43s/10s)\n"
+                    "4. Render khung đồ họa tin tức 24H (1080x1920)\n"
+                    "5. Render 4 cảnh 3D Pixar trên Muse.ai + Ghép Outro Like/Follow\n"
+                    "6. Tự động xuất bản lên Web Player & Hàng đợi Social!\n\n"
+                    "💡 <i>Bot sẽ tự động nhắn tin báo link Vercel ngay khi video 3D dựng xong!</i>"
+                ),
+                reply_markup=InlineKeyboardMarkup([
+                    [InlineKeyboardButton("📱 Xem Hàng Đợi Social", callback_data="cmd_view_social", style="success")],
+                    [InlineKeyboardButton("🏠 Về Bảng Điều Khiển", callback_data="cmd_back_home", style="primary")]
+                ]),
+                parse_mode=ParseMode.HTML
+            )
+        except Exception as e:
+            logger.error(f"Lỗi kích hoạt 3D pipeline: {e}")
+            await status_msg.edit_text(
+                text=f"❌ <b>Lỗi khởi chạy pipeline 3D:</b> <code>{str(e)}</code>",
+                parse_mode=ParseMode.HTML
+            )
         return
 
     # [LEGACY HIDDEN - GIỮ LẠI ĐỂ DÙNG LẠI SAU NÀY KHI BẬT ENABLE_LEGACY_RAW_COLLECTOR]

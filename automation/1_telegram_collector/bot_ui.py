@@ -134,7 +134,7 @@ def build_dashboard_text() -> str:
 def build_social_queue_keyboard() -> InlineKeyboardMarkup:
     """Hiển thị danh sách video 3D Thỏ & Gấu trong Hàng đợi Social (đồng bộ cả Local & Cloud VM)"""
     meta_files = sorted(
-        list(WEB_FULL_DIR.glob("*_meta.json")),
+        list(WEB_FULL_DIR.glob("tho_gau_*_meta.json")),
         key=lambda p: p.stat().st_mtime,
         reverse=True,
     )

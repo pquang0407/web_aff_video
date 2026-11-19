@@ -251,14 +251,73 @@ def sync_existing_3d_masterpieces(clean_legacy: bool = True) -> List[Dict[str, A
     return published_items
 
 
-def trigger_3d_pipeline_from_article(article_url: str, async_mode: bool = True) -> Dict[str, Any]:
+def can_run_3d_locally() -> bool:
+    """Kiểm tra máy hiện tại (Local hoặc Cloud VM) có Node.js + muse_cookie.txt/muse_session.b64 để render trực tiếp không"""
+    if not shutil.which("node"):
+        return False
+    cookie_file = AUTO_VIDEO_GEN_ROOT / "muse_cookie.txt"
+    b64_file = AUTO_VIDEO_GEN_ROOT / "muse_session.b64"
+    if not cookie_file.exists() and not b64_file.exists():
+        return False
+    return RUN_AUTO_SCRIPT.exists()
+
+
+PENDING_JOBS_FILE = WEB_AFF_ROOT / "storage" / "pending_3d_jobs.json"
+
+
+def load_pending_jobs() -> List[Dict[str, Any]]:
+    if not PENDING_JOBS_FILE.exists():
+        return []
+    try:
+        return json.loads(PENDING_JOBS_FILE.read_text(encoding="utf-8"))
+    except Exception:
+        return []
+
+
+def save_pending_jobs(jobs: List[Dict[str, Any]]) -> None:
+    PENDING_JOBS_FILE.parent.mkdir(parents=True, exist_ok=True)
+    PENDING_JOBS_FILE.write_text(json.dumps(jobs, ensure_ascii=False, indent=2), encoding="utf-8")
+
+
+def enqueue_cloud_3d_job(article_url: str, chat_id: Optional[str] = None) -> Dict[str, Any]:
+    jobs = load_pending_jobs()
+    job = {
+        "job_id": f"job_{datetime.now().strftime('%Y%m%d_%H%M%S')}",
+        "article_url": article_url.strip(),
+        "chat_id": str(chat_id) if chat_id else "",
+        "status": "pending",
+        "created_at": datetime.now().isoformat(),
+    }
+    jobs.append(job)
+    save_pending_jobs(jobs)
+    return job
+
+
+def trigger_3d_pipeline_from_article(
+    article_url: str,
+    async_mode: bool = True,
+    chat_id: Optional[str] = None,
+) -> Dict[str, Any]:
     """
     Kích hoạt tiến trình sản xuất Video 3D Thỏ & Gấu từ link bài báo (run-auto.mjs).
+    - Nếu chạy trên máy có Node + Chrome + Muse Cookie: Chạy trực tiếp run-auto.mjs.
+    - Nếu chạy trên Cloud VM mỏng (e2-micro headless): Đưa vào hàng đợi Cloud-Bridge để Worker 3D xử lý và tự động đồng bộ về VM.
     """
-    if not RUN_AUTO_SCRIPT.exists():
-        raise FileNotFoundError(f"Không tìm thấy script pipeline 3D: {RUN_AUTO_SCRIPT}")
+    if not can_run_3d_locally():
+        job = enqueue_cloud_3d_job(article_url, chat_id=chat_id)
+        logger.info(f"☁️ [CLOUD QUEUE] Đã xếp bài báo vào hàng đợi Worker 3D: {job['job_id']} ({article_url})")
+        return {
+            "ok": True,
+            "mode": "cloud_bridge_queue",
+            "pid": job["job_id"],
+            "job": job,
+            "article_url": article_url,
+            "message": "Đã tiếp nhận bài báo trên Cloud VM và chuyển tới Worker 3D Thỏ & Gấu! Video sẽ tự động đẩy lên Vercel & đồng bộ về Bot ngay khi dựng xong.",
+        }
 
     cmd = ["node", str(RUN_AUTO_SCRIPT), article_url.strip()]
+    if chat_id:
+        cmd.extend(["--chat-id", str(chat_id)])
     logger.info(f"🚀 Kích hoạt 3D Rabbit & Bear Pipeline cho bài báo: {article_url}")
 
     if async_mode:

@@ -66,6 +66,16 @@ class AdminRequestHandler(BaseHTTPRequestHandler):
             self._send_json({"ok": True, "logs": lines})
             return
 
+        if path == "/api/rabbit-bear/pending":
+            import sys
+            factory_dir = Path(__file__).resolve().parent.parent / "2_ai_video_factory"
+            if str(factory_dir) not in sys.path:
+                sys.path.insert(0, str(factory_dir))
+            import rabbit_bear_runner
+            jobs = [j for j in rabbit_bear_runner.load_pending_jobs() if j.get("status") == "pending"]
+            self._send_json({"ok": True, "jobs": jobs})
+            return
+
         self._send_json({"ok": False, "error": "Not found"}, 404)
 
     def do_POST(self) -> None:
@@ -170,6 +180,64 @@ class AdminRequestHandler(BaseHTTPRequestHandler):
                     "pipeline": res,
                     "queue": poster.get_social_queue(),
                 })
+                return
+
+            if path == "/api/rabbit-bear/complete":
+                import os
+                import subprocess
+                import sys
+                import urllib.request
+                factory_dir = Path(__file__).resolve().parent.parent / "2_ai_video_factory"
+                if str(factory_dir) not in sys.path:
+                    sys.path.insert(0, str(factory_dir))
+                import rabbit_bear_runner
+
+                job_id = payload.get("job_id", "")
+                video_id = payload.get("video_id", "")
+                title = payload.get("title", "Bản Tin 3D Thỏ & Gấu")
+                chat_id = payload.get("chat_id", "")
+
+                # Cập nhật trạng thái job
+                jobs = rabbit_bear_runner.load_pending_jobs()
+                for j in jobs:
+                    if j.get("job_id") == job_id:
+                        j["status"] = "completed"
+                        j["video_id"] = video_id
+                        if not chat_id:
+                            chat_id = j.get("chat_id", "")
+                rabbit_bear_runner.save_pending_jobs(jobs)
+
+                # Tự động git pull trên Cloud VM để nhận video 3D mới nhất từ GitHub
+                base_dir = str(config.BASE_DIR)
+                subprocess.run(["git", "fetch", "origin", "main"], cwd=base_dir, capture_output=True)
+                subprocess.run(["git", "reset", "--hard", "origin/main"], cwd=base_dir, capture_output=True)
+
+                # Gửi thông báo hoàn tất trực tiếp về Telegram cho người dùng
+                bot_token = os.getenv("TELEGRAM_BOT_TOKEN", "").strip()
+                web_base = os.getenv("WEB_BASE_URL", "https://webaffvideo-web.vercel.app").rstrip("/")
+                if bot_token and chat_id and video_id:
+                    tg_url = f"https://api.telegram.org/bot{bot_token}/sendMessage"
+                    msg_text = (
+                        f"🎉 <b>HOÀN TẤT DỰNG VIDEO 3D THỎ & GẤU!</b>\n"
+                        f"━━━━━━━━━━━━━━━━━━━━━━━━━━\n"
+                        f"🎬 <b>Tiêu đề:</b> {title}\n"
+                        f"🆔 <b>Mã Video:</b> <code>{video_id}</code>\n"
+                        f"🌐 <b>Xem trực tiếp trên Web Player:</b>\n"
+                        f"{web_base}/?v={video_id}\n\n"
+                        f"✅ <i>Video đã được giữ nguyên bản 100% đưa vào Hàng đợi Social trên Cloud VM!</i>"
+                    )
+                    tg_payload = json.dumps({
+                        "chat_id": chat_id,
+                        "text": msg_text,
+                        "parse_mode": "HTML",
+                    }).encode("utf-8")
+                    try:
+                        req = urllib.request.Request(tg_url, data=tg_payload, headers={"Content-Type": "application/json"})
+                        urllib.request.urlopen(req, timeout=10)
+                    except Exception:
+                        pass
+
+                self._send_json({"ok": True, "video_id": video_id, "queue": poster.get_social_queue()})
                 return
 
             if path == "/api/rabbit-bear/sync":

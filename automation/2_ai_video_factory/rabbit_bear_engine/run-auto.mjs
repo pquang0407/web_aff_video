@@ -584,10 +584,68 @@ function publishToWebAffEcosystem(videoId, finalVideoPath, scriptData, sourceUrl
   console.log(`✅ Đã xuất bản '${videoId}' lên Web Player & Hàng đợi Social thành công!`);
 }
 
+function loadMuseCookieString() {
+  if (fs.existsSync(COOKIE_FILE)) {
+    return fs.readFileSync(COOKIE_FILE, 'utf8').trim();
+  }
+  const b64File = path.join(__dirname, 'muse_session.b64');
+  if (fs.existsSync(b64File)) {
+    const raw = Buffer.from(fs.readFileSync(b64File, 'utf8').trim(), 'base64').toString('utf8').trim();
+    try { fs.writeFileSync(COOKIE_FILE, raw, 'utf8'); } catch (e) {}
+    return raw;
+  }
+  throw new Error('Không tìm thấy muse_cookie.txt hoặc muse_session.b64!');
+}
+
+function sendTelegramCompletionNotice(chatId, videoId, scriptData) {
+  if (!chatId) return;
+  let botToken = process.env.TELEGRAM_BOT_TOKEN || '';
+  if (!botToken) {
+    for (const envPath of [path.join(WEB_AFF_ROOT, '.env'), path.join(ENGINE_ROOT, '.env')]) {
+      if (fs.existsSync(envPath)) {
+        const m = fs.readFileSync(envPath, 'utf8').match(/^TELEGRAM_BOT_TOKEN=(.+)$/m);
+        if (m && m[1]) { botToken = m[1].trim(); break; }
+      }
+    }
+  }
+  if (!botToken) return;
+
+  const firstHeadline = scriptData.scenes?.[0]?.headline || scriptData.matchTitle || 'Bản Tin 3D Thỏ & Gấu';
+  const webUrl = `https://webaffvideo-web.vercel.app/?v=${videoId}`;
+  const msgText = [
+    `🎉 <b>HOÀN TẤT DỰNG VIDEO 3D THỎ & GẤU TRÊN CLOUD!</b>`,
+    `━━━━━━━━━━━━━━━━━━━━━━━━━━`,
+    `🎬 <b>Tiêu đề:</b> [3D Thỏ & Gấu] ${firstHeadline}`,
+    `🆔 <b>Mã Video:</b> <code>${videoId}</code>`,
+    `🌐 <b>Xem trực tiếp trên Web Player:</b>`,
+    `${webUrl}`,
+    ``,
+    `✅ <i>Video đã được giữ nguyên bản 100% đưa vào Hàng đợi Social & đẩy thẳng lên Vercel!</i>`
+  ].join('\n');
+
+  const body = JSON.stringify({
+    chat_id: chatId,
+    text: msgText,
+    parse_mode: 'HTML'
+  });
+
+  const req = https.request(`https://api.telegram.org/bot${botToken}/sendMessage`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', 'Content-Length': Buffer.byteLength(body) }
+  });
+  req.on('error', () => {});
+  req.write(body);
+  req.end();
+}
+
 async function main() {
-  const urlArg = process.argv.slice(2).find(a => a.startsWith('http')) || process.argv[2];
+  const args = process.argv.slice(2);
+  const urlArg = args.find(a => a.startsWith('http')) || args[0];
+  const chatIdIdx = args.indexOf('--chat-id');
+  const chatId = (chatIdIdx !== -1 && args[chatIdIdx + 1]) ? args[chatIdIdx + 1] : '';
+
   if (!urlArg) {
-    console.error('Cách dùng: node scripts/run-auto.mjs <LINK_BAI_BAO>');
+    console.error('Cách dùng: node scripts/run-auto.mjs <LINK_BAI_BAO> [--chat-id <CHAT_ID>]');
     process.exit(1);
   }
 
@@ -603,19 +661,27 @@ async function main() {
   generateSceneAudios(scriptData.scenes, outDir);
   await generateOverlays(scriptData, outDir);
 
-  const cookieStr = fs.readFileSync(COOKIE_FILE, 'utf8').trim();
+  const cookieStr = loadMuseCookieString();
   const cookies = cookieStr.split('; ').map(p => {
     const [k, ...v] = p.split('=');
     return { name: k.trim(), value: v.join('=').trim(), domain: '.muse.ai', path: '/' };
   });
 
+  const isHeadlessLinux = process.platform !== 'win32' && !process.env.DISPLAY;
   const browser = await puppeteer.launch({
     executablePath: CHROME_PATH,
-    headless: false,
+    headless: isHeadlessLinux ? 'new' : false,
     protocolTimeout: 600000,
-    args: ['--no-sandbox', '--disable-setuid-sandbox', '--window-size=1280,850']
+    args: [
+      '--no-sandbox',
+      '--disable-setuid-sandbox',
+      '--disable-dev-shm-usage',
+      '--disable-blink-features=AutomationControlled',
+      '--window-size=1280,850'
+    ]
   });
   const page = await browser.newPage();
+  await page.setUserAgent('Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36');
   await page.setViewport({ width: 1280, height: 850 });
   await page.setCookie(...cookies);
 
@@ -632,6 +698,7 @@ async function main() {
   await compositeFinalVideo(outDir, finalVideo);
 
   publishToWebAffEcosystem(videoId, finalVideo, scriptData, urlArg);
+  sendTelegramCompletionNotice(chatId, videoId, scriptData);
 }
 
 main().catch(err => {

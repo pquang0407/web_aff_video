@@ -25,10 +25,18 @@ logger = logging.getLogger("SocialPoster")
 
 def get_social_queue() -> List[Dict[str, Any]]:
     """
-    Lấy danh sách tất cả các video đã qua Module 2 & 3 để hiển thị lên Hàng Đợi (Queue)
+    Lấy danh sách tất cả các video 3D Thỏ & Gấu để hiển thị lên Hàng Đợi (Queue)
+    (Tự động loại bỏ các file metadata clip cũ không thuộc hệ thống 3D Thỏ & Gấu)
     """
+    for stale in list(config.FULL_DIR.glob("*_meta.json")):
+        if not stale.name.startswith("tho_gau_"):
+            try:
+                stale.unlink(missing_ok=True)
+            except Exception:
+                pass
+
     meta_files = sorted(
-        config.FULL_DIR.glob("*_meta.json"),
+        config.FULL_DIR.glob("tho_gau_*_meta.json"),
         key=lambda p: p.stat().st_mtime,
         reverse=True,
     )

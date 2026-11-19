@@ -66,11 +66,24 @@ def save_settings(settings: dict):
 
 
 def get_video_stats() -> dict:
-    """Lấy số lượng video thực tế trong các khoang (đồng bộ cả Local & Cloud VM)"""
+    """Lấy số lượng video 3D Thỏ & Gấu thực tế (tự động dọn các file vid_TikTok cũ còn sót trên VM)"""
+    for stale in list(WEB_FULL_DIR.glob("*_meta.json")):
+        if not stale.name.startswith("tho_gau_"):
+            try:
+                stale.unlink(missing_ok=True)
+            except Exception:
+                pass
+    for stale_t in list(SOCIAL_DIR.glob("*.*")):
+        if stale_t.name != ".gitkeep" and not stale_t.name.startswith("tho_gau_"):
+            try:
+                stale_t.unlink(missing_ok=True)
+            except Exception:
+                pass
+
     raw_files = list(RAW_STORAGE_DIR.glob("*.mp4"))
-    meta_files = list(WEB_FULL_DIR.glob("*_meta.json"))
+    meta_files = list(WEB_FULL_DIR.glob("tho_gau_*_meta.json"))
     web_videos_dir = ROOT_DIR / "web" / "videos"
-    web_mp4s = list(web_videos_dir.glob("*.mp4")) if web_videos_dir.exists() else list(WEB_FULL_DIR.glob("*.mp4"))
+    web_mp4s = list(web_videos_dir.glob("tho_gau_*.mp4")) if web_videos_dir.exists() else list(WEB_FULL_DIR.glob("tho_gau_*.mp4"))
     count_published = max(len(meta_files), len(web_mp4s))
     return {
         "raw_count": len(raw_files),
