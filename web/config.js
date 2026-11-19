@@ -26,6 +26,18 @@ const CONFIG = {
     ]
   },
   "videos": {
+    "tho_gau_3d_20261119112320": {
+      "id": "tho_gau_3d_20261119112320",
+      "title": "[3D Thỏ & Gấu] CÚ RẼ TỬ THẦN TRÊN PHỐ",
+      "duration": "00:46",
+      "views": "261.5K",
+      "likes": "14.8K",
+      "uploadDate": "Vừa xong",
+      "category": "🐰🐻 VŨ TRỤ THỎ & GẤU 3D",
+      "videoUrl": "videos/tho_gau_3d_20261119112320.mp4",
+      "posterUrl": "videos/tho_gau_3d_20261119112320_poster.jpg",
+      "description": "Bài học đắt giá cho tài xế xe lớn khi tham gia giao thông! Hãy cẩn trọng từng khúc cua. #ThoVaGau #GiaoThongAnToan #TinNong #24H"
+    },
     "tho_gau_3d_20261119045839": {
       "id": "tho_gau_3d_20261119045839",
       "title": "[3D Thỏ & Gấu] CHỒNG HAY ĐI KỂ TỘI VỢ",
@@ -64,15 +76,15 @@ const CONFIG = {
     },
     "default": {
       "id": "default",
-      "title": "[3D Thỏ & Gấu] CHỒNG HAY ĐI KỂ TỘI VỢ",
+      "title": "[3D Thỏ & Gấu] CÚ RẼ TỬ THẦN TRÊN PHỐ",
       "duration": "00:46",
-      "views": "134.5K",
-      "likes": "30.8K",
+      "views": "261.5K",
+      "likes": "14.8K",
       "uploadDate": "Vừa xong",
       "category": "🐰🐻 VŨ TRỤ THỎ & GẤU 3D",
-      "videoUrl": "videos/tho_gau_3d_20261119045839.mp4",
-      "posterUrl": "videos/tho_gau_3d_20261119045839_poster.jpg",
-      "description": "Khi chồng có tính hay đi kể tội vợ với họ hàng thay vì trực tiếp trao đổi và cái kết cười ra nước mắt của cặp đôi Thỏ Gấu! #ThoVaGau #HoGiaDinh #Pixar3D #TinTuc"
+      "videoUrl": "videos/tho_gau_3d_20261119112320.mp4",
+      "posterUrl": "videos/tho_gau_3d_20261119112320_poster.jpg",
+      "description": "Bài học đắt giá cho tài xế xe lớn khi tham gia giao thông! Hãy cẩn trọng từng khúc cua. #ThoVaGau #GiaoThongAnToan #TinNong #24H"
     }
   },
   "deals": [
