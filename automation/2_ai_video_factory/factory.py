@@ -7,6 +7,7 @@ import argparse
 import json
 import logging
 import random
+import shutil
 import sys
 import time
 from datetime import datetime
@@ -17,6 +18,10 @@ import config
 import gemini_analyzer
 import tts_engine
 import video_engine
+
+# Cờ tắt toàn bộ chức năng chỉnh sửa/lật gương/chèn banner/lồng tiếng đè của hệ thống cũ.
+# Mặc định False = Giữ nguyên 100% clip gốc để đưa thẳng vào Queue & Web Player.
+LEGACY_EDIT_OVERLAY_MODE = False
 
 # Thiết lập logging
 logging.basicConfig(
@@ -70,53 +75,50 @@ def process_single_video(input_path: Path, video_id: Optional[str] = None) -> Op
     sub_output = config.TEASER_DIR / f"{video_id}_sub.srt"
     metadata_output = config.FULL_DIR / f"{video_id}_meta.json"
 
-    # 4. Render bản Full cho Web Player (có lật gương hflip để lách bản quyền)
-    success_full = video_engine.render_full_video(input_path, full_output, hflip=True)
-    if not success_full:
-        logger.error("Xuất bản Full thất bại!")
-        return None
-
-    # 5. Trích xuất Poster Thumbnail
+    # 4. Trích xuất Poster Thumbnail
     poster_timestamp = min(2.0, max(0.5, duration / 4))
     video_engine.extract_poster(input_path, poster_output, timestamp=poster_timestamp)
 
-    # 6. Tạo giọng đọc AI (TTS) & phụ đề chữ chạy nếu có văn bản
-    voiceover_text = analysis.get("voiceover_text", "")
-    has_tts = False
-    if voiceover_text:
-        has_tts = tts_engine.generate_voice_and_sub(voiceover_text, voice_output, sub_output)
-
-    # 7. Render bản Teaser dọc 9:16:
-    # - Nếu video <= 30s (SHORT_VIDEO_THRESHOLD): Giữ nguyên 100% thời lượng để đăng
-    # - Nếu video > 30s: Cắt khoảng 10s (TEASER_CUT_DURATION) tại đoạn highlight do Gemini chọn
-    if duration <= config.SHORT_VIDEO_THRESHOLD:
-        start_sec = 0.0
-        teaser_dur = duration
-        logger.info(f"Video ngắn ({duration:.1f}s <= {config.SHORT_VIDEO_THRESHOLD}s) -> Giữ nguyên toàn bộ thời lượng!")
+    if not LEGACY_EDIT_OVERLAY_MODE:
+        # CHẾ ĐỘ MỚI: GIỮ NGUYÊN 100% CLIP GỐC ĐƯA THẲNG VÀO QUEUE & WEB PLAYER (KHÔNG CẮT, KHÔNG LẬT GƯƠNG, KHÔNG CHÈN ĐÈ)
+        shutil.copy2(input_path, full_output)
+        shutil.copy2(input_path, teaser_output)
+        logger.info(f"✅ [KEEP ORIGINAL] Đã giữ nguyên 100% clip gốc đưa vào Web & Queue: {full_output.name}")
     else:
-        start_sec = max(0.0, float(analysis.get("teaser_start_sec", 0.0)))
-        teaser_dur = min(duration, float(analysis.get("teaser_duration_sec", config.TEASER_CUT_DURATION)))
-        if start_sec + teaser_dur > duration:
-            start_sec = max(0.0, duration - teaser_dur)
-        logger.info(f"Video dài ({duration:.1f}s > {config.SHORT_VIDEO_THRESHOLD}s) -> Cắt đoạn Highlight {teaser_dur:.1f}s (từ {start_sec:.1f}s)!")
+        # [LEGACY HIDDEN - GIỮ LẠI ĐỂ DÙNG SAU KHI BẬT LEGACY_EDIT_OVERLAY_MODE]
+        success_full = video_engine.render_full_video(input_path, full_output, hflip=True)
+        if not success_full:
+            logger.error("Xuất bản Full thất bại!")
+            return None
 
-    top_text = analysis["top_banner_text"]
-    bottom_text = analysis["bottom_banner_text"]
+        voiceover_text = analysis.get("voiceover_text", "")
+        has_tts = False
+        if voiceover_text:
+            has_tts = tts_engine.generate_voice_and_sub(voiceover_text, voice_output, sub_output)
 
-    success_teaser = video_engine.render_teaser(
-        input_path=input_path,
-        output_path=teaser_output,
-        start_sec=start_sec,
-        duration_sec=teaser_dur,
-        top_text=top_text,
-        bottom_text=bottom_text,
-        hflip=True,
-        voiceover_path=voice_output if has_tts else None,
-        subtitle_path=sub_output if has_tts else None
-    )
+        if duration <= config.SHORT_VIDEO_THRESHOLD:
+            start_sec = 0.0
+            teaser_dur = duration
+        else:
+            start_sec = max(0.0, float(analysis.get("teaser_start_sec", 0.0)))
+            teaser_dur = min(duration, float(analysis.get("teaser_duration_sec", config.TEASER_CUT_DURATION)))
+            if start_sec + teaser_dur > duration:
+                start_sec = max(0.0, duration - teaser_dur)
 
-    if not success_teaser:
-        logger.warning("Render Teaser có vấn đề, nhưng bản Full đã hoàn tất.")
+        top_text = analysis["top_banner_text"]
+        bottom_text = analysis["bottom_banner_text"]
+
+        video_engine.render_teaser(
+            input_path=input_path,
+            output_path=teaser_output,
+            start_sec=start_sec,
+            duration_sec=teaser_dur,
+            top_text=top_text,
+            bottom_text=bottom_text,
+            hflip=True,
+            voiceover_path=voice_output if has_tts else None,
+            subtitle_path=sub_output if has_tts else None
+        )
 
     # 7. Đóng gói Metadata chuẩn để bàn giao cho Module 3 (Web Publisher) & Module 4 (Facebook Poster)
     metadata = {

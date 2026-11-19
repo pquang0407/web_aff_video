@@ -30,6 +30,7 @@ WEB_AFF_ROOT = CURRENT_DIR.parent.parent
 AUTO_VIDEO_GEN_ROOT = Path("d:/nckh/auto-video-gen")
 RUN_AUTO_SCRIPT = AUTO_VIDEO_GEN_ROOT / "scripts" / "run-auto.mjs"
 
+STORAGE_RAW_DIR = WEB_AFF_ROOT / "storage" / "1_raw"
 STORAGE_FULL_DIR = WEB_AFF_ROOT / "storage" / "2_web_full"
 STORAGE_TEASER_DIR = WEB_AFF_ROOT / "storage" / "3_social_teaser"
 WEB_VIDEOS_DIR = WEB_AFF_ROOT / "web" / "videos"
@@ -68,7 +69,7 @@ def archive_legacy_reup_clips() -> int:
     LEGACY_ARCHIVE_DIR.mkdir(parents=True, exist_ok=True)
     archived = 0
 
-    for folder in [STORAGE_FULL_DIR, STORAGE_TEASER_DIR, WEB_VIDEOS_DIR]:
+    for folder in [STORAGE_RAW_DIR, STORAGE_FULL_DIR, STORAGE_TEASER_DIR, WEB_VIDEOS_DIR]:
         if not folder.exists():
             continue
         for f in list(folder.iterdir()):
