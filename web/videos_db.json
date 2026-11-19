@@ -22,6 +22,18 @@
     ]
   },
   "videos": {
+    "tho_gau_3d_a_dinh_tu_xuyen": {
+      "id": "tho_gau_3d_a_dinh_tu_xuyen",
+      "title": "🐰🐻 [Bản Tin 3D] Thỏ Đỏ & Gấu Béo Lạc Vào Tiên Cảnh Á Đinh Tứ Xuyên: Vừa Leo Núi Vừa Ôm Bình Oxy",
+      "duration": "00:46",
+      "views": "268.4K",
+      "likes": "29.5K",
+      "uploadDate": "Vừa xong",
+      "category": "🏔️ 24H KHÁM PHÁ • THỎ & GẤU 3D",
+      "videoUrl": "videos/tho_gau_3d_a_dinh_tu_xuyen.mp4",
+      "posterUrl": "videos/tho_gau_3d_a_dinh_tu_xuyen_poster.jpg",
+      "description": "🏔️✨ THỎ ĐỎ & GẤU BÉO CHECK-IN THIÊN ĐƯỜNG HẠ GIỚI Á ĐINH (TỨ XUYÊN)!"
+    },
     "tho_gau_3d_bong_da_vietnam": {
       "id": "tho_gau_3d_bong_da_vietnam",
       "title": "🐰🐻 [Bản Tin 3D] Đại Chiến Sân Cỏ: Tiền Đạo Thỏ Đỏ Nã Đại Bác & Cú Sút Giữa Sân Của Gấu Béo",
@@ -36,15 +48,15 @@
     },
     "default": {
       "id": "default",
-      "title": "🐰🐻 [Bản Tin 3D] Đại Chiến Sân Cỏ: Tiền Đạo Thỏ Đỏ Nã Đại Bác & Cú Sút Giữa Sân Của Gấu Béo",
+      "title": "🐰🐻 [Bản Tin 3D] Thỏ Đỏ & Gấu Béo Lạc Vào Tiên Cảnh Á Đinh Tứ Xuyên: Vừa Leo Núi Vừa Ôm Bình Oxy",
       "duration": "00:46",
       "views": "268.4K",
       "likes": "29.5K",
       "uploadDate": "Vừa xong",
-      "category": "⚽ 24H BÓNG ĐÁ • THỎ & GẤU 3D",
-      "videoUrl": "videos/tho_gau_3d_bong_da_vietnam.mp4",
-      "posterUrl": "videos/tho_gau_3d_bong_da_vietnam_poster.jpg",
-      "description": "⚽🔥 ĐẠI CHIẾN SÂN CỎ 3D: TIỀN ĐẠO THỎ ĐỎ SỐ 7 ĐỐI ĐẦU BẦY GẤU TRẮNG!"
+      "category": "🏔️ 24H KHÁM PHÁ • THỎ & GẤU 3D",
+      "videoUrl": "videos/tho_gau_3d_a_dinh_tu_xuyen.mp4",
+      "posterUrl": "videos/tho_gau_3d_a_dinh_tu_xuyen_poster.jpg",
+      "description": "🏔️✨ THỎ ĐỎ & GẤU BÉO CHECK-IN THIÊN ĐƯỜNG HẠ GIỚI Á ĐINH (TỨ XUYÊN)!"
     }
   },
   "deals": [
