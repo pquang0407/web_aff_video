@@ -11,11 +11,14 @@ from config import (
 )
 
 
+# Cờ ẩn tính năng nạp video thô / dán link clip cũ (giữ lại code để bật lại khi cần)
+ENABLE_LEGACY_RAW_COLLECTOR = False
+
+
 def build_main_dashboard_keyboard() -> InlineKeyboardMarkup:
     """
-    Tạo bàn phím điều khiển trung tâm đẹp mắt, rực rỡ với màu sắc
-    chuẩn Telegram Bot API 9.4+ (style='success', style='danger', style='primary').
-    Độ dài chữ được tối ưu tuyệt đối để không bao giờ bị cắt ngắn '...'.
+    Tạo bàn phím điều khiển trung tâm cho Hệ thống Video Tin Tức 3D Vũ trụ Thỏ & Gấu.
+    Các nút nạp video thô cũ được ẩn đi qua cờ ENABLE_LEGACY_RAW_COLLECTOR để dùng lại sau này.
     """
     stats = get_video_stats()
     settings = load_settings()
@@ -25,16 +28,26 @@ def build_main_dashboard_keyboard() -> InlineKeyboardMarkup:
     mode_btn_style = "success" if auto_mode else "danger"
 
     keyboard = [
-        # Hàng 1: Nút hành động nổi bật nhất (Màu Đỏ Cam Danger)
+        # Hàng 1: Đồng bộ & Xuất bản Kho 3D Thỏ & Gấu
         [
+            InlineKeyboardButton(
+                "🐰🐻 ĐỒNG BỘ KHO VIDEO 3D THỎ & GẤU",
+                callback_data="cmd_sync_rabbit_bear",
+                style="danger"
+            )
+        ],
+    ]
+
+    # [LEGACY HIDDEN - GIỮ LẠI ĐỂ DÙNG LẠI SAU NÀY KHI BẬT ENABLE_LEGACY_RAW_COLLECTOR]
+    if ENABLE_LEGACY_RAW_COLLECTOR:
+        keyboard.append([
             InlineKeyboardButton(
                 "🔥 KÍCH HOẠT AUTO PIPELINE (M2 ➔ M4)",
                 callback_data="cmd_run_pipeline",
                 style="danger"
             )
-        ],
-        # Hàng 2: Hai nút ngắn gọn, cân xứng (Màu Xanh Dương Primary)
-        [
+        ])
+        keyboard.append([
             InlineKeyboardButton(
                 f"📥 Video Thô · {stats['raw_count']}",
                 callback_data="cmd_view_raw",
@@ -45,8 +58,18 @@ def build_main_dashboard_keyboard() -> InlineKeyboardMarkup:
                 callback_data="cmd_view_web",
                 style="primary"
             )
-        ],
-        # Hàng 3: Hàng đợi Social Teasers (Màu Xanh Lá Success rực rỡ, full-width không bao giờ bị cắt)
+        ])
+    else:
+        keyboard.append([
+            InlineKeyboardButton(
+                f"🌐 KHO WEB PLAYER 3D ({stats['web_count']} VIDEO)",
+                callback_data="cmd_view_web",
+                style="primary"
+            )
+        ])
+
+    keyboard.extend([
+        # Hàng 3: Hàng đợi Social Teasers (Màu Xanh Lá Success rực rỡ)
         [
             InlineKeyboardButton(
                 f"📱 HÀNG ĐỢI SOCIAL ({stats['social_count']} SẴN SÀNG)",
@@ -80,30 +103,30 @@ def build_main_dashboard_keyboard() -> InlineKeyboardMarkup:
             InlineKeyboardButton("🔄 Làm mới", callback_data="cmd_refresh_dashboard"),
             InlineKeyboardButton("🌐 Mở Web Player", url=WEB_BASE_URL)
         ]
-    ]
+    ])
     return InlineKeyboardMarkup(keyboard)
 
 
 def build_dashboard_text() -> str:
-    """Tạo nội dung giao diện trang chủ gọn gàng, typography cao cấp"""
+    """Tạo nội dung giao diện trang chủ Vũ trụ Thỏ & Gấu 3D Pixar"""
     stats = get_video_stats()
     settings = load_settings()
     auto_mode = settings.get("auto_pipeline_on_receive", True)
-    mode_desc = "🟢 <b>Đang Bật</b> <i>(Cào video ➔ AI Render ➔ Đăng Social)</i>" if auto_mode else "🟡 <b>Duyệt thủ công</b> <i>(Chờ admin duyệt)</i>"
+    mode_desc = "🟢 <b>Đang Bật</b> <i>(Gửi link báo ➔ Dựng 3D Thỏ & Gấu ➔ Web & Social)</i>" if auto_mode else "🟡 <b>Duyệt thủ công</b> <i>(Chờ admin duyệt)</i>"
 
     text = (
-        "🚀 <b>AUTO VIDEO AFFILIATE 24/7</b>\n"
+        "🐰🐻 <b>XƯỞNG VIDEO TIN TỨC 3D (VŨ TRỤ THỎ & GẤU)</b>\n"
         "━━━━━━━━━━━━━━━━━\n"
-        "🤖 <b>AI Core:</b> <code>Gemini 3.5 Flash Lite</code>\n"
-        "🎬 <b>Render:</b> <code>Fast Blur 9:16 + TTS Synced</code>\n"
+        "🤖 <b>Đạo diễn AI:</b> <code>Gemini 2.5 Flash (4-Act Story)</code>\n"
+        "🎙️ <b>Giọng đọc:</b> <code>NamMinhNeural (Đồng nhất 100% • 9.35s/10s)</code>\n"
+        "🎬 <b>3D Engine:</b> <code>Pixar 3D Muse.ai + Outro Like/Follow</code>\n"
         "💰 <b>Affiliate:</b> <code>Shopee / TikTok / Lazada</code>\n\n"
-        "📦 <b>HÀNG ĐỢI KHO LƯU TRỮ:</b>\n"
-        f"  ├ 📥 <b>Khoang 1 (Raw chờ AI):</b> <code>{stats['raw_count']} video</code>\n"
-        f"  ├ 🌐 <b>Khoang 2 (Web Full HD):</b> <code>{stats['web_count']} video</code>\n"
-        f"  └ 📱 <b>Khoang 3 (Social Teasers):</b> <code>{stats['social_count']} video sẵn sàng</code>\n\n"
+        "📦 <b>TRẠNG THÁI KHO PHÁT SÓNG:</b>\n"
+        f"  ├ 🌐 <b>Web Player 3D (Full HD 9:16):</b> <code>{stats['web_count']} video</code>\n"
+        f"  └ 📱 <b>Hàng đợi Social (FB/Threads):</b> <code>{stats['social_count']} video sẵn sàng</code>\n\n"
         f"⚙️ <b>Vận hành:</b> {mode_desc}\n"
         "━━━━━━━━━━━━━━━━━\n"
-        "💡 <i>Gửi link (FB/TikTok/YouTube) hoặc file video để tự động nạp!</i>"
+        "💡 <i>Gửi link bài báo (VnExpress, Soha, Dân Trí...) vào đây để tự động sản xuất video 3D Thỏ & Gấu!</i>"
     )
     return text
 

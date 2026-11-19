@@ -11,6 +11,7 @@ automation/1_telegram_collector/fb_cookies.txt
 automation/1_telegram_collector/ytdlp_archive.txt
 
 # File video dung lượng lớn (MP4, MKV, MOV, TS)
+storage/_legacy_archive/*
 storage/1_raw/*
 storage/2_web_full/*.mp4
 storage/3_social_teaser/*.mp4

@@ -55,6 +55,17 @@ class AdminRequestHandler(BaseHTTPRequestHandler):
             })
             return
 
+        if path == "/api/rabbit-bear/logs":
+            log_file = Path(__file__).resolve().parent.parent.parent / "storage" / "rabbit_bear_3d_build.log"
+            lines = []
+            if log_file.exists():
+                try:
+                    lines = log_file.read_text(encoding="utf-8", errors="ignore").splitlines()[-30:]
+                except Exception:
+                    pass
+            self._send_json({"ok": True, "logs": lines})
+            return
+
         self._send_json({"ok": False, "error": "Not found"}, 404)
 
     def do_POST(self) -> None:
@@ -140,6 +151,38 @@ class AdminRequestHandler(BaseHTTPRequestHandler):
                     "result": result,
                     "queue": poster.get_social_queue(),
                     "history": poster.get_post_history(),
+                })
+                return
+
+            if path == "/api/rabbit-bear/generate":
+                import sys
+                factory_dir = Path(__file__).resolve().parent.parent / "2_ai_video_factory"
+                if str(factory_dir) not in sys.path:
+                    sys.path.insert(0, str(factory_dir))
+                import rabbit_bear_runner
+                article_url = payload.get("url", "").strip()
+                if not article_url:
+                    self._send_json({"ok": False, "error": "Vui lòng nhập link bài báo tin tức!"}, 400)
+                    return
+                res = rabbit_bear_runner.trigger_3d_pipeline_from_article(article_url, async_mode=True)
+                self._send_json({
+                    "ok": True,
+                    "pipeline": res,
+                    "queue": poster.get_social_queue(),
+                })
+                return
+
+            if path == "/api/rabbit-bear/sync":
+                import sys
+                factory_dir = Path(__file__).resolve().parent.parent / "2_ai_video_factory"
+                if str(factory_dir) not in sys.path:
+                    sys.path.insert(0, str(factory_dir))
+                import rabbit_bear_runner
+                synced = rabbit_bear_runner.sync_existing_3d_masterpieces(clean_legacy=True)
+                self._send_json({
+                    "ok": True,
+                    "count": len(synced),
+                    "queue": poster.get_social_queue(),
                 })
                 return
 

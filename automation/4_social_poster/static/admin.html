@@ -348,18 +348,33 @@
     <div>
       <section class="card">
         <div class="card-title">
-          <span>🎬 HÀNG ĐỢI VIDEO (TỰ ĐỘNG NHẬN TỪ MODULE 2 & 3)</span>
+          <span>🐰🐻 XƯỞNG PHIM TIN TỨC 3D PIXAR (VŨ TRỤ THỎ & GẤU)</span>
           <div style="display:flex; gap:6px;">
             <button class="btn btn-surface" onclick="loadState()">🔄 Làm mới Queue</button>
-            <button class="btn btn-surface" onclick="clearQueue()" style="color:#ff6666; border-color:rgba(255,100,100,0.3)">🗑️ Dọn sạch Queue</button>
+            <button class="btn btn-surface" onclick="syncRabbitBearMasterpieces()" style="color:#00e676; border-color:rgba(0,230,118,0.35)">✨ Đồng bộ Kho 3D</button>
+            <!-- [LEGACY HIDDEN - GIỮ LẠI ĐỂ DÙNG LẠI SAU NÀY] -->
+            <button class="btn btn-surface" onclick="clearQueue()" style="display:none; color:#ff6666; border-color:rgba(255,100,100,0.3)">🗑️ Dọn sạch Queue</button>
           </div>
         </div>
         <p style="font-size:12px; color:var(--muted); margin-bottom:14px;">
-          Các video mới do AI tạo ra sẽ tự động xếp vào đây. Khi bật <strong>Auto-Scheduler 24/7</strong>, hệ thống sẽ tự động lấy lần lượt từng bài đi đăng mỗi khi đến Khung Giờ Vàng, hoặc bạn có thể hẹn giờ riêng cho từng bài.
+          Nhập đường dẫn bài báo tin tức bất kỳ (VnExpress, Soha, Dân Trí, Tuổi Trẻ...). Hệ thống tự động biên kịch <strong>4 phân cảnh Thỏ Đỏ & Gấu Béo 3D liền mạch + Outro cố định</strong>, lồng tiếng đồng nhất <code>vi-VN-NamMinhNeural</code> (khớp 9.35s/10s không khoảng lặng thừa) và đẩy thẳng lên Web Player & Hàng đợi Social!
         </p>
 
-        <!-- NẠP NHANH VIDEO TỪ LINK (FACEBOOK PAGE, GROUP, REEL, TIKTOK, YOUTUBE) -->
-        <div style="background: rgba(99, 102, 241, 0.08); border: 1px dashed rgba(99, 102, 241, 0.4); border-radius: 8px; padding: 12px; margin-bottom: 16px;">
+        <!-- PIPELINE MỚI: SẢN XUẤT VIDEO TIN TỨC 3D VŨ TRỤ THỎ & GẤU TỪ LINK BÀI BÁO -->
+        <div style="background: linear-gradient(135deg, rgba(255, 0, 85, 0.1), rgba(0, 230, 118, 0.08)); border: 1px solid rgba(0, 230, 118, 0.4); border-radius: 12px; padding: 14px; margin-bottom: 16px;">
+          <div style="font-weight: 800; font-size: 13px; color: #00e676; margin-bottom: 8px; display: flex; align-items: center; justify-content: space-between;">
+            <span>🎬 Tạo Video Hoạt Hình 3D Thỏ & Gấu Từ Link Bài Báo Tin Tức:</span>
+            <span style="font-size: 11px; color: #ffdd99; background: rgba(255,170,0,0.15); padding: 2px 8px; border-radius: 6px;">Unified Voice • 4 Cảnh + Outro 9:16</span>
+          </div>
+          <div style="display: flex; gap: 8px;">
+            <input id="inputArticleUrl" type="text" placeholder="Dán link bài báo (VnExpress, Soha, Tuổi Trẻ, Dân Trí...) vào đây..." style="flex: 1; padding: 10px 12px; border-radius: 8px; border: 1px solid var(--border); background: var(--bg); color: var(--text); font-size: 13px;" />
+            <button class="btn btn-accent" onclick="generateRabbitBear3D()" id="btnGenRabbitBear" style="white-space: nowrap; padding: 10px 16px;">🐰🐻 Dựng Video 3D Thỏ & Gấu</button>
+          </div>
+          <div id="rabbitBearStatus" style="font-size: 12px; color: var(--muted); margin-top: 8px; display: none; line-height: 1.5;"></div>
+        </div>
+
+        <!-- [LEGACY HIDDEN - GIỮ LẠI CHỨC NĂNG DÁN LINK VIDEO CŨ ĐỂ DÙNG LẠI SAU NÀY] -->
+        <div id="legacyVideoUrlBox" style="display: none; background: rgba(99, 102, 241, 0.08); border: 1px dashed rgba(99, 102, 241, 0.4); border-radius: 8px; padding: 12px; margin-bottom: 16px;">
           <div style="font-weight: 600; font-size: 13px; color: #818cf8; margin-bottom: 6px; display: flex; align-items: center; gap: 6px;">
             <span>📥 Nạp Nhanh Video Từ Link (Facebook Page, Group, Reel, TikTok, YouTube):</span>
           </div>
@@ -662,6 +677,58 @@
           STATE.queue = data.queue || [];
           renderUI();
           alert(`Đã dọn sạch hàng đợi clip thành công! (Đã xóa ${data.deleted_count || 0} mục cũ)`);
+        }
+      } catch (e) {
+        alert("Lỗi kết nối server: " + e.message);
+      }
+    }
+
+    async function generateRabbitBear3D() {
+      const url = document.getElementById("inputArticleUrl").value.trim();
+      if (!url) {
+        alert("Vui lòng dán link bài báo tin tức (VnExpress, Soha, Dân Trí, Tuổi Trẻ...)!");
+        return;
+      }
+      const btn = document.getElementById("btnGenRabbitBear");
+      const statusDiv = document.getElementById("rabbitBearStatus");
+      btn.disabled = true;
+      btn.innerText = "⏳ Đang khởi chạy 3D...";
+      statusDiv.style.display = "block";
+      statusDiv.style.color = "#00e676";
+      statusDiv.innerText = "🚀 Đang trích xuất bài báo -> Gemini viết kịch bản 4 cảnh Thỏ & Gấu -> Thu âm đồng nhất NamMinh (9.35s/10s) -> Dựng 3D Pixar Muse.ai...";
+
+      try {
+        const res = await fetch("/api/rabbit-bear/generate", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ url: url })
+        });
+        const data = await res.json();
+        if (data.ok) {
+          statusDiv.style.color = "#00e676";
+          statusDiv.innerText = `✓ ${data.pipeline.message} (PID: ${data.pipeline.pid})`;
+          document.getElementById("inputArticleUrl").value = "";
+        } else {
+          statusDiv.style.color = "#ff6666";
+          statusDiv.innerText = "❌ Lỗi: " + (data.error || "Không thể khởi chạy pipeline 3D");
+        }
+      } catch (e) {
+        statusDiv.style.color = "#ff6666";
+        statusDiv.innerText = "❌ Lỗi kết nối server: " + e.message;
+      } finally {
+        btn.disabled = false;
+        btn.innerText = "🐰🐻 Dựng Video 3D Thỏ & Gấu";
+      }
+    }
+
+    async function syncRabbitBearMasterpieces() {
+      try {
+        const res = await fetch("/api/rabbit-bear/sync", { method: "POST" });
+        const data = await res.json();
+        if (data.ok) {
+          STATE.queue = data.queue || [];
+          renderUI();
+          alert(`Đã ẩn toàn bộ clip cũ và đồng bộ ${data.count} video 3D Vũ trụ Thỏ & Gấu lên Web Player & Hàng đợi Social!`);
         }
       } catch (e) {
         alert("Lỗi kết nối server: " + e.message);

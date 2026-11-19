@@ -35,6 +35,7 @@ from config import (
     is_video_downloaded,
 )
 from bot_ui import (
+    ENABLE_LEGACY_RAW_COLLECTOR,
     build_main_dashboard_keyboard,
     build_dashboard_text,
     build_social_queue_keyboard,
@@ -208,6 +209,27 @@ async def handle_callback_query(update: Update, context: ContextTypes.DEFAULT_TY
                     reply_markup=InlineKeyboardMarkup([[InlineKeyboardButton("🔙 Quay lại", callback_data=f"vid_detail_{vid_id}")]])
                 )
 
+    elif data == "cmd_sync_rabbit_bear":
+        factory_dir = ROOT_DIR / "automation" / "2_ai_video_factory"
+        if str(factory_dir) not in sys.path:
+            sys.path.insert(0, str(factory_dir))
+        import rabbit_bear_runner
+        synced = rabbit_bear_runner.sync_existing_3d_masterpieces(clean_legacy=True)
+        await safe_edit_message_text(
+            query,
+            text=(
+                f"🐰🐻 <b>ĐÃ ĐỒNG BỘ {len(synced)} VIDEO 3D THỎ & GẤU LÊN HỆ THỐNG!</b>\n"
+                "━━━━━━━━━━━━━━━━━━━━━━━━━━\n"
+                "• Đã ẩn toàn bộ các clip cũ sang kho lưu trữ.\n"
+                "• Đã cập nhật video 3D Thỏ & Gấu (9:16 Full HD + Giọng đọc NamMinh đồng nhất 9.35s/10s) lên Web Player & Hàng đợi Social!\n\n"
+                f"👉 Xem ngay tại: <a href='{WEB_BASE_URL}'>{WEB_BASE_URL}</a>"
+            ),
+            reply_markup=InlineKeyboardMarkup([
+                [InlineKeyboardButton("📱 Xem Hàng Đợi Social", callback_data="cmd_view_social", style="success")],
+                [InlineKeyboardButton("🏠 Về Bảng Điều Khiển", callback_data="cmd_back_home", style="primary")]
+            ])
+        )
+
     elif data == "cmd_run_pipeline":
         await safe_edit_message_text(
             query,
@@ -261,8 +283,40 @@ async def handle_url_message(update: Update, context: ContextTypes.DEFAULT_TYPE)
         return
 
     total_links = len(valid_urls)
-    logger.info(f"Nhận được {total_links} link cần tải từ người dùng")
+    logger.info(f"Nhận được {total_links} link từ người dùng")
 
+    # CHẾ ĐỘ MỚI: PIPELINE VIDEO TIN TỨC 3D VŨ TRỤ THỎ & GẤU TỪ LINK BÀI BÁO
+    if not ENABLE_LEGACY_RAW_COLLECTOR:
+        factory_dir = ROOT_DIR / "automation" / "2_ai_video_factory"
+        if str(factory_dir) not in sys.path:
+            sys.path.insert(0, str(factory_dir))
+        import rabbit_bear_runner
+
+        article_url = valid_urls[0]
+        res = rabbit_bear_runner.trigger_3d_pipeline_from_article(article_url, async_mode=True)
+        await update.message.reply_text(
+            text=(
+                "🐰🐻 <b>ĐÃ KÍCH HOẠT XƯỞNG PHIM 3D VŨ TRỤ THỎ & GẤU!</b>\n"
+                "━━━━━━━━━━━━━━━━━━━━━━━━━━\n"
+                f"📰 <b>Bài báo nguồn:</b> <code>{article_url}</code>\n"
+                f"⚙️ <b>PID tiến trình:</b> <code>{res.get('pid')}</code>\n\n"
+                "🎬 <b>Quy trình tự động 6 bước đang chạy:</b>\n"
+                "1. Cào nội dung bài báo tin tức\n"
+                "2. Gemini 2.5 Flash biên kịch 4 cảnh Thỏ Đỏ & Gấu Béo (42-50 từ/cảnh)\n"
+                "3. Thu âm đồng nhất 100% <code>vi-VN-NamMinhNeural</code> (khớp 9.35s/10s)\n"
+                "4. Render khung đồ họa tin tức 24H (1080x1920)\n"
+                "5. Render 4 cảnh 3D Pixar trên Muse.ai + Ghép Outro Like/Follow\n"
+                "6. Tự động xuất bản lên Web Player & Hàng đợi Social!"
+            ),
+            reply_markup=InlineKeyboardMarkup([
+                [InlineKeyboardButton("📱 Xem Hàng Đợi Social", callback_data="cmd_view_social", style="success")],
+                [InlineKeyboardButton("🏠 Về Bảng Điều Khiển", callback_data="cmd_back_home", style="primary")]
+            ]),
+            parse_mode=ParseMode.HTML
+        )
+        return
+
+    # [LEGACY HIDDEN - GIỮ LẠI ĐỂ DÙNG LẠI SAU NÀY KHI BẬT ENABLE_LEGACY_RAW_COLLECTOR]
     if total_links == 1:
         url = valid_urls[0]
         is_fb_page = (

@@ -128,6 +128,19 @@ Hệ thống hỗ trợ nạp video tự động từ bất kỳ liên kết nà
 
 ## 5. NHẬT KÝ CẬP NHẬT & SỬA ĐỔI (CHANGELOG)
 
+### [2026-11-19 11:42] - Tích Hợp Xưởng Phim Tin Tức 3D Pixar (Vũ Trụ Thỏ & Gấu) & Đồng Bộ Âm Thanh Chính Xác 9.35s/10s
+* **Chuyển đổi động cơ sản xuất video sang Pipeline 3D Vũ trụ Thỏ & Gấu (`D:\nckh\auto-video-gen` $\rightarrow$ `D:\web_aff`):**
+  1. **Ẩn các tính năng dán link tải video thô / dọn clip cũ (bảo toàn mã nguồn để tái sử dụng sau này):**
+     * Trong [admin.html](file:///d:/web_aff/automation/4_social_poster/static/admin.html): Ẩn thanh `📥 Nạp Nhanh Video Từ Link (Facebook Page, Group, Reel, TikTok, YouTube)` và nút `🗑️ Dọn sạch Queue` bằng `style="display:none;"`.
+     * Trong [bot_ui.py](file:///d:/web_aff/automation/1_telegram_collector/bot_ui.py) và [bot_service.py](file:///d:/web_aff/automation/1_telegram_collector/bot_service.py): Đặt cờ `ENABLE_LEGACY_RAW_COLLECTOR = False` để ẩn các nút quản lý video thô cũ.
+     * Lưu trữ toàn bộ 68 tệp clip reup TikTok/demo cũ sang `storage/_legacy_archive/` để làm sạch hoàn toàn Web Player và Hàng đợi Social.
+  2. **Khắc phục triệt để lỗi "Đọc ngắn, dư 4-5 giây im lặng cuối cảnh" & Đảm bảo đồng nhất 100%:**
+     * **Kịch bản 4 hồi liền mạch (42–50 từ/cảnh):** Gemini 2.5 Flash biên kịch 4 phân cảnh có từ nối chuyển cảnh mượt mà (*"Mở đầu hành trình..."*, *"Chưa dừng lại ở đó..."*, *"Đỉnh điểm của màn tấu hài..."*, *"Khép lại chuyến phiêu lưu..."*), nhân vật chủ đạo luôn là **Thỏ Đỏ & Gấu Béo 3D Pixar**.
+     * **Precision Audio Sync Engine (`vi-VN-NamMinhNeural` + `silenceremove` + Dynamic `atempo`):** Dùng duy nhất 1 giọng đọc `vi-VN-NamMinhNeural` cho cả 4 cảnh nội dung và cảnh 5 Outro. Tự động cắt bỏ khoảng lặng thừa của Edge-TTS và tự động tính hệ số `atempo` để lời bình **luôn kéo dài từ `0.10s` đến `9.45s – 9.65s` trên mỗi cảnh `10.0s`** (và `5.53s / 6.00s` cho Outro). Chỉ chừa đúng `0.35s – 0.55s` nhịp thở tự nhiên khi chuyển cảnh, không còn khoảng lặng 4-5s và không bao giờ bị cắt chữ.
+  3. **Tích hợp điều khiển trực tiếp trên Web Admin & Telegram Bot ([rabbit_bear_runner.py](file:///d:/web_aff/automation/2_ai_video_factory/rabbit_bear_runner.py)):**
+     * Thêm bảng điều khiển **"🐰🐻 XƯỞNG PHIM TIN TỨC 3D PIXAR (VŨ TRỤ THỎ & GẤU)"** trên Web Admin (`/api/rabbit-bear/generate` & `/api/rabbit-bear/sync`) và hỗ trợ gửi link bài báo trực tiếp vào Telegram Bot.
+     * Đã đồng bộ 2 siêu phẩm 3D chuẩn 46.04s (`tho_gau_3d_a_dinh_tu_xuyen` và `tho_gau_3d_bong_da_vietnam`) lên Web Player ([config.js](file:///d:/web_aff/web/config.js), [videos_db.json](file:///d:/web_aff/web/videos_db.json)) và Hàng đợi Social.
+
 ### [2026-11-17 17:36] - Chuyển Đổi 100% Liên Kết Sang Tên Miền Thương Hiệu `shp.tho-hoantien.com`
 * **Chuẩn hóa định dạng liên kết theo đúng hệ thống Thỏ Hoàn Tiền:**
   * Toàn bộ link trên Web Player (`primaryUrl`, `backupUrl`, `voucherDealUrl`, toàn bộ Deals và Flash Products) đã được chuyển đổi trực tiếp qua API chính thức:
