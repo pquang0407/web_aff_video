@@ -66,6 +66,26 @@ def get_page_config() -> Dict[str, Any]:
     )
 
 
+def get_page_config_public() -> Dict[str, Any]:
+    """Trả danh sách Fanpage cho Web Admin nhưng ẨN TUYỆT ĐỐI access_token để bảo mật"""
+    raw = get_page_config()
+    safe_pages = []
+    for p in raw.get("pages", []):
+        if isinstance(p, dict):
+            safe_pages.append({
+                "id": p.get("id", ""),
+                "name": p.get("name", ""),
+                "category": p.get("category", "Trang Facebook"),
+                "picture_url": p.get("picture_url"),
+                "is_permanent": bool(p.get("is_permanent", False)),
+                "has_token": bool(p.get("access_token")),
+            })
+    return {
+        "pages": safe_pages,
+        "selected_page_id": raw.get("selected_page_id", ""),
+    }
+
+
 def save_page_config(pages: List[Dict[str, Any]], selected_page_id: Optional[str] = None) -> Dict[str, Any]:
     sel_id = selected_page_id or (pages[0]["id"] if pages else "")
     data = {"pages": pages, "selected_page_id": str(sel_id)}

@@ -4,7 +4,10 @@ Chạy độc lập tại: http://127.0.0.1:5050
 Tự động chạy ngầm tiến trình Auto-Scheduler kiểm tra lịch đăng mỗi 20 giây!
 """
 
+import base64
+import hmac
 import json
+import os
 import traceback
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
@@ -19,6 +22,40 @@ STATIC_DIR = Path(__file__).resolve().parent / "static"
 PORT = 5050
 
 
+def _load_admin_credentials() -> tuple[str, str]:
+    """Đọc ADMIN_USER và ADMIN_PASSWORD từ biến môi trường hoặc file .env"""
+    env_user = os.getenv("ADMIN_USER", "").strip()
+    env_pass = os.getenv("ADMIN_PASSWORD", "").strip()
+    env_file = config.BASE_DIR / ".env"
+    if (not env_user or not env_pass) and env_file.exists():
+        try:
+            for line in env_file.read_text(encoding="utf-8", errors="ignore").splitlines():
+                s = line.strip()
+                if not s or s.startswith("#") or "=" not in s:
+                    continue
+                k, v = s.split("=", 1)
+                k = k.strip()
+                v = v.strip().strip('"').strip("'")
+                if k == "ADMIN_USER" and not env_user:
+                    env_user = v
+                elif k == "ADMIN_PASSWORD" and not env_pass:
+                    env_pass = v
+        except Exception:
+            pass
+    return (env_user or "admin", env_pass or "ThoNews@2026!")
+
+
+def _get_safe_threads_config() -> dict:
+    raw = config.get_threads_config()
+    return {
+        "enabled": bool(raw.get("enabled", False)),
+        "username": raw.get("username", ""),
+        "threads_user_id": raw.get("threads_user_id", ""),
+        "has_token": bool(raw.get("access_token")),
+        "auto_reply_link": bool(raw.get("auto_reply_link", True)),
+    }
+
+
 class AdminRequestHandler(BaseHTTPRequestHandler):
     timeout = 15
 
@@ -29,16 +66,39 @@ class AdminRequestHandler(BaseHTTPRequestHandler):
         except Exception:
             pass
 
+    def _require_auth(self) -> bool:
+        """Khóa HTTP Basic Auth bảo vệ 100% Web Admin và API trước bot quét IP"""
+        expected_user, expected_pass = _load_admin_credentials()
+        auth_header = self.headers.get("Authorization", "")
+        if auth_header.startswith("Basic "):
+            try:
+                decoded = base64.b64decode(auth_header[6:].strip()).decode("utf-8", errors="ignore")
+                if ":" in decoded:
+                    u, p = decoded.split(":", 1)
+                    if hmac.compare_digest(u, expected_user) and hmac.compare_digest(p, expected_pass):
+                        return True
+            except Exception:
+                pass
+        body = b"401 Unauthorized - Vui long dang nhap Tai khoan Quan Tri"
+        self.send_response(401)
+        self.send_header("WWW-Authenticate", 'Basic realm="Tho-News Social Admin"')
+        self.send_header("Content-Type", "text/plain; charset=utf-8")
+        self.send_header("Content-Length", str(len(body)))
+        self.end_headers()
+        self.wfile.write(body)
+        return False
+
     def _send_json(self, data: dict, status: int = 200) -> None:
         raw = json.dumps(data, ensure_ascii=False).encode("utf-8")
         self.send_response(status)
         self.send_header("Content-Type", "application/json; charset=utf-8")
         self.send_header("Content-Length", str(len(raw)))
-        self.send_header("Access-Control-Allow-Origin", "*")
         self.end_headers()
         self.wfile.write(raw)
 
     def do_GET(self) -> None:
+        if not self._require_auth():
+            return
         parsed = urlparse(self.path)
         path = parsed.path
 
@@ -56,9 +116,9 @@ class AdminRequestHandler(BaseHTTPRequestHandler):
             self._send_json({
                 "ok": True,
                 "fb_cookie": fb_service.get_cookie_status(),
-                "fb_pages": fb_service.get_page_config(),
+                "fb_pages": fb_service.get_page_config_public(),
                 "fb_app": fb_service.get_app_config_public(),
-                "threads": config.get_threads_config(),
+                "threads": _get_safe_threads_config(),
                 "scheduler": config.get_scheduler_config(),
                 "queue": poster.get_social_queue(),
                 "history": poster.get_post_history(),
@@ -89,6 +149,8 @@ class AdminRequestHandler(BaseHTTPRequestHandler):
         self._send_json({"ok": False, "error": "Not found"}, 404)
 
     def do_POST(self) -> None:
+        if not self._require_auth():
+            return
         parsed = urlparse(self.path)
         path = parsed.path
         length = int(self.headers.get("Content-Length", 0))
@@ -119,7 +181,7 @@ class AdminRequestHandler(BaseHTTPRequestHandler):
                 pages = res_info.get("pages", [])
                 self._send_json({
                     "ok": True,
-                    "fb_pages": fb_service.get_page_config(),
+                    "fb_pages": fb_service.get_page_config_public(),
                     "fb_app": fb_service.get_app_config_public(),
                     "count": len(pages),
                     "is_permanent": res_info.get("is_permanent", False),
@@ -129,8 +191,8 @@ class AdminRequestHandler(BaseHTTPRequestHandler):
 
             if path == "/api/fb/select-page":
                 cfg = fb_service.get_page_config()
-                saved = fb_service.save_page_config(cfg.get("pages", []), payload.get("page_id", ""))
-                self._send_json({"ok": True, "fb_pages": saved})
+                fb_service.save_page_config(cfg.get("pages", []), payload.get("page_id", ""))
+                self._send_json({"ok": True, "fb_pages": fb_service.get_page_config_public()})
                 return
 
             if path == "/api/threads/save":
