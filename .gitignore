@@ -3,12 +3,15 @@
 *.local
 *.secret
 
-# File dữ liệu nhạy cảm Cookie & Phiên đăng nhập
+# File dữ liệu nhạy cảm & cấu hình runtime của Social Poster (không để git reset ghi đè)
 automation/4_social_poster/data/facebook_cookies.json
 automation/4_social_poster/data/page_config.json
 automation/4_social_poster/data/threads_config.json
+automation/4_social_poster/data/scheduler_config.json
+automation/4_social_poster/data/post_history.json
 automation/1_telegram_collector/fb_cookies.txt
 automation/1_telegram_collector/ytdlp_archive.txt
+storage/rabbit_bear_fifo_queue.json
 
 # File video dung lượng lớn (MP4, MKV, MOV, TS)
 storage/_legacy_archive/*
