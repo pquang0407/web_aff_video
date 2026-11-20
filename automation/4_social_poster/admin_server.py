@@ -6,7 +6,7 @@ Tự động chạy ngầm tiến trình Auto-Scheduler kiểm tra lịch đăng
 
 import json
 import traceback
-from http.server import BaseHTTPRequestHandler, HTTPServer
+from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
 from urllib.parse import urlparse
 
@@ -20,6 +20,15 @@ PORT = 5050
 
 
 class AdminRequestHandler(BaseHTTPRequestHandler):
+    timeout = 15
+
+    def setup(self) -> None:
+        super().setup()
+        try:
+            self.connection.settimeout(15)
+        except Exception:
+            pass
+
     def _send_json(self, data: dict, status: int = 200) -> None:
         raw = json.dumps(data, ensure_ascii=False).encode("utf-8")
         self.send_response(status)
@@ -278,12 +287,18 @@ class AdminRequestHandler(BaseHTTPRequestHandler):
             self._send_json({"ok": False, "error": str(e)}, 400)
 
 
+class ResilientAdminHTTPServer(ThreadingHTTPServer):
+    daemon_threads = True
+    allow_reuse_address = True
+    request_queue_size = 64
+
+
 def run_admin_server(port: int = PORT) -> None:
     # Khởi chạy luồng lập lịch tự động 24/7 ngầm
     scheduler_daemon.start_background_scheduler_thread()
 
-    # Lắng nghe trên 0.0.0.0 để cho phép truy cập từ xa qua IP công khai máy ảo
-    server = HTTPServer(("0.0.0.0", port), AdminRequestHandler)
+    # Lắng nghe đa luồng trên 0.0.0.0 với timeout chống treo cổng khi có bot quét IP
+    server = ResilientAdminHTTPServer(("0.0.0.0", port), AdminRequestHandler)
     print("==================================================================")
     print(f" WEB ADMIN & BỘ LẬP LỊCH TỰ ĐỘNG 24/7 ĐANG CHẠY TẠI:")
     print(f" 👉 http://0.0.0.0:{port}")
