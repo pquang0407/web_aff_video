@@ -99,10 +99,12 @@ async function fetchArticle(url) {
     || html.match(/<meta[^>]+content=["']([^"']+)["'][^>]+property=["']og:title["']/i);
   const titleTagMatch = html.match(/<title[^>]*>([\s\S]*?)<\/title>/i);
 
-  const rawH1 = h1Match ? h1Match[1].replace(/<[^>]+>/g, ' ') : '';
-  const rawOg = ogMatch ? ogMatch[1] : '';
-  const rawTag = titleTagMatch ? titleTagMatch[1] : '';
-  const articleTitle = shortenNewsTitle(rawH1 || rawOg || rawTag || 'Bản Tin 3D Thỏ & Gấu', 80);
+  const rawH1 = decodeHtmlEntities(h1Match ? h1Match[1].replace(/<[^>]+>/g, ' ') : '');
+  const rawOg = decodeHtmlEntities(ogMatch ? ogMatch[1] : '');
+  const rawTag = decodeHtmlEntities(titleTagMatch ? titleTagMatch[1] : '');
+  const genericH1 = /^(tin tức|trang chủ|vnexpress|dân trí|tuổi trẻ|thanh niên|soha|vietnamnet|kenh14|24h)$/i;
+  const goodH1 = (rawH1 && rawH1.length >= 12 && !genericH1.test(rawH1)) ? rawH1 : '';
+  const articleTitle = shortenNewsTitle(rawOg || goodH1 || rawTag || rawH1 || 'Bản Tin 3D Thỏ & Gấu', 80);
 
   const articleMatch = html.match(/<article[\s\S]*?<\/article>/i);
   const rawBlock = (h1Match ? h1Match[0] + ' ' : '') + (articleMatch ? articleMatch[0] : html);
@@ -655,7 +657,7 @@ function loadMuseCookieString() {
   throw new Error('Không tìm thấy muse_cookie.txt hoặc muse_session.b64!');
 }
 
-function sendTelegramCompletionNotice(chatId, videoId, scriptData) {
+async function sendTelegramCompletionNotice(chatId, videoId, scriptData) {
   if (!chatId) return;
   let botToken = process.env.TELEGRAM_BOT_TOKEN || '';
   if (!botToken) {
@@ -681,7 +683,7 @@ function sendTelegramCompletionNotice(chatId, videoId, scriptData) {
     `🌐 <b>Xem trực tiếp trên Web Player:</b>`,
     `${webUrl}`,
     ``,
-    `✅ <i>Video đã được giữ nguyên bản 100% đưa vào Hàng đợi Social & đẩy thẳng lên Vercel!</i>`
+    `✅ <i>Video đã được giữ nguyên bản 100% đưa vào Hàng đợi Social & đẩy thẳng lên tho-news.com!</i>`
   ].join('\n');
 
   const body = JSON.stringify({
@@ -690,13 +692,29 @@ function sendTelegramCompletionNotice(chatId, videoId, scriptData) {
     parse_mode: 'HTML'
   });
 
-  const req = https.request(`https://api.telegram.org/bot${botToken}/sendMessage`, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json', 'Content-Length': Buffer.byteLength(body) }
-  });
-  req.on('error', () => {});
-  req.write(body);
-  req.end();
+  for (let attempt = 1; attempt <= 2; attempt++) {
+    try {
+      await new Promise((resolve, reject) => {
+        const req = https.request(`https://api.telegram.org/bot${botToken}/sendMessage`, {
+          method: 'POST',
+          timeout: 15000,
+          headers: { 'Content-Type': 'application/json', 'Content-Length': Buffer.byteLength(body) }
+        }, res => {
+          res.resume();
+          res.on('end', resolve);
+        });
+        req.on('timeout', () => { req.destroy(new Error('Telegram sendMessage timeout')); });
+        req.on('error', reject);
+        req.write(body);
+        req.end();
+      });
+      console.log(`📨 Đã gửi thông báo hoàn tất về Telegram chat_id=${chatId}!`);
+      return;
+    } catch (e) {
+      console.warn(`⚠️ Lỗi gửi thông báo Telegram (lần ${attempt}/2): ${e.message}`);
+      if (attempt < 2) await new Promise(r => setTimeout(r, 2000));
+    }
+  }
 }
 
 async function main() {
@@ -760,7 +778,7 @@ async function main() {
   await compositeFinalVideo(outDir, finalVideo);
 
   publishToWebAffEcosystem(videoId, finalVideo, scriptData, urlArg);
-  sendTelegramCompletionNotice(chatId, videoId, scriptData);
+  await sendTelegramCompletionNotice(chatId, videoId, scriptData);
 
   // Tự động dọn thư mục tạm sau khi xuất bản xong để không đầy ổ cứng Cloud VM
   try {
