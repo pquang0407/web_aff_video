@@ -26,6 +26,18 @@ const CONFIG = {
     ]
   },
   "videos": {
+    "tho_gau_3d_20261120094519": {
+      "id": "tho_gau_3d_20261120094519",
+      "title": "[3D Thỏ & Gấu] Ai là vị vua cuối cùng của nhà Lê?",
+      "duration": "00:46",
+      "views": "312.5K",
+      "likes": "32.8K",
+      "uploadDate": "Vừa xong",
+      "category": "🐰🐻 VŨ TRỤ THỎ & GẤU 3D",
+      "videoUrl": "videos/tho_gau_3d_20261120094519.mp4",
+      "posterUrl": "videos/tho_gau_3d_20261120094519_poster.jpg",
+      "description": "Cùng Thỏ Đỏ và Gấu Béo khám phá bí ẩn lịch sử: Ai là vị vua cuối cùng của triều đại nhà Lê? #ThoVaGau #LichSuVietNam #KhamPha #2D3D"
+    },
     "tho_gau_3d_20261119185546": {
       "id": "tho_gau_3d_20261119185546",
       "title": "[3D Thỏ & Gấu] Hơn hai tháng vẫn chưa thể chấp nhận việc vợ bỏ tôi",
@@ -124,15 +136,15 @@ const CONFIG = {
     },
     "default": {
       "id": "default",
-      "title": "[3D Thỏ & Gấu] Hơn hai tháng vẫn chưa thể chấp nhận việc vợ bỏ tôi",
+      "title": "[3D Thỏ & Gấu] Ai là vị vua cuối cùng của nhà Lê?",
       "duration": "00:46",
-      "views": "197.5K",
-      "likes": "19.8K",
+      "views": "312.5K",
+      "likes": "32.8K",
       "uploadDate": "Vừa xong",
       "category": "🐰🐻 VŨ TRỤ THỎ & GẤU 3D",
-      "videoUrl": "videos/tho_gau_3d_20261119185546.mp4",
-      "posterUrl": "videos/tho_gau_3d_20261119185546_poster.jpg",
-      "description": "Khi hạnh phúc rời đi, chúng ta học cách đứng dậy. Hãy cùng Thỏ & Gấu chiêm nghiệm về sự buông bỏ và bắt đầu cuộc hành trình mới đầy hy vọng. #ThoVaGau #ChuaLanh #VuotQuaNoiBuon #HanhPhucMoi"
+      "videoUrl": "videos/tho_gau_3d_20261120094519.mp4",
+      "posterUrl": "videos/tho_gau_3d_20261120094519_poster.jpg",
+      "description": "Cùng Thỏ Đỏ và Gấu Béo khám phá bí ẩn lịch sử: Ai là vị vua cuối cùng của triều đại nhà Lê? #ThoVaGau #LichSuVietNam #KhamPha #2D3D"
     }
   },
   "deals": [
