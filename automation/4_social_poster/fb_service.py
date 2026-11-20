@@ -73,13 +73,100 @@ def save_page_config(pages: List[Dict[str, Any]], selected_page_id: Optional[str
     return data
 
 
-def fetch_managed_pages_via_token(user_or_page_token: str) -> List[Dict[str, Any]]:
-    """Lấy danh sách Fanpage từ User Access Token hoặc Page Access Token"""
+def get_app_config() -> Dict[str, Any]:
+    return config.load_json(
+        config.FB_APP_CONFIG_FILE,
+        {"app_id": "", "app_secret": "", "token_type": "short_lived", "updated_at": ""},
+    )
+
+
+def get_app_config_public() -> Dict[str, Any]:
+    cfg = get_app_config()
+    secret = cfg.get("app_secret", "")
+    masked = (secret[:4] + "••••••••" + secret[-4:]) if len(secret) >= 10 else ("••••" if secret else "")
+    return {
+        "app_id": cfg.get("app_id", ""),
+        "has_secret": bool(secret),
+        "app_secret_masked": masked,
+        "token_type": cfg.get("token_type", "short_lived"),
+        "updated_at": cfg.get("updated_at", ""),
+    }
+
+
+def save_app_config(app_id: str, app_secret: str = "", token_type: Optional[str] = None) -> Dict[str, Any]:
+    cur = get_app_config()
+    if app_id.strip():
+        cur["app_id"] = app_id.strip()
+    if app_secret.strip():
+        cur["app_secret"] = app_secret.strip()
+    if token_type:
+        cur["token_type"] = token_type
+    cur["updated_at"] = time.strftime("%Y-%m-%d %H:%M:%S")
+    config.save_json(config.FB_APP_CONFIG_FILE, cur)
+    return cur
+
+
+def exchange_to_long_lived_user_token(short_token: str, app_id: str, app_secret: str) -> Optional[str]:
+    """Đổi Short-Lived User Token (~1-2 giờ) sang Long-Lived User Token (60 ngày) để lấy Page Token VĨNH VIỄN"""
+    if not (short_token and app_id and app_secret):
+        return None
+    url = "https://graph.facebook.com/v21.0/oauth/access_token"
+    params = {
+        "grant_type": "fb_exchange_token",
+        "client_id": app_id.strip(),
+        "client_secret": app_secret.strip(),
+        "fb_exchange_token": short_token.strip(),
+    }
+    res = requests.get(url, params=params, timeout=15)
+    if res.ok:
+        data = res.json()
+        long_token = data.get("access_token")
+        if long_token:
+            logger.info("✅ Đã đổi thành công sang Long-Lived User Token (60 ngày)!")
+            return long_token
+    logger.warning(f"⚠️ Không thể đổi sang Long-Lived Token ({res.status_code}): {res.text[:220]}")
+    return None
+
+
+def fetch_managed_pages_via_token(
+    user_or_page_token: str,
+    app_id: str = "",
+    app_secret: str = "",
+) -> Dict[str, Any]:
+    """
+    Lấy danh sách Fanpage từ User Access Token hoặc Page Access Token.
+    Nếu có App ID + App Secret (nhập mới hoặc đã lưu sẵn), tự động đổi sang
+    Long-Lived User Token → lấy Never-Expiring (Vĩnh Viễn) Page Access Token!
+    """
     token = user_or_page_token.strip()
     if not token:
         raise ValueError("Vui lòng nhập Access Token.")
 
-    url = f"https://graph.facebook.com/v21.0/me/accounts?fields=id,name,access_token,category,picture{{url}}&access_token={token}"
+    # Lưu hoặc đọc lại App ID + App Secret đã cấu hình
+    saved_app = get_app_config()
+    use_app_id = app_id.strip() or saved_app.get("app_id", "").strip()
+    use_app_secret = app_secret.strip() or saved_app.get("app_secret", "").strip()
+    if app_id.strip() or app_secret.strip():
+        save_app_config(use_app_id, use_app_secret)
+
+    is_permanent = False
+    exchange_note = "Chưa có App ID & App Secret nên đang dùng Token ngắn hạn (~1-2 giờ)."
+    working_token = token
+
+    if use_app_id and use_app_secret:
+        long_tok = exchange_to_long_lived_user_token(token, use_app_id, use_app_secret)
+        if long_tok:
+            working_token = long_tok
+            is_permanent = True
+            exchange_note = "✅ Đã tự động đổi sang Page Access Token VĨNH VIỄN (Never-Expiring) dùng xuyên suốt!"
+            save_app_config(use_app_id, use_app_secret, token_type="permanent_page_token")
+        else:
+            exchange_note = "⚠️ App ID/Secret không khớp hoặc Token đã là Page Token — vẫn tiếp tục lấy danh sách Page."
+
+    prev_cfg = get_page_config()
+    prev_selected_id = str(prev_cfg.get("selected_page_id", "") or "")
+
+    url = f"https://graph.facebook.com/v21.0/me/accounts?fields=id,name,access_token,category,picture{{url}}&access_token={working_token}"
     res = requests.get(url, timeout=15)
     pages: List[Dict[str, Any]] = []
 
@@ -89,16 +176,19 @@ def fetch_managed_pages_via_token(user_or_page_token: str) -> List[Dict[str, Any
             pages.append({
                 "id": str(item.get("id")),
                 "name": item.get("name", ""),
-                "access_token": item.get("access_token") or token,
+                "access_token": item.get("access_token") or working_token,
                 "category": item.get("category", "Trang Facebook"),
                 "picture_url": pic,
+                "is_permanent": is_permanent,
             })
         if pages:
-            save_page_config(pages)
-            return pages
+            page_ids = {p["id"] for p in pages}
+            keep_id = prev_selected_id if prev_selected_id in page_ids else pages[0]["id"]
+            save_page_config(pages, keep_id)
+            return {"pages": pages, "is_permanent": is_permanent, "exchange_note": exchange_note}
 
     # Fallback nếu là Page Token trực tiếp
-    me_url = f"https://graph.facebook.com/v21.0/me?fields=id,name,category,picture{{url}}&access_token={token}"
+    me_url = f"https://graph.facebook.com/v21.0/me?fields=id,name,category,picture{{url}}&access_token={working_token}"
     me_res = requests.get(me_url, timeout=15)
     if me_res.ok:
         me_data = me_res.json()
@@ -107,12 +197,13 @@ def fetch_managed_pages_via_token(user_or_page_token: str) -> List[Dict[str, Any
             pages.append({
                 "id": str(me_data.get("id")),
                 "name": me_data.get("name", ""),
-                "access_token": token,
+                "access_token": working_token,
                 "category": me_data.get("category", "Trang Facebook"),
                 "picture_url": pic,
+                "is_permanent": is_permanent,
             })
-            save_page_config(pages)
-            return pages
+            save_page_config(pages, pages[0]["id"])
+            return {"pages": pages, "is_permanent": is_permanent, "exchange_note": exchange_note}
 
     raise RuntimeError(f"Không lấy được danh sách Fanpage từ Token: {res.text[:200]}")
 

@@ -57,6 +57,7 @@ class AdminRequestHandler(BaseHTTPRequestHandler):
                 "ok": True,
                 "fb_cookie": fb_service.get_cookie_status(),
                 "fb_pages": fb_service.get_page_config(),
+                "fb_app": fb_service.get_app_config_public(),
                 "threads": config.get_threads_config(),
                 "scheduler": config.get_scheduler_config(),
                 "queue": poster.get_social_queue(),
@@ -101,9 +102,29 @@ class AdminRequestHandler(BaseHTTPRequestHandler):
                 self._send_json({"ok": True, "fb_cookie": status})
                 return
 
+            if path == "/api/fb/save-app-config":
+                fb_service.save_app_config(
+                    payload.get("app_id", ""),
+                    payload.get("app_secret", ""),
+                )
+                self._send_json({"ok": True, "fb_app": fb_service.get_app_config_public()})
+                return
+
             if path == "/api/fb/fetch-pages-token":
-                pages = fb_service.fetch_managed_pages_via_token(payload.get("token", ""))
-                self._send_json({"ok": True, "fb_pages": fb_service.get_page_config(), "count": len(pages)})
+                res_info = fb_service.fetch_managed_pages_via_token(
+                    payload.get("token", ""),
+                    app_id=payload.get("app_id", ""),
+                    app_secret=payload.get("app_secret", ""),
+                )
+                pages = res_info.get("pages", [])
+                self._send_json({
+                    "ok": True,
+                    "fb_pages": fb_service.get_page_config(),
+                    "fb_app": fb_service.get_app_config_public(),
+                    "count": len(pages),
+                    "is_permanent": res_info.get("is_permanent", False),
+                    "exchange_note": res_info.get("exchange_note", ""),
+                })
                 return
 
             if path == "/api/fb/select-page":

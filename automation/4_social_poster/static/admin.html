@@ -295,17 +295,30 @@
         </div>
 
         <div class="note-box">
-          💡 <strong>Quyền cần chọn trên Graph API Explorer:</strong> Khi tạo User Access Token, bạn hãy chọn đủ 4 quyền sau để đăng video và tự động thả comment link:<br>
-          • <code>pages_show_list</code> (Xem danh sách Fanpage)<br>
-          • <code>pages_manage_posts</code> (Đăng video/bài viết)<br>
-          • <code>pages_manage_engagement</code> (Tự động bình luận link Web Player)<br>
-          • <code>pages_read_engagement</code> (Đọc thông số tương tác)
+          💡 <strong>Đổi Token Vĩnh Viễn (dùng xuyên suốt không hết hạn sau 2 giờ):</strong><br>
+          1. Nhập <strong>App ID</strong> & <strong>App Secret</strong> (trong Meta Developers → Cài đặt ứng dụng → Thông tin cơ bản) <em>chỉ cần nhập 1 lần</em>.<br>
+          2. Tạo User Token với đủ 5 quyền (<code>pages_show_list</code>, <code>pages_manage_posts</code>, <code>pages_manage_engagement</code>, <code>pages_read_engagement</code>, <code>pages_read_user_content</code>) rồi dán vào ô bên dưới → bấm <strong>Đổi Token Vĩnh Viễn</strong>!
         </div>
 
-        <label>Dán User / Page Access Token mới để làm mới phiên đăng nhập:</label>
+        <div id="fbAppTokenBadge" style="font-size:11px; margin:8px 0; padding:6px 10px; border-radius:8px; background:rgba(255,255,255,0.04); border:1px solid var(--border); color:var(--muted);">
+          ⏳ Trạng thái Token: Đang kiểm tra...
+        </div>
+
+        <div style="display:grid; grid-template-columns: 1fr 1fr; gap:8px; margin-bottom:8px;">
+          <div>
+            <label style="margin-top:4px;">Meta App ID:</label>
+            <input type="text" id="fbAppIdInput" placeholder="VD: 5623644177859959">
+          </div>
+          <div>
+            <label style="margin-top:4px;">Meta App Secret:</label>
+            <input type="password" id="fbAppSecretInput" placeholder="Dán khóa bí mật ứng dụng...">
+          </div>
+        </div>
+
+        <label>Dán User Access Token (EAA...) từ Graph API Explorer:</label>
         <div style="display:flex; gap:8px;">
           <input type="password" id="fbTokenInput" placeholder="Dán mã EAA... mới vào đây">
-          <button class="btn btn-blue" onclick="fetchPagesByToken()" style="white-space:nowrap;">Cập nhật Token</button>
+          <button class="btn btn-blue" onclick="fetchPagesByToken()" style="white-space:nowrap;">🔑 Đổi Token Vĩnh Viễn</button>
         </div>
 
         <label>Danh sách Fanpage (Bấm để chọn Page mặc định):</label>
@@ -465,7 +478,32 @@
         }
       }
 
-      // 2. Render Fanpage list
+      // 2. Render FB App Permanent Token status & Fanpage list
+      if (STATE.fb_app) {
+        const appIdEl = document.getElementById("fbAppIdInput");
+        const appSecretEl = document.getElementById("fbAppSecretInput");
+        const badgeEl = document.getElementById("fbAppTokenBadge");
+        if (appIdEl && !appIdEl.value && STATE.fb_app.app_id) {
+          appIdEl.value = STATE.fb_app.app_id;
+        }
+        if (appSecretEl && STATE.fb_app.has_secret) {
+          appSecretEl.placeholder = `Đã lưu (${STATE.fb_app.app_secret_masked}) — để trống nếu giữ nguyên`;
+        }
+        if (badgeEl) {
+          if (STATE.fb_app.token_type === "permanent_page_token") {
+            badgeEl.style.color = "#00e676";
+            badgeEl.style.borderColor = "rgba(0, 230, 118, 0.4)";
+            badgeEl.innerHTML = `🟢 <strong>Page Token VĨNH VIỄN đang hoạt động</strong> (Cập nhật: ${STATE.fb_app.updated_at || 'vừa xong'})`;
+          } else if (STATE.fb_app.app_id && STATE.fb_app.has_secret) {
+            badgeEl.style.color = "#ffd166";
+            badgeEl.innerHTML = `🟡 Đã lưu App ID & Secret — dán Token EAA... mới rồi bấm <strong>Đổi Token Vĩnh Viễn</strong>!`;
+          } else {
+            badgeEl.style.color = "#ffaa00";
+            badgeEl.innerHTML = `🟡 Chưa cấu hình App ID & Secret (Token ngắn hạn sẽ hết hạn sau ~1-2 giờ).`;
+          }
+        }
+      }
+
       const pageBox = document.getElementById("pageListContainer");
       const pages = (STATE.fb_pages && STATE.fb_pages.pages) || [];
       const selId = STATE.fb_pages ? STATE.fb_pages.selected_page_id : "";
@@ -645,15 +683,20 @@
 
     async function fetchPagesByToken() {
       const val = document.getElementById("fbTokenInput").value;
+      const appId = document.getElementById("fbAppIdInput").value;
+      const appSecret = document.getElementById("fbAppSecretInput").value;
       const res = await fetch("/api/fb/fetch-pages-token", {
         method: "POST",
-        body: JSON.stringify({ token: val })
+        body: JSON.stringify({ token: val, app_id: appId, app_secret: appSecret })
       });
       const data = await res.json();
       if (data.ok) {
         STATE.fb_pages = data.fb_pages;
+        if (data.fb_app) STATE.fb_app = data.fb_app;
+        document.getElementById("fbTokenInput").value = "";
+        document.getElementById("fbAppSecretInput").value = "";
         renderUI();
-        alert(`Đã cập nhật Token mới và lấy thành công ${data.count} Fanpage!`);
+        alert(`Đã cập nhật ${data.count} Fanpage!\n\n${data.exchange_note || ''}`);
       } else alert("Lỗi: " + data.error);
     }
 

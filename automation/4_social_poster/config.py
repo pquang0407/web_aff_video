@@ -20,6 +20,7 @@ DATA_DIR.mkdir(parents=True, exist_ok=True)
 
 FB_COOKIES_FILE = DATA_DIR / "facebook_cookies.json"
 FB_PAGE_CONFIG_FILE = DATA_DIR / "page_config.json"
+FB_APP_CONFIG_FILE = DATA_DIR / "fb_app_config.json"
 THREADS_CONFIG_FILE = DATA_DIR / "threads_config.json"
 POST_HISTORY_FILE = DATA_DIR / "post_history.json"
 SCHEDULER_CONFIG_FILE = DATA_DIR / "scheduler_config.json"
