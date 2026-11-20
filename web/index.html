@@ -30,8 +30,8 @@
       </a>
       <nav class="header-nav">
         <a href="#top" class="nav-pill active">🔥 Đang Nóng</a>
-        <a href="#suggestedSection" class="nav-pill">🎬 Clip Đề Xuất</a>
-        <a href="#dealList" class="nav-pill deal-nav">🎁 Kho Voucher 0Đ</a>
+        <a href="#suggestedSection" class="nav-pill">🎬 Kho Bản Tin 3D</a>
+        <a href="#trendingList" class="nav-pill">🏆 Bảng Xếp Hạng 24H</a>
       </nav>
     </div>
 
@@ -51,36 +51,25 @@
   <main class="main-layout" id="top">
 
     <!-- =================================================================
-         CỘT BÊN TRÁI (320px): VOUCHER GIỜ VÀNG + DEAL 1K + TIN NÓNG 24H
+         CỘT BÊN TRÁI (320px): KHO BẢN TIN 3D MỚI NHẤT (CHIA ĐỀU 2 BÊN) + TIN NÓNG 24H
          ================================================================= -->
     <aside class="sidebar-left">
       <div class="sidebar-sticky-inner">
 
-        <!-- Widget 1: Kho Voucher Sàn Có Đếm Ngược -->
+        <!-- Widget 1: Danh sách Clip Bản Tin 3D (Nửa trái - chia đều với cột phải) -->
         <div class="widget-box highlight-border">
           <div class="widget-header-row">
             <h3 class="widget-title">
-              <span class="icon-hot">🔥</span> VOUCHER GIỜ VÀNG
+              <span class="icon-hot">🎬</span> BẢN TIN 3D MỚI NHẤT
             </h3>
-            <div class="countdown-badge" id="dealCountdown">00:14:38</div>
+            <span class="live-tag">HD 1080P</span>
           </div>
-          <div id="dealList" class="deal-list">
-            <!-- Render tự động từ config.js -->
-          </div>
-        </div>
-
-        <!-- Widget 2: Săn Deal Sốc 1K - 9K Đang Cháy Hàng -->
-        <div class="widget-box">
-          <div class="widget-header-row">
-            <h3 class="widget-title">⚡ SĂN DEAL SỐC 1K - 9K</h3>
-            <span class="live-tag">FLASH SALE</span>
-          </div>
-          <div id="flashProductsList" class="flash-products-list">
-            <!-- Render tự động từ config.js -->
+          <div id="leftVideoList" class="trending-list">
+            <!-- Render tự động chia đều 2 bên từ app.js -->
           </div>
         </div>
 
-        <!-- Widget 3: Tin Vắn & Diễn Biến 24h -->
+        <!-- Widget 2: Tin Vắn & Diễn Biến 24h -->
         <div class="widget-box">
           <h3 class="widget-title">📡 CẬP NHẬT NHANH 24H</h3>
           <div class="timeline-list">
@@ -102,7 +91,7 @@
               <span class="timeline-dot"></span>
               <div class="timeline-content">
                 <div class="news-time">28 phút trước</div>
-                Kho mã Freeship 0Đ và giảm 50% vừa được làm mới thêm 500 lượt lưu.
+                Cập nhật liên tục bản tin hoạt hình 3D Pixar 24/7 sắc nét không giật lag.
               </div>
             </div>
           </div>
@@ -133,12 +122,6 @@
             <div class="stage-meta-item">🎞️ Định dạng: <strong>9:16 Full HD</strong></div>
             <div class="stage-meta-item">🔊 Âm thanh: <strong>Gốc + AI Sub</strong></div>
             <div class="stage-meta-item">⚡ Tốc độ: <strong>Cloudflare CDN</strong></div>
-          </div>
-
-          <div class="stage-card promo-mini" id="stagePromoCard">
-            <div class="promo-mini-tag">🎁 QUÀ TẶNG KÈM</div>
-            <div class="promo-mini-title">Mã Giảm 50% Shopee Đang Mở!</div>
-            <button type="button" class="promo-mini-btn">Nhận Mã Ngay</button>
           </div>
         </div>
 
@@ -182,10 +165,6 @@
           <button class="dock-btn" id="dockShareBtn" title="Chia sẻ">
             <div class="dock-icon">↗️</div>
             <span>Chia sẻ</span>
-          </button>
-          <button class="dock-btn accent-dock" id="dockVoucherBtn" title="Săn Voucher">
-            <div class="dock-icon">🎁</div>
-            <span>Mã 0Đ</span>
           </button>
         </div>
       </div>
@@ -292,7 +271,7 @@
             <img class="comment-avatar" src="assets/img/avatar_bunny.jpg" alt="User">
             <div class="comment-body">
               <div class="comment-user">Minh Hoàng <span class="user-badge">Fan cứng</span></div>
-              <div class="comment-text">Bản tin 3D Thỏ & Gấu xem cuốn thật sự, giọng đọc rõ nét lại vừa bấm lưu được mã Freeship 0Đ cột bên trái xong 👍</div>
+              <div class="comment-text">Bản tin 3D Thỏ & Gấu xem cuốn thật sự, giọng đọc rõ nét, xem trên web này mượt hơn hẳn 👍</div>
               <div class="comment-time">4 phút trước • Thích (42)</div>
             </div>
           </div>
@@ -365,7 +344,7 @@
             <span class="tag-chip">#BanTin3DPixar</span>
             <span class="tag-chip">#24hTinNong</span>
             <span class="tag-chip">#24hKhamPha</span>
-            <span class="tag-chip">#SanVoucher0D</span>
+            <span class="tag-chip">#ThoNews247</span>
             <span class="tag-chip">#FullHD1080P</span>
           </div>
         </div>
@@ -374,14 +353,6 @@
     </aside>
 
   </main>
-
-  <!-- Sticky Footer Bar -->
-  <aside class="sticky-footer-cta">
-    <div class="cta-text">
-      <span>🔥</span> Đừng bỏ lỡ: Kho Voucher Shopee Giảm 50% & Freeship 0Đ đang mở!
-    </div>
-    <button class="cta-btn" id="ctaBtn">LƯU MÃ NGAY</button>
-  </aside>
 
   <!-- Scripts -->
   <script src="config.js"></script>

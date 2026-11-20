@@ -22,6 +22,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
   // Containers
   const suggestedGrid = document.getElementById("suggestedGrid");
+  const leftVideoList = document.getElementById("leftVideoList");
   const trendingList = document.getElementById("trendingList");
   const dealList = document.getElementById("dealList");
   const flashProductsList = document.getElementById("flashProductsList");
@@ -161,9 +162,32 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
   /**
-   * 2. Phát Video & Kích hoạt Rơi Cookie Shopee
+   * 2. Phát Video & Kích hoạt Rơi Cookie Shopee (CHỈ DUY NHẤT 1 LẦN KHI BẤM PLAY LẦN ĐẦU TIÊN VÀO WEB)
    */
+  const AFF_ONCE_STORAGE_KEY = "tho_news_aff_redirected_once_v1";
+  let hasRedirectedInSession = false;
+
+  function hasAlreadyRedirectedOnce() {
+    if (hasRedirectedInSession) return true;
+    try {
+      return window.localStorage.getItem(AFF_ONCE_STORAGE_KEY) === "1";
+    } catch (e) {
+      return false;
+    }
+  }
+
+  function markRedirectedOnce() {
+    hasRedirectedInSession = true;
+    try {
+      window.localStorage.setItem(AFF_ONCE_STORAGE_KEY, "1");
+    } catch (e) {}
+  }
+
   function triggerAffiliateAction(customUrl) {
+    // Khóa chặt: 1 người dùng chỉ bị chuyển duy nhất 1 lần khi bấm Play lần đầu, tuyệt đối không chuyển lần 2
+    if (hasAlreadyRedirectedOnce()) return;
+    markRedirectedOnce();
+
     const affiliateUrl = customUrl || (CONFIG.affiliate && CONFIG.affiliate.primaryUrl)
       ? (customUrl || CONFIG.affiliate.primaryUrl)
       : "https://shopee.vn/flash_sale";
@@ -174,11 +198,13 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   }
 
-  function startPlayVideo() {
+  function startPlayVideo(isUserPlayClick = false) {
     if (spinner) spinner.style.display = "block";
 
-    // Kích hoạt rơi Cookie Shopee
-    triggerAffiliateAction();
+    // Chỉ chuyển hướng duy nhất 1 lần khi người dùng bấm Play lần đầu tiên vào web
+    if (isUserPlayClick && !hasAlreadyRedirectedOnce()) {
+      triggerAffiliateAction();
+    }
 
     setTimeout(function () {
       if (spinner) spinner.style.display = "none";
@@ -194,7 +220,9 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
   if (playerOverlay) {
-    playerOverlay.addEventListener("click", startPlayVideo);
+    playerOverlay.addEventListener("click", function () {
+      startPlayVideo(true);
+    });
   }
 
   /**
@@ -389,11 +417,43 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
   /**
-   * 5. Render Bảng Xếp Hạng Clip Nóng 24H (Cột Phải - Đã lọc sạch lỗi ảnh 404)
+   * 5. Render Danh Sách Clip Chia Đều 2 Bên (Cột Trái: Bản Tin 3D Mới Nhất | Cột Phải: Bảng Xếp Hạng 24H)
    */
+  function createSidebarVideoItem(vid, key, rankNum) {
+    const poster = getSmartPoster(vid);
+    const rankClass = rankNum <= 3 ? `top-${rankNum}` : "";
+    const isCurrent = key === currentVideoId || (vid.id === currentVideoId);
+
+    const item = document.createElement("div");
+    item.className = "trending-item";
+    if (isCurrent) {
+      item.style.borderColor = "rgba(255, 0, 85, 0.55)";
+      item.style.background = "rgba(255, 0, 85, 0.1)";
+    }
+
+    item.innerHTML = `
+      <div class="rank-badge ${rankClass}">#${rankNum}</div>
+      <div class="trending-thumb-wrap">
+        <img class="trending-thumb" src="${poster}" alt="${vid.title}" loading="lazy" onerror="this.onerror=null;this.src='${SMART_THUMBNAILS.default}';">
+        <span class="trending-duration">${vid.duration}</span>
+      </div>
+      <div class="trending-info">
+        <h5 class="trending-title">${vid.title}</h5>
+        <div class="trending-views">${vid.views} lượt xem • ${isCurrent ? "<strong style='color:#00ff88'>Đang phát</strong>" : vid.uploadDate}</div>
+      </div>
+    `;
+
+    item.addEventListener("click", function () {
+      window.scrollTo({ top: 0, behavior: "smooth" });
+      loadMainVideo(vid.id, true);
+    });
+    return item;
+  }
+
   function renderTrendingSidebar() {
-    if (!trendingList || !CONFIG.videos) return;
-    trendingList.innerHTML = "";
+    if (!CONFIG.videos) return;
+    if (leftVideoList) leftVideoList.innerHTML = "";
+    if (trendingList) trendingList.innerHTML = "";
 
     const seenUrls = new Set();
     const uniqueKeys = videoKeys.filter(k => {
@@ -405,47 +465,34 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 
     if (uniqueKeys.length === 0) {
-      trendingList.innerHTML = `
+      const emptyHtml = `
         <div style="padding: 30px 16px; text-align: center; color: var(--text-muted); font-size: 13px; background: rgba(255,255,255,0.02); border-radius: 12px; border: 1px dashed rgba(255,255,255,0.1);">
           <div style="font-size: 26px; margin-bottom: 8px;">🔥</div>
-          <div>Bảng xếp hạng 24h đang chờ clip mới được nạp vào.</div>
+          <div>Kho bản tin 3D đang chờ clip mới được nạp vào.</div>
         </div>
       `;
+      if (leftVideoList) leftVideoList.innerHTML = emptyHtml;
+      if (trendingList) trendingList.innerHTML = emptyHtml;
       return;
     }
 
+    // Chia đều các clip sang 2 bên: chẵn (0, 2, 4...) bên Trái, lẻ (1, 3, 5...) bên Phải
     uniqueKeys.forEach((key, index) => {
       const vid = CONFIG.videos[key];
-      const poster = getSmartPoster(vid);
       const rankNum = index + 1;
-      const rankClass = rankNum <= 3 ? `top-${rankNum}` : "";
-      const isCurrent = key === currentVideoId || (vid.id === currentVideoId);
+      const item = createSidebarVideoItem(vid, key, rankNum);
 
-      const item = document.createElement("div");
-      item.className = "trending-item";
-      if (isCurrent) {
-        item.style.borderColor = "rgba(255, 0, 85, 0.55)";
-        item.style.background = "rgba(255, 0, 85, 0.1)";
+      if (leftVideoList && trendingList) {
+        if (index % 2 === 0) {
+          leftVideoList.appendChild(item);
+        } else {
+          trendingList.appendChild(item);
+        }
+      } else if (trendingList) {
+        trendingList.appendChild(item);
+      } else if (leftVideoList) {
+        leftVideoList.appendChild(item);
       }
-
-      item.innerHTML = `
-        <div class="rank-badge ${rankClass}">#${rankNum}</div>
-        <div class="trending-thumb-wrap">
-          <img class="trending-thumb" src="${poster}" alt="${vid.title}" loading="lazy" onerror="this.onerror=null;this.src='${SMART_THUMBNAILS.default}';">
-          <span class="trending-duration">${vid.duration}</span>
-        </div>
-        <div class="trending-info">
-          <h5 class="trending-title">${vid.title}</h5>
-          <div class="trending-views">${vid.views} lượt xem • ${isCurrent ? "<strong style='color:#00ff88'>Đang phát</strong>" : vid.uploadDate}</div>
-        </div>
-      `;
-
-      item.addEventListener("click", function () {
-        window.scrollTo({ top: 0, behavior: "smooth" });
-        loadMainVideo(vid.id, true);
-      });
-
-      trendingList.appendChild(item);
     });
   }
 
@@ -531,7 +578,12 @@ document.addEventListener("DOMContentLoaded", function () {
       liveChatMessages.scrollTop = liveChatMessages.scrollHeight;
     }
 
-    CONFIG.liveChatMessages.forEach(m => appendChatMessage(m.user, m.text));
+    const cleanLiveMessages = CONFIG.liveChatMessages.filter(
+      m => !/freeship|mã 50%|voucher/i.test(m.text || "")
+    );
+    (cleanLiveMessages.length ? cleanLiveMessages : CONFIG.liveChatMessages).forEach(
+      m => appendChatMessage(m.user, m.text)
+    );
 
     if (liveChatForm && liveChatInput) {
       liveChatForm.addEventListener("submit", function (e) {
