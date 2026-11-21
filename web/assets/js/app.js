@@ -156,8 +156,8 @@ document.addEventListener("DOMContentLoaded", function () {
     renderSuggestedVideos();
     renderTrendingSidebar();
 
-    if (autoPlay) {
-      startPlayVideo();
+    if (autoPlay && hasAlreadyRedirectedOnce()) {
+      startPlayVideo(false);
     }
   }
 

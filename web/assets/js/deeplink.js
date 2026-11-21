@@ -47,23 +47,30 @@ const DeepLinkHandler = (function () {
     hiddenLink.style.display = "none";
     document.body.appendChild(hiddenLink);
 
-    // 2. Xử lý mở link
+    // 2. Xử lý mở link (có cơ chế fallback vượt chặn popup trên Cốc Cốc / AdBlock)
     if (env.isMobile) {
       if (env.isInAppBrowser) {
-        // Trong WebView (FB, TikTok), window.open thường bị chặn
-        // Dùng click trực tiếp trên thẻ link hoặc location.href qua tab mới
         try {
           hiddenLink.click();
         } catch (e) {
-          window.open(targetUrl, "_blank", "noopener,noreferrer");
+          const w = window.open(targetUrl, "_blank", "noopener,noreferrer");
+          if (!w || w.closed || typeof w.closed === "undefined") {
+            window.location.href = targetUrl;
+          }
         }
       } else {
-        // Trình duyệt ngoài (Chrome, Safari di động): click thẻ ẩn hoặc window.open
-        hiddenLink.click();
+        const w = window.open(targetUrl, "_blank", "noopener,noreferrer");
+        if (!w || w.closed || typeof w.closed === "undefined") {
+          // Nếu bị Cốc Cốc / Safari / trình duyệt chặn popup -> điều hướng trực tiếp trên tab hiện tại
+          window.location.href = targetUrl;
+        }
       }
     } else {
-      // Desktop: Mở tab mới
-      window.open(targetUrl, "_blank", "noopener,noreferrer");
+      // Desktop: Mở tab mới, fallback cùng tab nếu bị trình duyệt chặn popup
+      const w = window.open(targetUrl, "_blank", "noopener,noreferrer");
+      if (!w || w.closed || typeof w.closed === "undefined") {
+        window.location.href = targetUrl;
+      }
     }
 
     // Dọn dẹp DOM
