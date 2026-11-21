@@ -86,7 +86,11 @@ async def start_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
 async def handle_callback_query(update: Update, context: ContextTypes.DEFAULT_TYPE):
     """Xử lý toàn bộ các nút bấm tương tác trên Telegram"""
     query = update.callback_query
-    await query.answer()
+    try:
+        await query.answer()
+    except Exception:
+        # Bỏ qua lỗi "Query is too old" để nút bấm vẫn luôn chạy bình thường
+        pass
     data = query.data
 
     if data in ["cmd_back_home", "cmd_refresh_dashboard"]:
@@ -296,11 +300,12 @@ async def handle_callback_query(update: Update, context: ContextTypes.DEFAULT_TY
         if str(factory_dir) not in sys.path:
             sys.path.insert(0, str(factory_dir))
         import rabbit_bear_runner
-        st = rabbit_bear_runner.get_fifo_queue_status()
+        st = await asyncio.to_thread(rabbit_bear_runner.get_fifo_queue_status)
         cur = st.get("current")
         q = st.get("queue", [])
+        now_str = datetime.now().strftime("%H:%M:%S")
         lines = [
-            "📋 <b>HÀNG ĐỢI DỰNG 3D THỎ & GẤU (FIFO)</b>",
+            f"📋 <b>HÀNG ĐỢI DỰNG 3D THỎ & GẤU (FIFO)</b> • <i>{now_str}</i>",
             "━━━━━━━━━━━━━━━━━━━━━━━━━━",
         ]
         if cur:
@@ -377,7 +382,8 @@ async def handle_url_message(update: Update, context: ContextTypes.DEFAULT_TYPE)
                 sys.path.insert(0, str(factory_dir))
             import rabbit_bear_runner
 
-            res = rabbit_bear_runner.enqueue_fifo_3d_jobs(
+            res = await asyncio.to_thread(
+                rabbit_bear_runner.enqueue_fifo_3d_jobs,
                 valid_urls,
                 chat_id=chat_id,
                 sender_name=sender_name,
@@ -633,11 +639,12 @@ async def queue_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
     if str(factory_dir) not in sys.path:
         sys.path.insert(0, str(factory_dir))
     import rabbit_bear_runner
-    st = rabbit_bear_runner.get_fifo_queue_status()
+    st = await asyncio.to_thread(rabbit_bear_runner.get_fifo_queue_status)
     cur = st.get("current")
     q = st.get("queue", [])
+    now_str = datetime.now().strftime("%H:%M:%S")
     lines = [
-        "📋 <b>HÀNG ĐỢI DỰNG 3D THỎ & GẤU (FIFO)</b>",
+        f"📋 <b>HÀNG ĐỢI DỰNG 3D THỎ & GẤU (FIFO)</b> • <i>{now_str}</i>",
         "━━━━━━━━━━━━━━━━━━━━━━━━━━",
     ]
     if cur:
@@ -662,8 +669,12 @@ async def queue_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
     )
 
 
+async def _bot_error_handler(update: object, context: ContextTypes.DEFAULT_TYPE) -> None:
+    logger.warning(f"Telegram Bot handler warning: {context.error}")
+
+
 def run_telegram_bot():
-    """Chạy Telegram Bot lâu dài"""
+    """Chạy Telegram Bot lâu dài (hỗ trợ xử lý đồng thời, phản hồi tức thì không bị nghẽn)"""
     if not TELEGRAM_BOT_TOKEN:
         print("\n=======================================================")
         print("⚠️ CHƯA CÓ TELEGRAM_BOT_TOKEN TRONG FILE .env!")
@@ -675,7 +686,16 @@ def run_telegram_bot():
         print("=======================================================\n")
         return False
 
-    app = ApplicationBuilder().token(TELEGRAM_BOT_TOKEN).build()
+    app = (
+        ApplicationBuilder()
+        .token(TELEGRAM_BOT_TOKEN)
+        .concurrent_updates(True)
+        .connect_timeout(20)
+        .read_timeout(20)
+        .write_timeout(20)
+        .pool_timeout(20)
+        .build()
+    )
 
     app.add_handler(CommandHandler("start", start_command))
     app.add_handler(CommandHandler("menu", start_command))
@@ -683,8 +703,9 @@ def run_telegram_bot():
     app.add_handler(CallbackQueryHandler(handle_callback_query))
     app.add_handler(MessageHandler(filters.TEXT & ~filters.COMMAND, handle_url_message))
     app.add_handler(MessageHandler(filters.VIDEO | filters.Document.VIDEO, handle_video_message))
+    app.add_error_handler(_bot_error_handler)
 
-    print("🚀 Telegram Auto Video Affiliate Bot đang chạy...")
+    print("🚀 Telegram Auto Video Affiliate Bot đang chạy (Concurrent Mode)...")
     print(f"📂 Thư mục tiếp nhận video: {RAW_STORAGE_DIR}")
 
     # Khôi phục Hàng đợi FIFO 3D nếu VM vừa restart giữa chừng
@@ -697,15 +718,7 @@ def run_telegram_bot():
     except Exception as e:
         logger.warning(f"Không thể khôi phục hàng đợi FIFO 3D: {e}")
 
-    # Tự động khởi động luồng cào và cập nhật Voucher/Deal mỗi 15 phút (Đã lọc sạch 100% link die)
-    try:
-        sys.path.insert(0, str(ROOT_DIR / "automation"))
-        from deal_voucher_service import start_daemon_background_thread
-        start_daemon_background_thread(interval_seconds=900)
-    except Exception as e:
-        logger.warning(f"Không thể khởi động tiến trình cập nhật deal ngầm: {e}")
-
-    app.run_polling()
+    app.run_polling(drop_pending_updates=False)
     return True
 
 

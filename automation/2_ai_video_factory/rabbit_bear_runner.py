@@ -418,6 +418,17 @@ def _fifo_worker_loop() -> None:
         if chat_id:
             cmd.extend(["--chat-id", str(chat_id)])
 
+        # Trên Linux Cloud VM (e2-micro), hạ độ ưu tiên CPU & Disk của tiến trình dựng 3D/FFmpeg xuống thấp nhất
+        # để Telegram Bot và Web Admin luôn phản hồi tức thì (< 1 giây), không bao giờ bị treo hay nghẽn lệnh!
+        if os.name != "nt":
+            prefix = []
+            if shutil.which("ionice"):
+                prefix.extend(["ionice", "-c", "3"])
+            if shutil.which("nice"):
+                prefix.extend(["nice", "-n", "19"])
+            if prefix:
+                cmd = prefix + cmd
+
         exit_code = -1
         tail_err = ""
         try:
