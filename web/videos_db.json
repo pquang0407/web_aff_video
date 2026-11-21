@@ -22,6 +22,18 @@
     ]
   },
   "videos": {
+    "tho_gau_3d_20261121062345": {
+      "id": "tho_gau_3d_20261121062345",
+      "title": "[3D Thỏ & Gấu] GTA 6 phá kỷ lục lịch sử ngành giải trí ngay ngày đầu ra mắt",
+      "duration": "00:46",
+      "views": "318.5K",
+      "likes": "28.8K",
+      "uploadDate": "Vừa xong",
+      "category": "🐰🐻 VŨ TRỤ THỎ & GẤU 3D",
+      "videoUrl": "videos/tho_gau_3d_20261121062345.mp4",
+      "posterUrl": "videos/tho_gau_3d_20261121062345_poster.jpg",
+      "description": "GTA 6 lập kỷ lục khủng ngay ngày đầu ra mắt khiến Thỏ Đỏ và Gấu Béo đứng ngồi không yên! Xem ngay video hoạt hình 3D cực hot! #GTA6 #ThoVaGau #Kyluc #TinGame"
+    },
     "tho_gau_3d_20261120102732": {
       "id": "tho_gau_3d_20261120102732",
       "title": "[3D Thỏ & Gấu] Công an Hà Nội thua ngược CLB mạnh nhất Malaysia",
@@ -144,15 +156,15 @@
     },
     "default": {
       "id": "default",
-      "title": "[3D Thỏ & Gấu] Công an Hà Nội thua ngược CLB mạnh nhất Malaysia",
+      "title": "[3D Thỏ & Gấu] GTA 6 phá kỷ lục lịch sử ngành giải trí ngay ngày đầu ra mắt",
       "duration": "00:46",
-      "views": "265.5K",
-      "likes": "24.8K",
+      "views": "318.5K",
+      "likes": "28.8K",
       "uploadDate": "Vừa xong",
       "category": "🐰🐻 VŨ TRỤ THỎ & GẤU 3D",
-      "videoUrl": "videos/tho_gau_3d_20261120102732.mp4",
-      "posterUrl": "videos/tho_gau_3d_20261120102732_poster.jpg",
-      "description": "Thỏ Đỏ và Gấu Béo phân tích trận đấu nghẹt thở khi Công an Hà Nội để thua ngược đáng tiếc trước đại diện mạnh nhất Malaysia! #ThỏVàGấu #BóngĐá #CAHN #CupCLBDongNamA"
+      "videoUrl": "videos/tho_gau_3d_20261121062345.mp4",
+      "posterUrl": "videos/tho_gau_3d_20261121062345_poster.jpg",
+      "description": "GTA 6 lập kỷ lục khủng ngay ngày đầu ra mắt khiến Thỏ Đỏ và Gấu Béo đứng ngồi không yên! Xem ngay video hoạt hình 3D cực hot! #GTA6 #ThoVaGau #Kyluc #TinGame"
     }
   },
   "deals": [
