@@ -8,6 +8,7 @@ automation/4_social_poster/data/facebook_cookies.json
 automation/4_social_poster/data/page_config.json
 automation/4_social_poster/data/fb_app_config.json
 automation/4_social_poster/data/threads_config.json
+automation/4_social_poster/data/tiktok_config.json
 automation/4_social_poster/data/scheduler_config.json
 automation/4_social_poster/data/post_history.json
 automation/1_telegram_collector/fb_cookies.txt

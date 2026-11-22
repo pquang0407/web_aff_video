@@ -355,6 +355,54 @@
           <button class="btn btn-accent" style="width:100%" onclick="saveThreadsConfig()">Lưu Phiên Threads</button>
         </div>
       </section>
+
+      <!-- 4. CẤU HÌNH TIKTOK CONTENT POSTING API -->
+      <section class="card">
+        <div class="card-title">
+          <span>🎵 4. KẾT NỐI TIKTOK (CONTENT POSTING API)</span>
+          <span style="font-size:11px; color:#00f2ea">Login Kit + Upload</span>
+        </div>
+
+        <div id="tiktokStatusBadge" style="font-size:11px; margin:8px 0; padding:6px 10px; border-radius:8px; background:rgba(255,255,255,0.04); border:1px solid var(--border); color:var(--muted);">
+          ⏳ Trạng thái TikTok: Chưa kết nối
+        </div>
+
+        <div style="display:grid; grid-template-columns: 1fr 1fr; gap:8px; margin-bottom:8px;">
+          <div>
+            <label style="margin-top:4px;">TikTok Client Key:</label>
+            <input type="text" id="ttClientKey" placeholder="Dán Client Key (Sandbox/Prod)">
+          </div>
+          <div>
+            <label style="margin-top:4px;">TikTok Client Secret:</label>
+            <input type="password" id="ttClientSecret" placeholder="Dán Client Secret...">
+          </div>
+        </div>
+
+        <div style="display:grid; grid-template-columns: 1fr 1fr; gap:8px; margin-bottom:10px;">
+          <div>
+            <label style="margin-top:4px;">Chế độ đăng TikTok:</label>
+            <select id="ttPostMode">
+              <option value="inbox">📥 Đẩy vào Hộp thư / Nháp (video.upload)</option>
+              <option value="direct">🚀 Đăng thẳng Direct Post (video.publish)</option>
+            </select>
+          </div>
+          <div>
+            <label style="margin-top:4px;">Quyền riêng tư (Direct):</label>
+            <select id="ttPrivacyLevel">
+              <option value="SELF_ONLY">🔒 Chỉ mình tôi (Sandbox / Chờ duyệt)</option>
+              <option value="PUBLIC_TO_EVERYONE">🌍 Công khai (Production đã duyệt)</option>
+            </select>
+          </div>
+        </div>
+
+        <button class="btn btn-blue" style="width:100%; margin-bottom:10px;" onclick="saveAndOpenTikTokOAuth()">🔗 1. Lưu Key & Mở Đăng Nhập TikTok</button>
+
+        <label style="margin-top:4px;">2. Dán mã Authorization Code từ tho-news.com/tiktok-callback.html:</label>
+        <div style="display:flex; gap:8px;">
+          <input type="text" id="ttAuthCode" placeholder="Dán mã code vừa copy vào đây...">
+          <button class="btn btn-green" onclick="exchangeTikTokCode()" style="white-space:nowrap;">✅ Kết Nối</button>
+        </div>
+      </section>
     </div>
 
     <!-- CỘT PHẢI: HÀNG ĐỢI VIDEO (SOCIAL QUEUE) & ĐẶT LỊCH TỪNG BÀI -->
@@ -526,10 +574,34 @@
         `;
       }).join("");
 
-      // 3. Render Threads
+      // 3. Render Threads & TikTok
       if (STATE.threads) {
         document.getElementById("threadsUsername").value = STATE.threads.username || "";
         document.getElementById("threadsUserId").value = STATE.threads.threads_user_id || "";
+      }
+      if (STATE.tiktok) {
+        const ckEl = document.getElementById("ttClientKey");
+        const csEl = document.getElementById("ttClientSecret");
+        const pmEl = document.getElementById("ttPostMode");
+        const plEl = document.getElementById("ttPrivacyLevel");
+        const tbEl = document.getElementById("tiktokStatusBadge");
+        if (ckEl && !ckEl.value && STATE.tiktok.client_key) ckEl.value = STATE.tiktok.client_key;
+        if (csEl && STATE.tiktok.has_secret) csEl.placeholder = `Đã lưu (${STATE.tiktok.client_secret_masked}) — để trống nếu giữ nguyên`;
+        if (pmEl && STATE.tiktok.post_mode) pmEl.value = STATE.tiktok.post_mode;
+        if (plEl && STATE.tiktok.privacy_level) plEl.value = STATE.tiktok.privacy_level;
+        if (tbEl) {
+          if (STATE.tiktok.connected) {
+            tbEl.style.color = "#00f2ea";
+            tbEl.style.borderColor = "rgba(0, 242, 234, 0.4)";
+            tbEl.innerHTML = `🟢 <strong>Đã kết nối TikTok: ${STATE.tiktok.display_name || 'Creator'}</strong> (Chế độ: ${STATE.tiktok.post_mode === 'direct' ? 'Direct Post' : 'Hộp thư / Nháp'})`;
+          } else if (STATE.tiktok.client_key && STATE.tiktok.has_secret) {
+            tbEl.style.color = "#ffd166";
+            tbEl.innerHTML = `🟡 Đã lưu Client Key & Secret — bấm <strong>1. Mở Đăng Nhập TikTok</strong> để cấp quyền!`;
+          } else {
+            tbEl.style.color = "#9499b8";
+            tbEl.innerHTML = `⚪ Chưa kết nối TikTok (nhập Client Key & Secret từ Sandbox/Production).`;
+          }
+        }
       }
 
       // 4. Render Queue with Per-Video Schedule Picker
@@ -585,7 +657,8 @@
               <div class="queue-actions">
                 <select id="pageSel_${item.id}" style="padding:5px 8px; font-size:11px; border-radius:8px;">${pageOptions}</select>
                 <a class="btn btn-surface" href="${targetUrl}" target="_blank" style="text-align:center; text-decoration:none;">👁️ Xem Clip Trên Web</a>
-                <button class="btn btn-accent" onclick="triggerPost('${item.id}', false)">🚀 Đăng Thật Ngay</button>
+                <button class="btn btn-accent" onclick="triggerPost('${item.id}', false)">🚀 Đăng Facebook</button>
+                <button class="btn btn-surface" style="color:#00f2ea; border-color:rgba(0,242,234,0.45);" onclick="postToTikTok('${item.id}')">🎵 Đăng TikTok</button>
                 <button class="btn btn-surface" style="color:#ff6b6b; border-color:rgba(255,107,107,0.45);" onclick="deleteVideoById('${item.id}', '${safeTitle}')">🗑️ Xóa khỏi Web & Queue</button>
               </div>
             </div>
@@ -724,6 +797,82 @@
         renderUI();
         alert(`Đã cập nhật ${data.count} Fanpage!\n\n${data.exchange_note || ''}`);
       } else alert("Lỗi: " + data.error);
+    }
+
+    async function saveAndOpenTikTokOAuth() {
+      const payload = {
+        client_key: document.getElementById("ttClientKey").value,
+        client_secret: document.getElementById("ttClientSecret").value,
+        post_mode: document.getElementById("ttPostMode").value,
+        privacy_level: document.getElementById("ttPrivacyLevel").value
+      };
+      try {
+        const res = await fetch("/api/tiktok/save-config", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(payload)
+        });
+        const data = await res.json();
+        if (data.ok) {
+          if (data.tiktok) STATE.tiktok = data.tiktok;
+          document.getElementById("ttClientSecret").value = "";
+          renderUI();
+          if (data.auth_url) {
+            window.open(data.auth_url, "_blank");
+          } else {
+            alert("Đã lưu cấu hình TikTok! Hãy nhập Client Key để mở trang đăng nhập.");
+          }
+        } else {
+          alert("Lỗi: " + data.error);
+        }
+      } catch (e) {
+        alert("Lỗi kết nối server!");
+      }
+    }
+
+    async function exchangeTikTokCode() {
+      const code = document.getElementById("ttAuthCode").value.trim();
+      if (!code) {
+        alert("Vui lòng dán mã Authorization Code từ trang tho-news.com/tiktok-callback.html!");
+        return;
+      }
+      try {
+        const res = await fetch("/api/tiktok/exchange-code", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ code })
+        });
+        const data = await res.json();
+        if (data.ok) {
+          STATE.tiktok = data.tiktok;
+          document.getElementById("ttAuthCode").value = "";
+          renderUI();
+          alert(`✅ Đã kết nối TikTok thành công (${data.tiktok.display_name || 'Creator'})!\nRefresh Token sống 365 ngày — giờ bạn có thể bấm nút "🎵 Đăng TikTok" ở bất kỳ clip nào!`);
+        } else {
+          alert("❌ Lỗi kết nối TikTok: " + data.error);
+        }
+      } catch (e) {
+        alert("Lỗi kết nối server!");
+      }
+    }
+
+    async function postToTikTok(videoId) {
+      if (!confirm(`🎵 Bắn video '${videoId}' lên TikTok ngay bây giờ?`)) return;
+      try {
+        const res = await fetch("/api/tiktok/post", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ video_id: videoId })
+        });
+        const data = await res.json();
+        if (data.ok && data.result) {
+          alert(`✅ ĐĂNG TIKTOK THÀNH CÔNG!\n${data.result.note || ''}\nPublish ID: ${data.result.publish_id || ''}`);
+        } else {
+          alert("❌ Lỗi đăng TikTok:\n" + (data.error || "Không xác định"));
+        }
+      } catch (e) {
+        alert("Lỗi kết nối server khi đăng TikTok!");
+      }
     }
 
     async function saveThreadsConfig() {

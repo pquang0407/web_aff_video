@@ -17,6 +17,7 @@ import config
 import fb_service
 import poster
 import scheduler_daemon
+import tiktok_service
 
 STATIC_DIR = Path(__file__).resolve().parent / "static"
 PORT = 5050
@@ -118,6 +119,7 @@ class AdminRequestHandler(BaseHTTPRequestHandler):
                 "fb_cookie": fb_service.get_cookie_status(),
                 "fb_pages": fb_service.get_page_config_public(),
                 "fb_app": fb_service.get_app_config_public(),
+                "tiktok": tiktok_service.get_tiktok_config_public(),
                 "threads": _get_safe_threads_config(),
                 "scheduler": config.get_scheduler_config(),
                 "queue": poster.get_social_queue(),
@@ -198,6 +200,53 @@ class AdminRequestHandler(BaseHTTPRequestHandler):
             if path == "/api/fb/toggle-page":
                 fb_service.toggle_selected_page(payload.get("page_id", ""))
                 self._send_json({"ok": True, "fb_pages": fb_service.get_page_config_public()})
+                return
+
+            if path == "/api/tiktok/save-config":
+                tiktok_service.save_tiktok_app_config(
+                    client_key=payload.get("client_key", ""),
+                    client_secret=payload.get("client_secret", ""),
+                    post_mode=payload.get("post_mode"),
+                    privacy_level=payload.get("privacy_level"),
+                )
+                auth_url = ""
+                try:
+                    auth_url = tiktok_service.build_oauth_authorize_url()
+                except Exception:
+                    pass
+                self._send_json({
+                    "ok": True,
+                    "tiktok": tiktok_service.get_tiktok_config_public(),
+                    "auth_url": auth_url,
+                })
+                return
+
+            if path == "/api/tiktok/exchange-code":
+                pub = tiktok_service.exchange_code_for_token(payload.get("code", ""))
+                self._send_json({"ok": True, "tiktok": pub})
+                return
+
+            if path == "/api/tiktok/post":
+                video_id = (payload.get("video_id") or "").strip()
+                candidates = [
+                    config.BASE_DIR / "web" / "videos" / f"{video_id}.mp4",
+                    config.FULL_DIR / f"{video_id}.mp4",
+                    config.TEASER_DIR / f"{video_id}_teaser.mp4",
+                ]
+                video_path = next((p for p in candidates if p.exists()), candidates[0])
+                caption = payload.get("caption", "")
+                if not caption:
+                    meta_p = config.FULL_DIR / f"{video_id}_meta.json"
+                    if meta_p.exists():
+                        try:
+                            m = json.loads(meta_p.read_text(encoding="utf-8"))
+                            caption = m.get("social_caption") or m.get("title") or video_id
+                        except Exception:
+                            caption = video_id
+                    else:
+                        caption = video_id
+                tt_res = tiktok_service.publish_video_to_tiktok(video_path, caption)
+                self._send_json({"ok": True, "result": tt_res})
                 return
 
             if path == "/api/threads/save":
