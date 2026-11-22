@@ -22,6 +22,18 @@
     ]
   },
   "videos": {
+    "tho_gau_3d_20261122201729": {
+      "id": "tho_gau_3d_20261122201729",
+      "title": "[3D Thỏ & Gấu] Messi gây tranh cãi vì ném bóng vào mặt đối thủ ở MLS",
+      "duration": "00:46",
+      "views": "187.5K",
+      "likes": "24.8K",
+      "uploadDate": "Vừa xong",
+      "category": "🐰🐻 VŨ TRỤ THỎ & GẤU 3D",
+      "videoUrl": "videos/tho_gau_3d_20261122201729.mp4",
+      "posterUrl": "videos/tho_gau_3d_20261122201729_poster.jpg",
+      "description": "Messi gây tranh cãi vì ném bóng vào mặt đối thủ ở MLS khiến cộng đồng mạng chia làm hai luồng ý kiến trái chiều. Liệu đây là tiểu xảo hay chỉ là pha ném biên bình thường của siêu sao người Argentina? #Messi #MLS #InterMiami #BongDa"
+    },
     "tho_gau_3d_20261122195326": {
       "id": "tho_gau_3d_20261122195326",
       "title": "[3D Thỏ & Gấu] GTA 6 trở thành màn ra mắt game có lượng người xem lớn nhất lịch sử...",
@@ -228,15 +240,15 @@
     },
     "default": {
       "id": "default",
-      "title": "[3D Thỏ & Gấu] GTA 6 trở thành màn ra mắt game có lượng người xem lớn nhất lịch sử...",
+      "title": "[3D Thỏ & Gấu] Messi gây tranh cãi vì ném bóng vào mặt đối thủ ở MLS",
       "duration": "00:46",
-      "views": "148.5K",
-      "likes": "21.8K",
+      "views": "187.5K",
+      "likes": "24.8K",
       "uploadDate": "Vừa xong",
       "category": "🐰🐻 VŨ TRỤ THỎ & GẤU 3D",
-      "videoUrl": "videos/tho_gau_3d_20261122195326.mp4",
-      "posterUrl": "videos/tho_gau_3d_20261122195326_poster.jpg",
-      "description": "GTA 6 xô đổ mọi kỷ lục lịch sử Twitch, vượt mặt cả tượng đài VALORANT! Xem ngay Thỏ Đỏ và Gấu Béo phân tích bom tấn này nhé! #GTA6 #Twitch #ThoVaGau #Gaming"
+      "videoUrl": "videos/tho_gau_3d_20261122201729.mp4",
+      "posterUrl": "videos/tho_gau_3d_20261122201729_poster.jpg",
+      "description": "Messi gây tranh cãi vì ném bóng vào mặt đối thủ ở MLS khiến cộng đồng mạng chia làm hai luồng ý kiến trái chiều. Liệu đây là tiểu xảo hay chỉ là pha ném biên bình thường của siêu sao người Argentina? #Messi #MLS #InterMiami #BongDa"
     }
   },
   "deals": [
