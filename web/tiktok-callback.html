@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Kết Nối TikTok • Tho News 3D</title>
+  <style>
+    body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; background: #0f111a; color: #e6e8f2; display: flex; align-items: center; justify-content: center; min-height: 100vh; margin: 0; padding: 16px; }
+    .card { max-width: 560px; width: 100%; background: #171a27; border: 1px solid #2a2f45; border-radius: 16px; padding: 28px; text-align: center; }
+    h1 { font-size: 20px; margin: 0 0 10px; color: #00e676; }
+    p { font-size: 14px; color: #b6bdd6; line-height: 1.6; }
+    .code-box { background: #0b0d14; border: 1px solid #353b57; border-radius: 10px; padding: 14px; word-break: break-all; font-family: monospace; font-size: 13px; color: #ffd166; margin: 16px 0; text-align: left; }
+    .btn { background: linear-gradient(135deg, #ff0055, #ff4d79); color: #fff; border: none; padding: 11px 22px; border-radius: 10px; font-weight: 700; cursor: pointer; font-size: 14px; }
+    .err { color: #ff6b6b; }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <h1 id="title">✅ Đã nhận mã ủy quyền TikTok!</h1>
+    <p id="desc">Hãy bấm nút bên dưới để sao chép mã <strong>Authorization Code</strong> và dán vào mục TikTok trên trang Admin Tho News 3D:</p>
+    <div id="codeBox" class="code-box">Đang đọc tham số từ TikTok...</div>
+    <button id="copyBtn" class="btn" onclick="copyCode()">📋 Copy Mã Kết Nối TikTok</button>
+  </div>
+  <script>
+    const params = new URLSearchParams(window.location.search);
+    const code = params.get("code") || "";
+    const err = params.get("error") || "";
+    const errDesc = params.get("error_description") || "";
+    const box = document.getElementById("codeBox");
+    if (err) {
+      document.getElementById("title").textContent = "❌ Kết nối TikTok bị từ chối";
+      document.getElementById("title").className = "err";
+      document.getElementById("desc").textContent = errDesc || err;
+      box.textContent = `error=${err}`;
+      document.getElementById("copyBtn").style.display = "none";
+    } else if (code) {
+      box.textContent = code;
+    } else {
+      document.getElementById("title").textContent = "🔗 Trang Callback TikTok OAuth";
+      document.getElementById("desc").textContent = "Trang này dùng để tiếp nhận mã xác thực sau khi bạn bấm Đăng nhập TikTok từ hệ thống Tho News 3D.";
+      box.textContent = "Chưa có mã code trong URL.";
+      document.getElementById("copyBtn").style.display = "none";
+    }
+    function copyCode() {
+      navigator.clipboard.writeText(code).then(() => {
+        document.getElementById("copyBtn").textContent = "✅ Đã Copy! Dán vào Web Admin ngay";
+      });
+    }
+  </script>
+</body>
+</html>
