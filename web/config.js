@@ -1,6 +1,6 @@
 /**
- * CONFIG.JS - Được cập nhật tự động bởi Admin Social Poster
- * Cập nhật lúc: 2026-11-22 17:23:29
+ * CONFIG.JS - Được sinh tự động bởi Module 3 (Web Publisher)
+ * Không cần chỉnh sửa thủ công khi thêm video mới.
  */
 const CONFIG = {
   "affiliate": {
@@ -26,6 +26,18 @@ const CONFIG = {
     ]
   },
   "videos": {
+    "tho_gau_3d_20261122102759": {
+      "id": "tho_gau_3d_20261122102759",
+      "title": "[3D Thỏ & Gấu] Nhà ở xã hội được chuyển nhượng theo giá thị trường nhưng phải đúng đối...",
+      "duration": "00:46",
+      "views": "132.5K",
+      "likes": "32.8K",
+      "uploadDate": "Vừa xong",
+      "category": "🐰🐻 VŨ TRỤ THỎ & GẤU 3D",
+      "videoUrl": "videos/tho_gau_3d_20261122102759.mp4",
+      "posterUrl": "videos/tho_gau_3d_20261122102759_poster.jpg",
+      "description": "Thỏ Đỏ và Gấu Béo cập nhật ngay luật nhà ở xã hội mới nhất từ 1/7/2027 cho cả nhà cùng nắm rõ nè! #NhaOXaHoi #LuatNhaO #ThoVaGau #TinTuc3D"
+    },
     "tho_gau_3d_20261121062345": {
       "id": "tho_gau_3d_20261121062345",
       "title": "[3D Thỏ & Gấu] GTA 6 phá kỷ lục lịch sử ngành giải trí ngay ngày đầu ra mắt",
@@ -160,15 +172,15 @@ const CONFIG = {
     },
     "default": {
       "id": "default",
-      "title": "[3D Thỏ & Gấu] GTA 6 phá kỷ lục lịch sử ngành giải trí ngay ngày đầu ra mắt",
+      "title": "[3D Thỏ & Gấu] Nhà ở xã hội được chuyển nhượng theo giá thị trường nhưng phải đúng đối...",
       "duration": "00:46",
-      "views": "318.5K",
-      "likes": "28.8K",
+      "views": "132.5K",
+      "likes": "32.8K",
       "uploadDate": "Vừa xong",
       "category": "🐰🐻 VŨ TRỤ THỎ & GẤU 3D",
-      "videoUrl": "videos/tho_gau_3d_20261121062345.mp4",
-      "posterUrl": "videos/tho_gau_3d_20261121062345_poster.jpg",
-      "description": "GTA 6 lập kỷ lục khủng ngay ngày đầu ra mắt khiến Thỏ Đỏ và Gấu Béo đứng ngồi không yên! Xem ngay video hoạt hình 3D cực hot! #GTA6 #ThoVaGau #Kyluc #TinGame"
+      "videoUrl": "videos/tho_gau_3d_20261122102759.mp4",
+      "posterUrl": "videos/tho_gau_3d_20261122102759_poster.jpg",
+      "description": "Thỏ Đỏ và Gấu Béo cập nhật ngay luật nhà ở xã hội mới nhất từ 1/7/2027 cho cả nhà cùng nắm rõ nè! #NhaOXaHoi #LuatNhaO #ThoVaGau #TinTuc3D"
     }
   },
   "deals": [
