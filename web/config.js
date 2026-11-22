@@ -26,6 +26,18 @@ const CONFIG = {
     ]
   },
   "videos": {
+    "tho_gau_3d_20261122184154": {
+      "id": "tho_gau_3d_20261122184154",
+      "title": "[3D Thỏ & Gấu] Người phụ nữ bỏ nghề y tá làm vận động viên marathon chuyên nghiệp:...",
+      "duration": "00:46",
+      "views": "342.5K",
+      "likes": "17.8K",
+      "uploadDate": "Vừa xong",
+      "category": "🐰🐻 VŨ TRỤ THỎ & GẤU 3D",
+      "videoUrl": "videos/tho_gau_3d_20261122184154.mp4",
+      "posterUrl": "videos/tho_gau_3d_20261122184154_poster.jpg",
+      "description": "Câu chuyện kinh ngạc về nữ y tá từ bỏ 13 năm áo blouse trắng để theo đuổi đam mê chạy bộ chuyên nghiệp và thu nhập khổng lồ! #ThoVaGau #Marathon #KinhTe #NguoiNỏiTien"
+    },
     "tho_gau_3d_20261122181847": {
       "id": "tho_gau_3d_20261122181847",
       "title": "[3D Thỏ & Gấu] Không phải chạy bộ hay bơi lội, đây mới là bài tập tốt nhất cho tim,...",
@@ -184,15 +196,15 @@ const CONFIG = {
     },
     "default": {
       "id": "default",
-      "title": "[3D Thỏ & Gấu] Không phải chạy bộ hay bơi lội, đây mới là bài tập tốt nhất cho tim,...",
+      "title": "[3D Thỏ & Gấu] Người phụ nữ bỏ nghề y tá làm vận động viên marathon chuyên nghiệp:...",
       "duration": "00:46",
-      "views": "240.5K",
+      "views": "342.5K",
       "likes": "17.8K",
       "uploadDate": "Vừa xong",
       "category": "🐰🐻 VŨ TRỤ THỎ & GẤU 3D",
-      "videoUrl": "videos/tho_gau_3d_20261122181847.mp4",
-      "posterUrl": "videos/tho_gau_3d_20261122181847_poster.jpg",
-      "description": "Bạn nghĩ chạy bộ là nhất? Thỏ Đỏ và Gấu Béo sẽ khai sáng cho bạn về bí kíp sống khỏe chuẩn chuyên gia! #ThỏVàGấu #SốngKhỏe #TimPhổi #TậpLuyệnThôngMinh"
+      "videoUrl": "videos/tho_gau_3d_20261122184154.mp4",
+      "posterUrl": "videos/tho_gau_3d_20261122184154_poster.jpg",
+      "description": "Câu chuyện kinh ngạc về nữ y tá từ bỏ 13 năm áo blouse trắng để theo đuổi đam mê chạy bộ chuyên nghiệp và thu nhập khổng lồ! #ThoVaGau #Marathon #KinhTe #NguoiNỏiTien"
     }
   },
   "deals": [
