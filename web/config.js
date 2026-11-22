@@ -26,6 +26,18 @@ const CONFIG = {
     ]
   },
   "videos": {
+    "tho_gau_3d_20261122195326": {
+      "id": "tho_gau_3d_20261122195326",
+      "title": "[3D Thỏ & Gấu] GTA 6 trở thành màn ra mắt game có lượng người xem lớn nhất lịch sử...",
+      "duration": "00:46",
+      "views": "148.5K",
+      "likes": "21.8K",
+      "uploadDate": "Vừa xong",
+      "category": "🐰🐻 VŨ TRỤ THỎ & GẤU 3D",
+      "videoUrl": "videos/tho_gau_3d_20261122195326.mp4",
+      "posterUrl": "videos/tho_gau_3d_20261122195326_poster.jpg",
+      "description": "GTA 6 xô đổ mọi kỷ lục lịch sử Twitch, vượt mặt cả tượng đài VALORANT! Xem ngay Thỏ Đỏ và Gấu Béo phân tích bom tấn này nhé! #GTA6 #Twitch #ThoVaGau #Gaming"
+    },
     "tho_gau_3d_20261122192744": {
       "id": "tho_gau_3d_20261122192744",
       "title": "[3D Thỏ & Gấu] Yamal lần thứ ba hỏng phạt đền tại La Liga",
@@ -220,15 +232,15 @@ const CONFIG = {
     },
     "default": {
       "id": "default",
-      "title": "[3D Thỏ & Gấu] Yamal lần thứ ba hỏng phạt đền tại La Liga",
+      "title": "[3D Thỏ & Gấu] GTA 6 trở thành màn ra mắt game có lượng người xem lớn nhất lịch sử...",
       "duration": "00:46",
-      "views": "195.5K",
-      "likes": "30.8K",
+      "views": "148.5K",
+      "likes": "21.8K",
       "uploadDate": "Vừa xong",
       "category": "🐰🐻 VŨ TRỤ THỎ & GẤU 3D",
-      "videoUrl": "videos/tho_gau_3d_20261122192744.mp4",
-      "posterUrl": "videos/tho_gau_3d_20261122192744_poster.jpg",
-      "description": "Kỷ lục buồn cho Lamine Yamal khi tiếp tục sút hỏng phạt đền tại La Liga! Cùng Thỏ Đỏ và Gấu Béo khám phá màn lội ngược dòng hú vía của Barca nhé! ⚽🐰🐻🔥 #ThỏVàGấu #LaLiga #Yamal #Barca"
+      "videoUrl": "videos/tho_gau_3d_20261122195326.mp4",
+      "posterUrl": "videos/tho_gau_3d_20261122195326_poster.jpg",
+      "description": "GTA 6 xô đổ mọi kỷ lục lịch sử Twitch, vượt mặt cả tượng đài VALORANT! Xem ngay Thỏ Đỏ và Gấu Béo phân tích bom tấn này nhé! #GTA6 #Twitch #ThoVaGau #Gaming"
     }
   },
   "deals": [
