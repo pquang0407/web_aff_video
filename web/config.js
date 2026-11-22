@@ -26,6 +26,18 @@ const CONFIG = {
     ]
   },
   "videos": {
+    "tho_gau_3d_20261122192744": {
+      "id": "tho_gau_3d_20261122192744",
+      "title": "[3D Thỏ & Gấu] Yamal lần thứ ba hỏng phạt đền tại La Liga",
+      "duration": "00:46",
+      "views": "195.5K",
+      "likes": "30.8K",
+      "uploadDate": "Vừa xong",
+      "category": "🐰🐻 VŨ TRỤ THỎ & GẤU 3D",
+      "videoUrl": "videos/tho_gau_3d_20261122192744.mp4",
+      "posterUrl": "videos/tho_gau_3d_20261122192744_poster.jpg",
+      "description": "Kỷ lục buồn cho Lamine Yamal khi tiếp tục sút hỏng phạt đền tại La Liga! Cùng Thỏ Đỏ và Gấu Béo khám phá màn lội ngược dòng hú vía của Barca nhé! ⚽🐰🐻🔥 #ThỏVàGấu #LaLiga #Yamal #Barca"
+    },
     "tho_gau_3d_20261122190601": {
       "id": "tho_gau_3d_20261122190601",
       "title": "[3D Thỏ & Gấu] Không phải yoga hay pilates, đây mới là bộ môn giúp cải thiện sức mạnh...",
@@ -208,15 +220,15 @@ const CONFIG = {
     },
     "default": {
       "id": "default",
-      "title": "[3D Thỏ & Gấu] Không phải yoga hay pilates, đây mới là bộ môn giúp cải thiện sức mạnh...",
+      "title": "[3D Thỏ & Gấu] Yamal lần thứ ba hỏng phạt đền tại La Liga",
       "duration": "00:46",
-      "views": "354.5K",
-      "likes": "18.8K",
+      "views": "195.5K",
+      "likes": "30.8K",
       "uploadDate": "Vừa xong",
       "category": "🐰🐻 VŨ TRỤ THỎ & GẤU 3D",
-      "videoUrl": "videos/tho_gau_3d_20261122190601.mp4",
-      "posterUrl": "videos/tho_gau_3d_20261122190601_poster.jpg",
-      "description": "Yoga và Pilates đã xưa rồi, đây mới là chân ái giúp cơ thể dẻo dai cực đỉnh! Thỏ Đỏ và Gấu Béo đang tập gì mà hay thế này? Xem ngay nhé! #ThoVaGau #ThaiCucQuyen #SucKhoe #VuTruHoatHinh"
+      "videoUrl": "videos/tho_gau_3d_20261122192744.mp4",
+      "posterUrl": "videos/tho_gau_3d_20261122192744_poster.jpg",
+      "description": "Kỷ lục buồn cho Lamine Yamal khi tiếp tục sút hỏng phạt đền tại La Liga! Cùng Thỏ Đỏ và Gấu Béo khám phá màn lội ngược dòng hú vía của Barca nhé! ⚽🐰🐻🔥 #ThỏVàGấu #LaLiga #Yamal #Barca"
     }
   },
   "deals": [
