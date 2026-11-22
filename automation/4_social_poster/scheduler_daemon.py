@@ -15,6 +15,7 @@ from pathlib import Path
 from typing import Any, Dict, Optional
 
 import config
+import fb_service
 import poster
 
 logger = logging.getLogger("SchedulerDaemon")
@@ -91,15 +92,41 @@ def check_and_run_due_posts() -> Optional[Dict[str, Any]]:
                 should_fire = True
 
     if should_fire:
-        next_video = pending_videos[-1]  # Lấy theo thứ tự FIFO
-        vid_id = next_video["id"]
-        logger.info(f"[AUTO SCHEDULER 24/7] Tự động xuất bản video '{vid_id}' theo lịch ({mode})...")
-        res = poster.post_video_to_social(
-            video_id=vid_id,
-            simulate=bool(sched.get("simulate_mode", False)),
-        )
+        # Lưu mốc last_auto_run trước để đảm bảo không bắn lặp trong cùng 1 phút
         config.save_scheduler_config({"last_auto_run": now.isoformat()})
-        return res
+
+        page_cfg = fb_service.get_page_config()
+        selected_page_ids = page_cfg.get("selected_page_ids") or []
+        if not selected_page_ids:
+            fallback_pid = page_cfg.get("selected_page_id") or ""
+            selected_page_ids = [fallback_pid] if fallback_pid else [""]
+
+        # Lấy danh sách clip chưa đăng theo thứ tự FIFO (cũ nhất lên trước)
+        fifo_pending = list(reversed(pending_videos))
+        num_to_post = min(len(selected_page_ids), len(fifo_pending))
+        batch_results = []
+
+        logger.info(
+            f"[AUTO SCHEDULER 24/7] Đúng khung giờ ({mode}): Bắn {num_to_post} clip khác nhau cho {num_to_post}/{len(selected_page_ids)} Page (KHÔNG TRÙNG BÀI)!"
+        )
+        for i in range(num_to_post):
+            vid_id = fifo_pending[i]["id"]
+            # Dùng pick_next_round_robin_page_id để nếu kho ít clip hơn số Page thì vẫn chia đều công bằng qua các khung giờ
+            target_pid = fb_service.pick_next_round_robin_page_id() if selected_page_ids[0] else None
+            logger.info(f"  -> [{i + 1}/{num_to_post}] Đăng clip '{vid_id}' lên Page ID={target_pid}")
+            try:
+                res = poster.post_video_to_social(
+                    video_id=vid_id,
+                    page_id=target_pid,
+                    simulate=bool(sched.get("simulate_mode", False)),
+                )
+                batch_results.append(res)
+            except Exception as post_err:
+                logger.error(f"  ❌ Lỗi đăng clip '{vid_id}' lên Page {target_pid}: {post_err}")
+            if i < num_to_post - 1:
+                time.sleep(3)
+
+        return {"batch_count": len(batch_results), "results": batch_results}
 
     return None
 
