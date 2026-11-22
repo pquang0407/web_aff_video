@@ -1,6 +1,6 @@
 /**
- * CONFIG.JS - Được sinh tự động bởi Module 3 (Web Publisher)
- * Không cần chỉnh sửa thủ công khi thêm video mới.
+ * CONFIG.JS - Được cập nhật tự động bởi Admin Social Poster
+ * Cập nhật lúc: 2026-11-22 17:23:29
  */
 const CONFIG = {
   "affiliate": {
@@ -26,18 +26,6 @@ const CONFIG = {
     ]
   },
   "videos": {
-    "tho_gau_3d_20261121070557": {
-      "id": "tho_gau_3d_20261121070557",
-      "title": "[3D Thỏ & Gấu] Làng bóng đá thế giới trầm trồ trước 2 siêu phẩm U17 Việt Nam ghi vào...",
-      "duration": "00:46",
-      "views": "174.5K",
-      "likes": "33.8K",
-      "uploadDate": "Vừa xong",
-      "category": "🐰🐻 VŨ TRỤ THỎ & GẤU 3D",
-      "videoUrl": "videos/tho_gau_3d_20261121070557.mp4",
-      "posterUrl": "videos/tho_gau_3d_20261121070557_poster.jpg",
-      "description": "Thỏ Đỏ và Gấu Béo phát cuồng trước siêu phẩm để đời của U17 Việt Nam! Xem ngay video hoạt hình cực vui nhộn này nhé. #U17VietNam #ThoVaGau #BongDa #24HBongDa"
-    },
     "tho_gau_3d_20261121062345": {
       "id": "tho_gau_3d_20261121062345",
       "title": "[3D Thỏ & Gấu] GTA 6 phá kỷ lục lịch sử ngành giải trí ngay ngày đầu ra mắt",
@@ -172,15 +160,15 @@ const CONFIG = {
     },
     "default": {
       "id": "default",
-      "title": "[3D Thỏ & Gấu] Làng bóng đá thế giới trầm trồ trước 2 siêu phẩm U17 Việt Nam ghi vào...",
+      "title": "[3D Thỏ & Gấu] GTA 6 phá kỷ lục lịch sử ngành giải trí ngay ngày đầu ra mắt",
       "duration": "00:46",
-      "views": "174.5K",
-      "likes": "33.8K",
+      "views": "318.5K",
+      "likes": "28.8K",
       "uploadDate": "Vừa xong",
       "category": "🐰🐻 VŨ TRỤ THỎ & GẤU 3D",
-      "videoUrl": "videos/tho_gau_3d_20261121070557.mp4",
-      "posterUrl": "videos/tho_gau_3d_20261121070557_poster.jpg",
-      "description": "Thỏ Đỏ và Gấu Béo phát cuồng trước siêu phẩm để đời của U17 Việt Nam! Xem ngay video hoạt hình cực vui nhộn này nhé. #U17VietNam #ThoVaGau #BongDa #24HBongDa"
+      "videoUrl": "videos/tho_gau_3d_20261121062345.mp4",
+      "posterUrl": "videos/tho_gau_3d_20261121062345_poster.jpg",
+      "description": "GTA 6 lập kỷ lục khủng ngay ngày đầu ra mắt khiến Thỏ Đỏ và Gấu Béo đứng ngồi không yên! Xem ngay video hoạt hình 3D cực hot! #GTA6 #ThoVaGau #Kyluc #TinGame"
     }
   },
   "deals": [

@@ -161,6 +161,7 @@ HÃY CHUYỂN THỂ BÀI BÁO THÀNH KỊCH BẢN 4 PHÂN CẢNH LIỀN MẠCH (
    - Mỗi visualPrompt BẮT BUỘC bắt đầu bằng: "Create a 16:9 aspect ratio video clip, 10 seconds long. Directly render the video now without asking options. Stylized 3D Pixar animation..."
    - Phải mô tả rõ ngoại hình đồng nhất của "cute bunny rabbit in bright red hoodie/jersey with long ears" và "chubby fluffy white bear", cùng hành động khớp với lời bình của cảnh đó.
    - QUY TẮC AN TOÀN MUSE.AI (BẮT BUỘC): Trong visualPrompt tiếng Anh TUYỆT ĐỐI KHÔNG dùng các từ nhạy cảm bị bộ lọc AI chặn như: dead, death, die, killed, murder, blood, gore, fatal crash, corpse, hit by truck. Nếu bài báo nói về tai nạn hoặc vụ án, hãy mô tả cảnh 3D ẩn dụ an toàn (ví dụ: "reckless truck making a sharp turn at an intersection causing a tense near-miss traffic stop", "police officers with flashing lights questioning the regretful bear driver beside the truck", "solemn family reflection and traffic safety lesson").
+   - QUY TẮC QUỐC KỲ (BẮT BUỘC): TUYỆT ĐỐI KHÔNG vẽ quốc kỳ hoặc lá cờ có ngôi sao trong visualPrompt (AI video rất hay vẽ biến dạng sai lệch số ngôi sao trên quốc kỳ Việt Nam!). Khi làm tin bóng đá/thể thao Việt Nam, hãy thay bằng pháo hoa, cúp vàng, khán đài rực sáng và áo đấu thể thao màu đỏ có số áo (KHÔNG vẽ cờ).
    - Nếu bài báo là tin thời sự / pháp luật / giao thông nghiêm túc, hãy dùng giọng bình luận thời sự kịch tính, sâu sắc và cảnh tỉnh (không dùng từ 'tấu hài' cho tin buồn), đồng thời đặt brandBadge là "24H TIN NÓNG" hoặc "24H GIAO THÔNG".
 
 Trả về duy nhất định dạng JSON thuần:

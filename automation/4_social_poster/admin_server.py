@@ -200,6 +200,16 @@ class AdminRequestHandler(BaseHTTPRequestHandler):
                 self._send_json({"ok": True, "threads": saved})
                 return
 
+            if path == "/api/video/delete":
+                video_id = payload.get("video_id", "").strip()
+                res = poster.delete_video_everywhere(video_id, auto_git_push=True)
+                self._send_json({
+                    "ok": True,
+                    "delete_result": res,
+                    "queue": poster.get_social_queue(),
+                })
+                return
+
             if path == "/api/queue/clear":
                 # Xóa sạch các video cũ trong hàng đợi
                 deleted_count = 0
