@@ -195,6 +195,11 @@ class AdminRequestHandler(BaseHTTPRequestHandler):
                 self._send_json({"ok": True, "fb_pages": fb_service.get_page_config_public()})
                 return
 
+            if path == "/api/fb/toggle-page":
+                fb_service.toggle_selected_page(payload.get("page_id", ""))
+                self._send_json({"ok": True, "fb_pages": fb_service.get_page_config_public()})
+                return
+
             if path == "/api/threads/save":
                 saved = config.save_threads_config(payload)
                 self._send_json({"ok": True, "threads": saved})

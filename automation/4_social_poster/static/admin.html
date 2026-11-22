@@ -321,7 +321,7 @@
           <button class="btn btn-blue" onclick="fetchPagesByToken()" style="white-space:nowrap;">🔑 Đổi Token Vĩnh Viễn</button>
         </div>
 
-        <label>Danh sách Fanpage (Bấm để chọn Page mặc định):</label>
+        <label>Danh sách Fanpage (Tích chọn nhiều Page để tự động xoay vòng — mỗi clip chỉ đăng duy nhất 1 Page, KHÔNG trùng video):</label>
         <div class="page-list" id="pageListContainer">
           <!-- Render danh sách Fanpage -->
         </div>
@@ -506,19 +506,21 @@
 
       const pageBox = document.getElementById("pageListContainer");
       const pages = (STATE.fb_pages && STATE.fb_pages.pages) || [];
-      const selId = STATE.fb_pages ? STATE.fb_pages.selected_page_id : "";
-      document.getElementById("pageCountPill").textContent = `✓ ${pages.length} Fanpage sẵn sàng`;
+      const selIds = (STATE.fb_pages && STATE.fb_pages.selected_page_ids && STATE.fb_pages.selected_page_ids.length)
+        ? STATE.fb_pages.selected_page_ids.map(String)
+        : (STATE.fb_pages && STATE.fb_pages.selected_page_id ? [String(STATE.fb_pages.selected_page_id)] : []);
+      document.getElementById("pageCountPill").textContent = `✓ ${selIds.length}/${pages.length} Page xoay vòng`;
 
       pageBox.innerHTML = pages.map(p => {
-        const isSel = String(p.id) === String(selId);
+        const isSel = selIds.includes(String(p.id));
         return `
-          <div class="page-item ${isSel ? 'active' : ''}" onclick="selectPage('${p.id}')">
+          <div class="page-item ${isSel ? 'active' : ''}" onclick="togglePage('${p.id}')">
             <div>
-              <div class="page-name">${p.name}</div>
+              <div class="page-name">${isSel ? '☑️' : '⬜'} ${p.name}</div>
               <div class="page-id">ID: ${p.id} • ${p.category || 'Fanpage'}</div>
             </div>
             <span style="font-size:12px; font-weight:800; color:${isSel ? '#00e676' : '#9499b8'}">
-              ${isSel ? '● Đang chọn' : 'Chọn'}
+              ${isSel ? '● Xoay vòng' : 'Bật'}
             </span>
           </div>
         `;
@@ -549,7 +551,9 @@
           let badgeText = "⏳ TRONG HÀNG ĐỢI TỰ ĐỘNG";
           if (isPosted) {
             badgeClass = "badge-posted";
-            badgeText = "✓ ĐÃ ĐĂNG SOCIAL";
+            badgeText = item.posted_page_name
+              ? `✓ ĐÃ ĐĂNG LÊN: ${item.posted_page_name}`
+              : "✓ ĐÃ ĐĂNG SOCIAL";
           } else if (isScheduled) {
             badgeClass = "badge-scheduled";
             badgeText = `⏰ HẸN GIỜ: ${item.scheduled_at.replace("T", " ")}`;
@@ -560,10 +564,13 @@
             ? rawUrl
             : `https://tho-news.com/?v=${item.id}`;
           const safeTitle = String(item.title || item.id).replace(/'/g, "\\'").replace(/"/g, "&quot;");
+          const pageOptions = `<option value="">🔄 Tự động xoay vòng (không trùng)</option>` + pages.map(p =>
+            `<option value="${p.id}">${p.name}</option>`
+          ).join("");
           return `
             <div class="queue-item">
               <div class="queue-info">
-                <div style="display:flex; align-items:center; gap:8px; margin-bottom:5px;">
+                <div style="display:flex; align-items:center; gap:8px; margin-bottom:5px; flex-wrap:wrap;">
                   <span class="badge-status ${badgeClass}">${badgeText}</span>
                   <span style="font-size:12px; color:var(--muted)">ID: <strong>${item.id}</strong> • Thời lượng: ${item.duration || '00:46'}</span>
                 </div>
@@ -576,6 +583,7 @@
                 </div>
               </div>
               <div class="queue-actions">
+                <select id="pageSel_${item.id}" style="padding:5px 8px; font-size:11px; border-radius:8px;">${pageOptions}</select>
                 <a class="btn btn-surface" href="${targetUrl}" target="_blank" style="text-align:center; text-decoration:none;">👁️ Xem Clip Trên Web</a>
                 <button class="btn btn-accent" onclick="triggerPost('${item.id}', false)">🚀 Đăng Thật Ngay</button>
                 <button class="btn btn-surface" style="color:#ff6b6b; border-color:rgba(255,107,107,0.45);" onclick="deleteVideoById('${item.id}', '${safeTitle}')">🗑️ Xóa khỏi Web & Queue</button>
@@ -644,29 +652,42 @@
       } catch (e) {}
     }
 
-    async function selectPage(pageId) {
-      STATE.fb_pages.selected_page_id = pageId;
-      renderUI();
+    async function togglePage(pageId) {
       try {
-        await fetch("/api/fb/select-page", {
+        const res = await fetch("/api/fb/toggle-page", {
           method: "POST",
+          headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ page_id: pageId })
         });
+        const data = await res.json();
+        if (data.ok && data.fb_pages) {
+          STATE.fb_pages = data.fb_pages;
+          renderUI();
+        }
       } catch (e) {}
     }
 
     async function triggerPost(videoId, simulate) {
+      const selEl = document.getElementById(`pageSel_${videoId}`);
+      const chosenPageId = selEl ? selEl.value : "";
       try {
         const res = await fetch("/api/social/post", {
           method: "POST",
-          body: JSON.stringify({ video_id: videoId, simulate: simulate })
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ video_id: videoId, simulate: simulate, page_id: chosenPageId || null })
         });
         const data = await res.json();
         if (data.ok) {
           STATE.queue = data.queue;
           STATE.history = data.history;
           renderUI();
-          alert(`Đã chạy đăng video '${videoId}' (${simulate ? 'Chế độ Test Giả Lập' : 'Chế độ Đăng Thật'}) + Tự động thả comment link thành công!`);
+          const fbRes = data.result && data.result.results && data.result.results.facebook;
+          if (!simulate && fbRes && fbRes.ok === false) {
+            alert(`❌ Lỗi đăng Facebook cho '${videoId}':\n${fbRes.error || 'Không xác định'}`);
+          } else {
+            const pName = (fbRes && fbRes.page_name) ? ` lên Page "${fbRes.page_name}"` : "";
+            alert(`✅ Đã đăng video '${videoId}'${pName} + Tự động thả comment link thành công!`);
+          }
         } else {
           alert("Thông báo: " + data.error);
         }

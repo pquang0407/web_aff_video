@@ -60,10 +60,23 @@ def save_facebook_cookies(cookies_raw: str) -> Dict[str, Any]:
 
 
 def get_page_config() -> Dict[str, Any]:
-    return config.load_json(
+    raw = config.load_json(
         config.FB_PAGE_CONFIG_FILE,
-        {"pages": [], "selected_page_id": ""},
+        {"pages": [], "selected_page_id": "", "selected_page_ids": [], "rr_cursor": 0},
     )
+    pages = raw.get("pages", [])
+    sel_id = str(raw.get("selected_page_id", "") or "")
+    sel_ids = [str(x) for x in (raw.get("selected_page_ids") or []) if str(x)]
+    valid_ids = {str(p.get("id")) for p in pages if isinstance(p, dict) and p.get("id")}
+    sel_ids = [x for x in sel_ids if x in valid_ids]
+    if not sel_ids and sel_id and sel_id in valid_ids:
+        sel_ids = [sel_id]
+    elif not sel_ids and pages:
+        sel_ids = [str(pages[0].get("id"))]
+    raw["selected_page_ids"] = sel_ids
+    raw["selected_page_id"] = sel_id or (sel_ids[0] if sel_ids else "")
+    raw["rr_cursor"] = int(raw.get("rr_cursor", 0) or 0)
+    return raw
 
 
 def get_page_config_public() -> Dict[str, Any]:
@@ -83,14 +96,72 @@ def get_page_config_public() -> Dict[str, Any]:
     return {
         "pages": safe_pages,
         "selected_page_id": raw.get("selected_page_id", ""),
+        "selected_page_ids": raw.get("selected_page_ids", []),
+        "rr_cursor": raw.get("rr_cursor", 0),
     }
 
 
-def save_page_config(pages: List[Dict[str, Any]], selected_page_id: Optional[str] = None) -> Dict[str, Any]:
-    sel_id = selected_page_id or (pages[0]["id"] if pages else "")
-    data = {"pages": pages, "selected_page_id": str(sel_id)}
+def save_page_config(
+    pages: List[Dict[str, Any]],
+    selected_page_id: Optional[str] = None,
+    selected_page_ids: Optional[List[str]] = None,
+    rr_cursor: Optional[int] = None,
+) -> Dict[str, Any]:
+    prev = config.load_json(config.FB_PAGE_CONFIG_FILE, {})
+    valid_ids = {str(p.get("id")) for p in pages if isinstance(p, dict) and p.get("id")}
+    sel_id = str(selected_page_id or prev.get("selected_page_id") or (pages[0]["id"] if pages else ""))
+    if selected_page_ids is not None:
+        sel_ids = [str(x) for x in selected_page_ids if str(x) in valid_ids]
+    else:
+        sel_ids = [str(x) for x in (prev.get("selected_page_ids") or []) if str(x) in valid_ids]
+    if not sel_ids and sel_id in valid_ids:
+        sel_ids = [sel_id]
+    elif not sel_ids and pages:
+        sel_ids = [str(pages[0]["id"])]
+    if sel_id not in valid_ids and sel_ids:
+        sel_id = sel_ids[0]
+    cursor = int(prev.get("rr_cursor", 0) or 0) if rr_cursor is None else int(rr_cursor)
+    data = {
+        "pages": pages,
+        "selected_page_id": sel_id,
+        "selected_page_ids": sel_ids,
+        "rr_cursor": cursor,
+    }
     config.save_json(config.FB_PAGE_CONFIG_FILE, data)
     return data
+
+
+def toggle_selected_page(page_id: str) -> Dict[str, Any]:
+    """Bật/tắt 1 Fanpage trong danh sách xoay vòng đăng không trùng video"""
+    pid = str(page_id).strip()
+    cfg = get_page_config()
+    pages = cfg.get("pages", [])
+    sel_ids = list(cfg.get("selected_page_ids", []))
+    if pid in sel_ids:
+        if len(sel_ids) > 1:
+            sel_ids.remove(pid)
+    else:
+        valid_ids = {str(p.get("id")) for p in pages}
+        if pid in valid_ids:
+            sel_ids.append(pid)
+    return save_page_config(pages, selected_page_id=sel_ids[0] if sel_ids else "", selected_page_ids=sel_ids)
+
+
+def pick_next_round_robin_page_id() -> str:
+    """Chọn Fanpage kế tiếp theo cơ chế xoay vòng Round-Robin (đảm bảo nhiều Page không đăng trùng clip)"""
+    cfg = get_page_config()
+    sel_ids = cfg.get("selected_page_ids", [])
+    if not sel_ids:
+        return cfg.get("selected_page_id", "")
+    cursor = int(cfg.get("rr_cursor", 0) or 0)
+    chosen = sel_ids[cursor % len(sel_ids)]
+    save_page_config(
+        cfg.get("pages", []),
+        selected_page_id=cfg.get("selected_page_id", chosen),
+        selected_page_ids=sel_ids,
+        rr_cursor=(cursor + 1) % max(1, len(sel_ids)),
+    )
+    return chosen
 
 
 def get_app_config() -> Dict[str, Any]:

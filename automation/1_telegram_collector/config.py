@@ -66,7 +66,7 @@ def save_settings(settings: dict):
 
 
 def get_video_stats() -> dict:
-    """Lấy số lượng video 3D Thỏ & Gấu thực tế (tự động dọn các file vid_TikTok cũ còn sót trên VM)"""
+    """Lấy số lượng video 3D Thỏ & Gấu chuẩn xác 100% khớp với web/videos_db.json (dọn file meta mồ côi)"""
     for stale in list(WEB_FULL_DIR.glob("*_meta.json")):
         if not stale.name.startswith("tho_gau_"):
             try:
@@ -81,16 +81,42 @@ def get_video_stats() -> dict:
                 pass
 
     raw_files = list(RAW_STORAGE_DIR.glob("*.mp4"))
-    meta_files = list(WEB_FULL_DIR.glob("tho_gau_*_meta.json"))
-    web_videos_dir = ROOT_DIR / "web" / "videos"
-    web_mp4s = list(web_videos_dir.glob("tho_gau_*.mp4")) if web_videos_dir.exists() else list(WEB_FULL_DIR.glob("tho_gau_*.mp4"))
-    count_published = max(len(meta_files), len(web_mp4s))
+    web_db_path = ROOT_DIR / "web" / "videos_db.json"
+    live_ids = []
+    if web_db_path.exists():
+        try:
+            db = json.loads(web_db_path.read_text(encoding="utf-8"))
+            live_ids = [k for k in (db.get("videos") or {}).keys() if k != "default"]
+        except Exception:
+            live_ids = []
+
+    live_id_set = set(live_ids)
+    # Dọn các file _meta.json mồ côi trên VM đã bị xóa khỏi web/videos_db.json để không bị lệch số đếm
+    if live_id_set:
+        for mp in list(WEB_FULL_DIR.glob("tho_gau_*_meta.json")):
+            vid_id = mp.stem.replace("_meta", "")
+            if vid_id not in live_id_set:
+                try:
+                    mp.unlink(missing_ok=True)
+                except Exception:
+                    pass
+
+    if live_ids:
+        count_published = len(live_ids)
+        social_files = live_ids
+    else:
+        meta_files = list(WEB_FULL_DIR.glob("tho_gau_*_meta.json"))
+        web_videos_dir = ROOT_DIR / "web" / "videos"
+        web_mp4s = list(web_videos_dir.glob("tho_gau_*.mp4")) if web_videos_dir.exists() else []
+        count_published = max(len(meta_files), len(web_mp4s))
+        social_files = [f.stem.replace("_meta", "") for f in meta_files]
+
     return {
         "raw_count": len(raw_files),
         "web_count": count_published,
         "social_count": count_published,
         "raw_files": [f.name for f in raw_files],
-        "social_files": [f.stem.replace("_meta", "") for f in meta_files]
+        "social_files": social_files,
     }
 
 

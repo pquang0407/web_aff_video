@@ -234,14 +234,17 @@ def post_video_to_social(
     target_platforms = platforms or sched_cfg.get("platforms", ["facebook", "threads"])
     results: Dict[str, Any] = {}
 
-    # 1. Đăng lên Facebook Fanpage + Auto Comment Link
+    # 1. Đăng lên Facebook Fanpage + Auto Comment Link (Hỗ trợ xoay vòng nhiều Page KHÔNG TRÙNG VIDEO)
     if "facebook" in target_platforms:
         try:
+            chosen_page_id = (page_id or "").strip() or (meta.get("assigned_page_id") or "").strip()
+            if not chosen_page_id:
+                chosen_page_id = fb_service.pick_next_round_robin_page_id()
             fb_res = fb_service.publish_video_and_auto_comment(
                 video_path=teaser_path,
                 caption=caption,
                 comment_text=comment_text,
-                page_id=page_id,
+                page_id=chosen_page_id,
                 simulate=simulate,
             )
             results["facebook"] = fb_res
@@ -263,9 +266,14 @@ def post_video_to_social(
             logger.warning(f"Lỗi khi đăng bài Threads: {th_err}")
             results["threads"] = {"ok": False, "error": str(th_err)}
 
-    # 3. Lưu trạng thái vào metadata và lịch sử
+    # 3. Lưu trạng thái vào metadata và lịch sử (chỉ đánh dấu đã đăng nếu Facebook ok hoặc simulate)
     now_iso = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-    meta["status"] = "posted_to_social"
+    fb_ok = bool(results.get("facebook", {}).get("ok"))
+    if fb_ok or simulate:
+        meta["status"] = "posted_to_social"
+        if results.get("facebook", {}).get("page_id"):
+            meta["posted_page_id"] = str(results["facebook"]["page_id"])
+            meta["posted_page_name"] = str(results["facebook"].get("page_name", ""))
     meta["last_posted_at"] = now_iso
     meta["social_results"] = results
     meta_path.write_text(json.dumps(meta, ensure_ascii=False, indent=2), encoding="utf-8")
