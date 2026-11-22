@@ -26,6 +26,18 @@ const CONFIG = {
     ]
   },
   "videos": {
+    "tho_gau_3d_20261122181847": {
+      "id": "tho_gau_3d_20261122181847",
+      "title": "[3D Thỏ & Gấu] Không phải chạy bộ hay bơi lội, đây mới là bài tập tốt nhất cho tim,...",
+      "duration": "00:46",
+      "views": "240.5K",
+      "likes": "17.8K",
+      "uploadDate": "Vừa xong",
+      "category": "🐰🐻 VŨ TRỤ THỎ & GẤU 3D",
+      "videoUrl": "videos/tho_gau_3d_20261122181847.mp4",
+      "posterUrl": "videos/tho_gau_3d_20261122181847_poster.jpg",
+      "description": "Bạn nghĩ chạy bộ là nhất? Thỏ Đỏ và Gấu Béo sẽ khai sáng cho bạn về bí kíp sống khỏe chuẩn chuyên gia! #ThỏVàGấu #SốngKhỏe #TimPhổi #TậpLuyệnThôngMinh"
+    },
     "tho_gau_3d_20261122102759": {
       "id": "tho_gau_3d_20261122102759",
       "title": "[3D Thỏ & Gấu] Nhà ở xã hội được chuyển nhượng theo giá thị trường nhưng phải đúng đối...",
@@ -172,15 +184,15 @@ const CONFIG = {
     },
     "default": {
       "id": "default",
-      "title": "[3D Thỏ & Gấu] Nhà ở xã hội được chuyển nhượng theo giá thị trường nhưng phải đúng đối...",
+      "title": "[3D Thỏ & Gấu] Không phải chạy bộ hay bơi lội, đây mới là bài tập tốt nhất cho tim,...",
       "duration": "00:46",
-      "views": "132.5K",
-      "likes": "32.8K",
+      "views": "240.5K",
+      "likes": "17.8K",
       "uploadDate": "Vừa xong",
       "category": "🐰🐻 VŨ TRỤ THỎ & GẤU 3D",
-      "videoUrl": "videos/tho_gau_3d_20261122102759.mp4",
-      "posterUrl": "videos/tho_gau_3d_20261122102759_poster.jpg",
-      "description": "Thỏ Đỏ và Gấu Béo cập nhật ngay luật nhà ở xã hội mới nhất từ 1/7/2027 cho cả nhà cùng nắm rõ nè! #NhaOXaHoi #LuatNhaO #ThoVaGau #TinTuc3D"
+      "videoUrl": "videos/tho_gau_3d_20261122181847.mp4",
+      "posterUrl": "videos/tho_gau_3d_20261122181847_poster.jpg",
+      "description": "Bạn nghĩ chạy bộ là nhất? Thỏ Đỏ và Gấu Béo sẽ khai sáng cho bạn về bí kíp sống khỏe chuẩn chuyên gia! #ThỏVàGấu #SốngKhỏe #TimPhổi #TậpLuyệnThôngMinh"
     }
   },
   "deals": [
