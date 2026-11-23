@@ -26,6 +26,18 @@ const CONFIG = {
     ]
   },
   "videos": {
+    "tho_gau_3d_20261123103717": {
+      "id": "tho_gau_3d_20261123103717",
+      "title": "[3D Thỏ & Gấu] Tỷ phú Nguyễn Thị Phương Thảo vừa bắt tay DN Trung Quốc, làm 1 việc tại...",
+      "duration": "00:46",
+      "views": "296.5K",
+      "likes": "33.8K",
+      "uploadDate": "Vừa xong",
+      "category": "🐰🐻 VŨ TRỤ THỎ & GẤU 3D",
+      "videoUrl": "videos/tho_gau_3d_20261123103717.mp4",
+      "posterUrl": "videos/tho_gau_3d_20261123103717_poster.jpg",
+      "description": "Thỏ Đỏ và Gấu Béo cùng khám phá thương vụ Vietjet bắt tay đối tác Trung Quốc để nâng tầm hàng không Việt! #Vietjet #LongThanh #HangKhong #ThoVaGau"
+    },
     "tho_gau_3d_20261123101412": {
       "id": "tho_gau_3d_20261123101412",
       "title": "[3D Thỏ & Gấu] Man Utd thảm bại trong trận ra mắt của Pochettino",
@@ -388,15 +400,15 @@ const CONFIG = {
     },
     "default": {
       "id": "default",
-      "title": "[3D Thỏ & Gấu] Man Utd thảm bại trong trận ra mắt của Pochettino",
+      "title": "[3D Thỏ & Gấu] Tỷ phú Nguyễn Thị Phương Thảo vừa bắt tay DN Trung Quốc, làm 1 việc tại...",
       "duration": "00:46",
-      "views": "360.5K",
-      "likes": "24.8K",
+      "views": "296.5K",
+      "likes": "33.8K",
       "uploadDate": "Vừa xong",
       "category": "🐰🐻 VŨ TRỤ THỎ & GẤU 3D",
-      "videoUrl": "videos/tho_gau_3d_20261123101412.mp4",
-      "posterUrl": "videos/tho_gau_3d_20261123101412_poster.jpg",
-      "description": "Man Utd thảm bại trong trận ra mắt của Pochettino sau thất bại nặng nề trước Liverpool tại Anfield! #ManUtd #Pochettino #NgoaiHangAnh #VuTruThoVaGau"
+      "videoUrl": "videos/tho_gau_3d_20261123103717.mp4",
+      "posterUrl": "videos/tho_gau_3d_20261123103717_poster.jpg",
+      "description": "Thỏ Đỏ và Gấu Béo cùng khám phá thương vụ Vietjet bắt tay đối tác Trung Quốc để nâng tầm hàng không Việt! #Vietjet #LongThanh #HangKhong #ThoVaGau"
     }
   },
   "deals": [
