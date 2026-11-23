@@ -26,6 +26,18 @@ const CONFIG = {
     ]
   },
   "videos": {
+    "tho_gau_3d_20261123143307": {
+      "id": "tho_gau_3d_20261123143307",
+      "title": "[3D Thỏ & Gấu] Quán mì miễn phí 3.000 bát mỗi ngày khiến hàng xóm lo mất khách",
+      "duration": "00:46",
+      "views": "161.5K",
+      "likes": "18.8K",
+      "uploadDate": "Vừa xong",
+      "category": "🐰🐻 VŨ TRỤ THỎ & GẤU 3D",
+      "videoUrl": "videos/tho_gau_3d_20261123143307.mp4",
+      "posterUrl": "videos/tho_gau_3d_20261123143307_poster.jpg",
+      "description": "Chuyện thật như đùa tại quán mì 0 đồng phát 3000 bát mỗi ngày khiến hàng xóm xôn xao lo mất khách. Cùng Thỏ Đỏ và Gấu Béo khám phá ngay sự thật đằng sau câu chuyện này nhé! #ThoVaGau #QuanMi0Dong #TinTuc3D #PixarAnimation"
+    },
     "tho_gau_3d_20261123140329": {
       "id": "tho_gau_3d_20261123140329",
       "title": "[3D Thỏ & Gấu] Những màn so tài trên sân bóng rổ trẻ 3x3 Festival",
@@ -496,15 +508,15 @@ const CONFIG = {
     },
     "default": {
       "id": "default",
-      "title": "[3D Thỏ & Gấu] Những màn so tài trên sân bóng rổ trẻ 3x3 Festival",
+      "title": "[3D Thỏ & Gấu] Quán mì miễn phí 3.000 bát mỗi ngày khiến hàng xóm lo mất khách",
       "duration": "00:46",
-      "views": "160.5K",
-      "likes": "19.8K",
+      "views": "161.5K",
+      "likes": "18.8K",
       "uploadDate": "Vừa xong",
       "category": "🐰🐻 VŨ TRỤ THỎ & GẤU 3D",
-      "videoUrl": "videos/tho_gau_3d_20261123140329.mp4",
-      "posterUrl": "videos/tho_gau_3d_20261123140329_poster.jpg",
-      "description": "Đại hội bóng rổ 3x3 Festival gọi tên ai? Thỏ Đỏ và Gấu Béo đã có màn so găng cực gắt trên sân đấu chuyên nghiệp nè cả nhà ơi! Xem ngay kẻo lỡ những khoảnh khắc siêu đáng yêu này nhé! #BongRo3x3 #ThoVaGau #3x3Festival #TheThaoTre"
+      "videoUrl": "videos/tho_gau_3d_20261123143307.mp4",
+      "posterUrl": "videos/tho_gau_3d_20261123143307_poster.jpg",
+      "description": "Chuyện thật như đùa tại quán mì 0 đồng phát 3000 bát mỗi ngày khiến hàng xóm xôn xao lo mất khách. Cùng Thỏ Đỏ và Gấu Béo khám phá ngay sự thật đằng sau câu chuyện này nhé! #ThoVaGau #QuanMi0Dong #TinTuc3D #PixarAnimation"
     }
   },
   "deals": [
