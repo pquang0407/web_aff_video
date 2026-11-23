@@ -22,6 +22,18 @@
     ]
   },
   "videos": {
+    "tho_gau_3d_20261123121000": {
+      "id": "tho_gau_3d_20261123121000",
+      "title": "[3D Thỏ & Gấu] Miền Trung có thể mưa trên 750 mm trong 7 ngày tới",
+      "duration": "00:46",
+      "views": "272.5K",
+      "likes": "19.8K",
+      "uploadDate": "Vừa xong",
+      "category": "🐰🐻 VŨ TRỤ THỎ & GẤU 3D",
+      "videoUrl": "videos/tho_gau_3d_20261123121000.mp4",
+      "posterUrl": "videos/tho_gau_3d_20261123121000_poster.jpg",
+      "description": "Cảnh báo khẩn cấp! Miền Trung đối mặt đợt mưa lớn kỷ lục từ 24-30/11 với lượng mưa hơn 750mm. Thỏ Đỏ và Gấu Béo cùng bà con cần chủ động phòng chống thiên tai ngay nhé! #ThoVaGau #TinMienTrung #CanhBaoMuaLon #ThoiTietVietNam"
+    },
     "tho_gau_3d_20261123114408": {
       "id": "tho_gau_3d_20261123114408",
       "title": "[3D Thỏ & Gấu] Chưa từng có ở Việt Nam: 1 doanh nghiệp Việt vượt loạt \"ông lớn\" quốc...",
@@ -432,15 +444,15 @@
     },
     "default": {
       "id": "default",
-      "title": "[3D Thỏ & Gấu] Chưa từng có ở Việt Nam: 1 doanh nghiệp Việt vượt loạt \"ông lớn\" quốc...",
+      "title": "[3D Thỏ & Gấu] Miền Trung có thể mưa trên 750 mm trong 7 ngày tới",
       "duration": "00:46",
-      "views": "270.5K",
-      "likes": "34.8K",
+      "views": "272.5K",
+      "likes": "19.8K",
       "uploadDate": "Vừa xong",
       "category": "🐰🐻 VŨ TRỤ THỎ & GẤU 3D",
-      "videoUrl": "videos/tho_gau_3d_20261123114408.mp4",
-      "posterUrl": "videos/tho_gau_3d_20261123114408_poster.jpg",
-      "description": "Viettel chính thức trở thành nhà mạng đầu tiên tại Việt Nam đạt chứng nhận Mạng tự trị Cấp độ 4 từ TM Forum, vượt qua nhiều ông lớn quốc tế! 🚀 #Viettel #MangTuTri #CongNgheVietNam #TMForum"
+      "videoUrl": "videos/tho_gau_3d_20261123121000.mp4",
+      "posterUrl": "videos/tho_gau_3d_20261123121000_poster.jpg",
+      "description": "Cảnh báo khẩn cấp! Miền Trung đối mặt đợt mưa lớn kỷ lục từ 24-30/11 với lượng mưa hơn 750mm. Thỏ Đỏ và Gấu Béo cùng bà con cần chủ động phòng chống thiên tai ngay nhé! #ThoVaGau #TinMienTrung #CanhBaoMuaLon #ThoiTietVietNam"
     }
   },
   "deals": [
