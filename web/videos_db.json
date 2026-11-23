@@ -22,6 +22,18 @@
     ]
   },
   "videos": {
+    "tho_gau_3d_20261123112104": {
+      "id": "tho_gau_3d_20261123112104",
+      "title": "[3D Thỏ & Gấu] Chuyên gia phong thủy: 4 loại cây nên trồng trong phòng khách, ban công...",
+      "duration": "00:46",
+      "views": "253.5K",
+      "likes": "28.8K",
+      "uploadDate": "Vừa xong",
+      "category": "🐰🐻 VŨ TRỤ THỎ & GẤU 3D",
+      "videoUrl": "videos/tho_gau_3d_20261123112104.mp4",
+      "posterUrl": "videos/tho_gau_3d_20261123112104_poster.jpg",
+      "description": "Khám phá ngay 4 loại cây phong thủy cực kỳ ý nghĩa giúp phòng khách và ban công nhà bạn hút tài lộc, may mắn theo chuyên gia! #VuTruThoVaGau #CayPhongThuy #NhaDep #MeoHay"
+    },
     "tho_gau_3d_20261123105841": {
       "id": "tho_gau_3d_20261123105841",
       "title": "[3D Thỏ & Gấu] Một loại ung thư đã được xác định nguyên nhân 80% ca bệnh: Người Việt...",
@@ -408,15 +420,15 @@
     },
     "default": {
       "id": "default",
-      "title": "[3D Thỏ & Gấu] Một loại ung thư đã được xác định nguyên nhân 80% ca bệnh: Người Việt...",
+      "title": "[3D Thỏ & Gấu] Chuyên gia phong thủy: 4 loại cây nên trồng trong phòng khách, ban công...",
       "duration": "00:46",
-      "views": "273.5K",
-      "likes": "23.8K",
+      "views": "253.5K",
+      "likes": "28.8K",
       "uploadDate": "Vừa xong",
       "category": "🐰🐻 VŨ TRỤ THỎ & GẤU 3D",
-      "videoUrl": "videos/tho_gau_3d_20261123105841.mp4",
-      "posterUrl": "videos/tho_gau_3d_20261123105841_poster.jpg",
-      "description": "Căn bệnh nguy hiểm hàng đầu tại Việt Nam đã sáng tỏ nguyên nhân nhưng nhiều người vẫn chủ quan. Xem ngay để bảo vệ sức khỏe! #VuTruThoVaGau #UngThuPhoi #BaoVeSucKhoe #TinTuc24h"
+      "videoUrl": "videos/tho_gau_3d_20261123112104.mp4",
+      "posterUrl": "videos/tho_gau_3d_20261123112104_poster.jpg",
+      "description": "Khám phá ngay 4 loại cây phong thủy cực kỳ ý nghĩa giúp phòng khách và ban công nhà bạn hút tài lộc, may mắn theo chuyên gia! #VuTruThoVaGau #CayPhongThuy #NhaDep #MeoHay"
     }
   },
   "deals": [
