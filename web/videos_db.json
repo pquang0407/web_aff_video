@@ -22,6 +22,18 @@
     ]
   },
   "videos": {
+    "tho_gau_3d_20261123072128": {
+      "id": "tho_gau_3d_20261123072128",
+      "title": "[3D Thỏ & Gấu] 3 con giáp đón mưa tài lộc trong ngày Rằm tháng 10 âm",
+      "duration": "00:46",
+      "views": "335.5K",
+      "likes": "34.8K",
+      "uploadDate": "Vừa xong",
+      "category": "🐰🐻 VŨ TRỤ THỎ & GẤU 3D",
+      "videoUrl": "videos/tho_gau_3d_20261123072128.mp4",
+      "posterUrl": "videos/tho_gau_3d_20261123072128_poster.jpg",
+      "description": "Cùng Thỏ Đỏ và Gấu Béo khám phá 3 con giáp cực kỳ may mắn, tài lộc vượng phát trong ngày Rằm tháng 10 âm lịch nhé! #ThoVaGau #TaiLoc #RamThang10 #PhongThuy"
+    },
     "tho_gau_3d_20261123065728": {
       "id": "tho_gau_3d_20261123065728",
       "title": "[3D Thỏ & Gấu] Việt Nam có một nơi được ví như 'Đà Lạt của miền Bắc', quanh năm mát...",
@@ -288,15 +300,15 @@
     },
     "default": {
       "id": "default",
-      "title": "[3D Thỏ & Gấu] Việt Nam có một nơi được ví như 'Đà Lạt của miền Bắc', quanh năm mát...",
+      "title": "[3D Thỏ & Gấu] 3 con giáp đón mưa tài lộc trong ngày Rằm tháng 10 âm",
       "duration": "00:46",
-      "views": "179.5K",
-      "likes": "26.8K",
+      "views": "335.5K",
+      "likes": "34.8K",
       "uploadDate": "Vừa xong",
       "category": "🐰🐻 VŨ TRỤ THỎ & GẤU 3D",
-      "videoUrl": "videos/tho_gau_3d_20261123065728.mp4",
-      "posterUrl": "videos/tho_gau_3d_20261123065728_poster.jpg",
-      "description": "Tam Đảo sắp có siêu hầm xuyên núi, rút ngắn 40km di chuyển! Cùng Thỏ Đỏ và Gấu Béo khám phá ngay xem có gì hấp dẫn nhé. #TamDao #DaLatMienBac #DuLichVietNam #ThoVaGau"
+      "videoUrl": "videos/tho_gau_3d_20261123072128.mp4",
+      "posterUrl": "videos/tho_gau_3d_20261123072128_poster.jpg",
+      "description": "Cùng Thỏ Đỏ và Gấu Béo khám phá 3 con giáp cực kỳ may mắn, tài lộc vượng phát trong ngày Rằm tháng 10 âm lịch nhé! #ThoVaGau #TaiLoc #RamThang10 #PhongThuy"
     }
   },
   "deals": [
