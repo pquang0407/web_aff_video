@@ -22,6 +22,18 @@
     ]
   },
   "videos": {
+    "tho_gau_3d_20261123101412": {
+      "id": "tho_gau_3d_20261123101412",
+      "title": "[3D Thỏ & Gấu] Man Utd thảm bại trong trận ra mắt của Pochettino",
+      "duration": "00:46",
+      "views": "360.5K",
+      "likes": "24.8K",
+      "uploadDate": "Vừa xong",
+      "category": "🐰🐻 VŨ TRỤ THỎ & GẤU 3D",
+      "videoUrl": "videos/tho_gau_3d_20261123101412.mp4",
+      "posterUrl": "videos/tho_gau_3d_20261123101412_poster.jpg",
+      "description": "Man Utd thảm bại trong trận ra mắt của Pochettino sau thất bại nặng nề trước Liverpool tại Anfield! #ManUtd #Pochettino #NgoaiHangAnh #VuTruThoVaGau"
+    },
     "tho_gau_3d_20261123094956": {
       "id": "tho_gau_3d_20261123094956",
       "title": "[3D Thỏ & Gấu] Lớp yoga cười giữa chợ Đồng Xuân",
@@ -372,15 +384,15 @@
     },
     "default": {
       "id": "default",
-      "title": "[3D Thỏ & Gấu] Lớp yoga cười giữa chợ Đồng Xuân",
+      "title": "[3D Thỏ & Gấu] Man Utd thảm bại trong trận ra mắt của Pochettino",
       "duration": "00:46",
-      "views": "132.5K",
+      "views": "360.5K",
       "likes": "24.8K",
       "uploadDate": "Vừa xong",
       "category": "🐰🐻 VŨ TRỤ THỎ & GẤU 3D",
-      "videoUrl": "videos/tho_gau_3d_20261123094956.mp4",
-      "posterUrl": "videos/tho_gau_3d_20261123094956_poster.jpg",
-      "description": "Cười thả ga cùng Thỏ Đỏ và Gấu Béo tại lớp yoga cười giữa chợ Đồng Xuân! Xem ngay video hoạt hình 3D Pixar cực kỳ hài hước và thư giãn nhé! #ThoVaGau #YogaCuoi #ChoDongXuan #PixarAnimation"
+      "videoUrl": "videos/tho_gau_3d_20261123101412.mp4",
+      "posterUrl": "videos/tho_gau_3d_20261123101412_poster.jpg",
+      "description": "Man Utd thảm bại trong trận ra mắt của Pochettino sau thất bại nặng nề trước Liverpool tại Anfield! #ManUtd #Pochettino #NgoaiHangAnh #VuTruThoVaGau"
     }
   },
   "deals": [
