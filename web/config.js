@@ -26,6 +26,18 @@ const CONFIG = {
     ]
   },
   "videos": {
+    "tho_gau_3d_20261123074725": {
+      "id": "tho_gau_3d_20261123074725",
+      "title": "[3D Thỏ & Gấu] Tất cả người dùng điện thoại Samsung kiểm tra điện thoại sớm khi thấy...",
+      "duration": "00:46",
+      "views": "333.5K",
+      "likes": "24.8K",
+      "uploadDate": "Vừa xong",
+      "category": "🐰🐻 VŨ TRỤ THỎ & GẤU 3D",
+      "videoUrl": "videos/tho_gau_3d_20261123074725.mp4",
+      "posterUrl": "videos/tho_gau_3d_20261123074725_poster.jpg",
+      "description": "Điện thoại Samsung bỗng xuất hiện biểu tượng giọt nước chớ có hoảng hốt! Hãy xem ngay bí kíp xử lý cực chuẩn để cứu chiếc dế yêu khỏi nguy cơ chập mạch và hỏng vĩnh viễn nhé các bạn! #ThoVaGau #Samsung #CongNghe #MeoHay"
+    },
     "tho_gau_3d_20261123072128": {
       "id": "tho_gau_3d_20261123072128",
       "title": "[3D Thỏ & Gấu] 3 con giáp đón mưa tài lộc trong ngày Rằm tháng 10 âm",
@@ -304,15 +316,15 @@ const CONFIG = {
     },
     "default": {
       "id": "default",
-      "title": "[3D Thỏ & Gấu] 3 con giáp đón mưa tài lộc trong ngày Rằm tháng 10 âm",
+      "title": "[3D Thỏ & Gấu] Tất cả người dùng điện thoại Samsung kiểm tra điện thoại sớm khi thấy...",
       "duration": "00:46",
-      "views": "335.5K",
-      "likes": "34.8K",
+      "views": "333.5K",
+      "likes": "24.8K",
       "uploadDate": "Vừa xong",
       "category": "🐰🐻 VŨ TRỤ THỎ & GẤU 3D",
-      "videoUrl": "videos/tho_gau_3d_20261123072128.mp4",
-      "posterUrl": "videos/tho_gau_3d_20261123072128_poster.jpg",
-      "description": "Cùng Thỏ Đỏ và Gấu Béo khám phá 3 con giáp cực kỳ may mắn, tài lộc vượng phát trong ngày Rằm tháng 10 âm lịch nhé! #ThoVaGau #TaiLoc #RamThang10 #PhongThuy"
+      "videoUrl": "videos/tho_gau_3d_20261123074725.mp4",
+      "posterUrl": "videos/tho_gau_3d_20261123074725_poster.jpg",
+      "description": "Điện thoại Samsung bỗng xuất hiện biểu tượng giọt nước chớ có hoảng hốt! Hãy xem ngay bí kíp xử lý cực chuẩn để cứu chiếc dế yêu khỏi nguy cơ chập mạch và hỏng vĩnh viễn nhé các bạn! #ThoVaGau #Samsung #CongNghe #MeoHay"
     }
   },
   "deals": [
