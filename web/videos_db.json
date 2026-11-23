@@ -22,6 +22,18 @@
     ]
   },
   "videos": {
+    "tho_gau_3d_20261123150654": {
+      "id": "tho_gau_3d_20261123150654",
+      "title": "[3D Thỏ & Gấu] Cách nắm bàn tay tiết lộ bạn",
+      "duration": "00:46",
+      "views": "304.5K",
+      "likes": "27.8K",
+      "uploadDate": "Vừa xong",
+      "category": "🐰🐻 VŨ TRỤ THỎ & GẤU 3D",
+      "videoUrl": "videos/tho_gau_3d_20261123150654.mp4",
+      "posterUrl": "videos/tho_gau_3d_20261123150654_poster.jpg",
+      "description": "Thỏ Đỏ và Gấu Béo phát hiện ra cách nắm tay cực chuẩn xác giúp tiết lộ vận mệnh giàu nghèo cực thú vị. Cùng xem ngay nhé! #ThoVaGau #CachNamBanTay #KhamPha #Trending"
+    },
     "tho_gau_3d_20261123143307": {
       "id": "tho_gau_3d_20261123143307",
       "title": "[3D Thỏ & Gấu] Quán mì miễn phí 3.000 bát mỗi ngày khiến hàng xóm lo mất khách",
@@ -504,15 +516,15 @@
     },
     "default": {
       "id": "default",
-      "title": "[3D Thỏ & Gấu] Quán mì miễn phí 3.000 bát mỗi ngày khiến hàng xóm lo mất khách",
+      "title": "[3D Thỏ & Gấu] Cách nắm bàn tay tiết lộ bạn",
       "duration": "00:46",
-      "views": "161.5K",
-      "likes": "18.8K",
+      "views": "304.5K",
+      "likes": "27.8K",
       "uploadDate": "Vừa xong",
       "category": "🐰🐻 VŨ TRỤ THỎ & GẤU 3D",
-      "videoUrl": "videos/tho_gau_3d_20261123143307.mp4",
-      "posterUrl": "videos/tho_gau_3d_20261123143307_poster.jpg",
-      "description": "Chuyện thật như đùa tại quán mì 0 đồng phát 3000 bát mỗi ngày khiến hàng xóm xôn xao lo mất khách. Cùng Thỏ Đỏ và Gấu Béo khám phá ngay sự thật đằng sau câu chuyện này nhé! #ThoVaGau #QuanMi0Dong #TinTuc3D #PixarAnimation"
+      "videoUrl": "videos/tho_gau_3d_20261123150654.mp4",
+      "posterUrl": "videos/tho_gau_3d_20261123150654_poster.jpg",
+      "description": "Thỏ Đỏ và Gấu Béo phát hiện ra cách nắm tay cực chuẩn xác giúp tiết lộ vận mệnh giàu nghèo cực thú vị. Cùng xem ngay nhé! #ThoVaGau #CachNamBanTay #KhamPha #Trending"
     }
   },
   "deals": [
