@@ -22,6 +22,18 @@
     ]
   },
   "videos": {
+    "tho_gau_3d_20261123065728": {
+      "id": "tho_gau_3d_20261123065728",
+      "title": "[3D Thỏ & Gấu] Việt Nam có một nơi được ví như 'Đà Lạt của miền Bắc', quanh năm mát...",
+      "duration": "00:46",
+      "views": "179.5K",
+      "likes": "26.8K",
+      "uploadDate": "Vừa xong",
+      "category": "🐰🐻 VŨ TRỤ THỎ & GẤU 3D",
+      "videoUrl": "videos/tho_gau_3d_20261123065728.mp4",
+      "posterUrl": "videos/tho_gau_3d_20261123065728_poster.jpg",
+      "description": "Tam Đảo sắp có siêu hầm xuyên núi, rút ngắn 40km di chuyển! Cùng Thỏ Đỏ và Gấu Béo khám phá ngay xem có gì hấp dẫn nhé. #TamDao #DaLatMienBac #DuLichVietNam #ThoVaGau"
+    },
     "tho_gau_3d_20261123063305": {
       "id": "tho_gau_3d_20261123063305",
       "title": "[3D Thỏ & Gấu] Chồng mất 4 năm, tôi muốn tái giá và đưa con trai theo, bố mẹ chồng bất...",
@@ -276,15 +288,15 @@
     },
     "default": {
       "id": "default",
-      "title": "[3D Thỏ & Gấu] Chồng mất 4 năm, tôi muốn tái giá và đưa con trai theo, bố mẹ chồng bất...",
+      "title": "[3D Thỏ & Gấu] Việt Nam có một nơi được ví như 'Đà Lạt của miền Bắc', quanh năm mát...",
       "duration": "00:46",
-      "views": "180.5K",
-      "likes": "25.8K",
+      "views": "179.5K",
+      "likes": "26.8K",
       "uploadDate": "Vừa xong",
       "category": "🐰🐻 VŨ TRỤ THỎ & GẤU 3D",
-      "videoUrl": "videos/tho_gau_3d_20261123063305.mp4",
-      "posterUrl": "videos/tho_gau_3d_20261123063305_poster.jpg",
-      "description": "Câu chuyện đầy trăn trở về người vợ trẻ muốn tái giá sau 4 năm chồng mất và lời đề nghị bất ngờ từ bố mẹ chồng. Bạn sẽ chọn ở lại hay ra đi? #ThoVaGau #TinNong #GiaDinh #TamSu"
+      "videoUrl": "videos/tho_gau_3d_20261123065728.mp4",
+      "posterUrl": "videos/tho_gau_3d_20261123065728_poster.jpg",
+      "description": "Tam Đảo sắp có siêu hầm xuyên núi, rút ngắn 40km di chuyển! Cùng Thỏ Đỏ và Gấu Béo khám phá ngay xem có gì hấp dẫn nhé. #TamDao #DaLatMienBac #DuLichVietNam #ThoVaGau"
     }
   },
   "deals": [
