@@ -26,6 +26,18 @@ const CONFIG = {
     ]
   },
   "videos": {
+    "tho_gau_3d_20261123123454": {
+      "id": "tho_gau_3d_20261123123454",
+      "title": "[3D Thỏ & Gấu] Vượt đèn đỏ sẽ bị phạt thế nào theo đề xuất mới?",
+      "duration": "00:46",
+      "views": "150.5K",
+      "likes": "28.8K",
+      "uploadDate": "Vừa xong",
+      "category": "🐰🐻 VŨ TRỤ THỎ & GẤU 3D",
+      "videoUrl": "videos/tho_gau_3d_20261123123454.mp4",
+      "posterUrl": "videos/tho_gau_3d_20261123123454_poster.jpg",
+      "description": "Thỏ Đỏ và Gấu Béo sẽ đưa bạn đi tìm hiểu ngay các mức xử phạt cực kỳ nghiêm khắc đối với hành vi vượt đèn đỏ theo đề xuất mới nhất nhé! #VuotDenDo #GiaoThong #ThoVaGau #TinNong"
+    },
     "tho_gau_3d_20261123121000": {
       "id": "tho_gau_3d_20261123121000",
       "title": "[3D Thỏ & Gấu] Miền Trung có thể mưa trên 750 mm trong 7 ngày tới",
@@ -448,15 +460,15 @@ const CONFIG = {
     },
     "default": {
       "id": "default",
-      "title": "[3D Thỏ & Gấu] Miền Trung có thể mưa trên 750 mm trong 7 ngày tới",
+      "title": "[3D Thỏ & Gấu] Vượt đèn đỏ sẽ bị phạt thế nào theo đề xuất mới?",
       "duration": "00:46",
-      "views": "272.5K",
-      "likes": "19.8K",
+      "views": "150.5K",
+      "likes": "28.8K",
       "uploadDate": "Vừa xong",
       "category": "🐰🐻 VŨ TRỤ THỎ & GẤU 3D",
-      "videoUrl": "videos/tho_gau_3d_20261123121000.mp4",
-      "posterUrl": "videos/tho_gau_3d_20261123121000_poster.jpg",
-      "description": "Cảnh báo khẩn cấp! Miền Trung đối mặt đợt mưa lớn kỷ lục từ 24-30/11 với lượng mưa hơn 750mm. Thỏ Đỏ và Gấu Béo cùng bà con cần chủ động phòng chống thiên tai ngay nhé! #ThoVaGau #TinMienTrung #CanhBaoMuaLon #ThoiTietVietNam"
+      "videoUrl": "videos/tho_gau_3d_20261123123454.mp4",
+      "posterUrl": "videos/tho_gau_3d_20261123123454_poster.jpg",
+      "description": "Thỏ Đỏ và Gấu Béo sẽ đưa bạn đi tìm hiểu ngay các mức xử phạt cực kỳ nghiêm khắc đối với hành vi vượt đèn đỏ theo đề xuất mới nhất nhé! #VuotDenDo #GiaoThong #ThoVaGau #TinNong"
     }
   },
   "deals": [
