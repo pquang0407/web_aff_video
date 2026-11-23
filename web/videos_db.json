@@ -22,6 +22,18 @@
     ]
   },
   "videos": {
+    "tho_gau_3d_20261123060846": {
+      "id": "tho_gau_3d_20261123060846",
+      "title": "[3D Thỏ & Gấu] Thắp hương xong nhớ hạ 3 thứ này khỏi bàn thờ",
+      "duration": "00:46",
+      "views": "237.5K",
+      "likes": "18.8K",
+      "uploadDate": "Vừa xong",
+      "category": "🐰🐻 VŨ TRỤ THỎ & GẤU 3D",
+      "videoUrl": "videos/tho_gau_3d_20261123060846.mp4",
+      "posterUrl": "videos/tho_gau_3d_20261123060846_poster.jpg",
+      "description": "Thắp hương xong nhớ hạ ngay 3 thứ này khỏi bàn thờ để vừa giữ gìn vệ sinh vừa bảo đảm an toàn thực phẩm cho cả nhà nhé! #ThoVaGau #BanTho #PhongThucViet #AnToanThucPham"
+    },
     "tho_gau_3d_20261122204110": {
       "id": "tho_gau_3d_20261122204110",
       "title": "[3D Thỏ & Gấu] Neymar thắng giải poker, nhận hơn 63.000 USD",
@@ -252,15 +264,15 @@
     },
     "default": {
       "id": "default",
-      "title": "[3D Thỏ & Gấu] Neymar thắng giải poker, nhận hơn 63.000 USD",
+      "title": "[3D Thỏ & Gấu] Thắp hương xong nhớ hạ 3 thứ này khỏi bàn thờ",
       "duration": "00:46",
-      "views": "324.5K",
-      "likes": "21.8K",
+      "views": "237.5K",
+      "likes": "18.8K",
       "uploadDate": "Vừa xong",
       "category": "🐰🐻 VŨ TRỤ THỎ & GẤU 3D",
-      "videoUrl": "videos/tho_gau_3d_20261122204110.mp4",
-      "posterUrl": "videos/tho_gau_3d_20261122204110_poster.jpg",
-      "description": "Thỏ Đỏ và Gấu Béo trầm trồ khi Neymar vừa đá bóng đỉnh cao vừa ôm trọn cúp vô địch poker cực ngầu! #Neymar #Poker #ThoVaGau #BongDa"
+      "videoUrl": "videos/tho_gau_3d_20261123060846.mp4",
+      "posterUrl": "videos/tho_gau_3d_20261123060846_poster.jpg",
+      "description": "Thắp hương xong nhớ hạ ngay 3 thứ này khỏi bàn thờ để vừa giữ gìn vệ sinh vừa bảo đảm an toàn thực phẩm cho cả nhà nhé! #ThoVaGau #BanTho #PhongThucViet #AnToanThucPham"
     }
   },
   "deals": [
