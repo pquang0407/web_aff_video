@@ -22,6 +22,18 @@
     ]
   },
   "videos": {
+    "tho_gau_3d_20261123140329": {
+      "id": "tho_gau_3d_20261123140329",
+      "title": "[3D Thỏ & Gấu] Những màn so tài trên sân bóng rổ trẻ 3x3 Festival",
+      "duration": "00:46",
+      "views": "160.5K",
+      "likes": "19.8K",
+      "uploadDate": "Vừa xong",
+      "category": "🐰🐻 VŨ TRỤ THỎ & GẤU 3D",
+      "videoUrl": "videos/tho_gau_3d_20261123140329.mp4",
+      "posterUrl": "videos/tho_gau_3d_20261123140329_poster.jpg",
+      "description": "Đại hội bóng rổ 3x3 Festival gọi tên ai? Thỏ Đỏ và Gấu Béo đã có màn so găng cực gắt trên sân đấu chuyên nghiệp nè cả nhà ơi! Xem ngay kẻo lỡ những khoảnh khắc siêu đáng yêu này nhé! #BongRo3x3 #ThoVaGau #3x3Festival #TheThaoTre"
+    },
     "tho_gau_3d_20261123132126": {
       "id": "tho_gau_3d_20261123132126",
       "title": "[3D Thỏ & Gấu] Hơn 40 thương hiệu tham gia triển lãm ôtô, xe máy lớn nhất Việt Nam 2026",
@@ -480,15 +492,15 @@
     },
     "default": {
       "id": "default",
-      "title": "[3D Thỏ & Gấu] Hơn 40 thương hiệu tham gia triển lãm ôtô, xe máy lớn nhất Việt Nam 2026",
+      "title": "[3D Thỏ & Gấu] Những màn so tài trên sân bóng rổ trẻ 3x3 Festival",
       "duration": "00:46",
-      "views": "211.5K",
-      "likes": "12.8K",
+      "views": "160.5K",
+      "likes": "19.8K",
       "uploadDate": "Vừa xong",
       "category": "🐰🐻 VŨ TRỤ THỎ & GẤU 3D",
-      "videoUrl": "videos/tho_gau_3d_20261123132126.mp4",
-      "posterUrl": "videos/tho_gau_3d_20261123132126_poster.jpg",
-      "description": "Đại tiệc siêu xe đổ bộ thủ đô Hà Nội, Thỏ Đỏ và Gấu Béo đã sẵn sàng lái thử chưa? Cùng khám phá triển lãm hoành tráng nhất năm nhé! #VietnamMobilityShow2026 #ThoVaGau #SieuXe #TrienLamOto"
+      "videoUrl": "videos/tho_gau_3d_20261123140329.mp4",
+      "posterUrl": "videos/tho_gau_3d_20261123140329_poster.jpg",
+      "description": "Đại hội bóng rổ 3x3 Festival gọi tên ai? Thỏ Đỏ và Gấu Béo đã có màn so găng cực gắt trên sân đấu chuyên nghiệp nè cả nhà ơi! Xem ngay kẻo lỡ những khoảnh khắc siêu đáng yêu này nhé! #BongRo3x3 #ThoVaGau #3x3Festival #TheThaoTre"
     }
   },
   "deals": [
