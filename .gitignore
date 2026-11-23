@@ -16,12 +16,11 @@ automation/1_telegram_collector/fb_cookies.txt
 automation/1_telegram_collector/ytdlp_archive.txt
 storage/rabbit_bear_fifo_queue.json
 
-# File video dung lượng lớn (MP4, MKV, MOV, TS)
+# File video & metadata runtime trên VM (không để git reset khôi phục bài đã đăng)
 storage/_legacy_archive/*
 storage/1_raw/*
-storage/2_web_full/*.mp4
-storage/3_social_teaser/*.mp4
-storage/3_social_teaser/*.mp3
+storage/2_web_full/*
+storage/3_social_teaser/*
 !storage/1_raw/.gitkeep
 !storage/2_web_full/.gitkeep
 !storage/3_social_teaser/.gitkeep

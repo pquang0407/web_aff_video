@@ -26,9 +26,34 @@ logger = logging.getLogger("SocialPoster")
 
 
 def get_posted_video_registry() -> Dict[str, Any]:
-    """Danh sách vĩnh viễn các video ID đã đăng lên Facebook (chống trùng 100% ngay cả sau khi xóa file trong storage/)"""
+    """
+    Danh sách vĩnh viễn các video ID đã đăng lên Facebook (chống trùng 100%).
+    Tự động hợp nhất thêm dữ liệu từ post_history.json để các clip đã đăng trước đó
+    KHÔNG BAO GIỜ bị đăng lặp lại kể cả sau khi git reset --hard!
+    """
     reg = config.load_json(config.POSTED_VIDEO_IDS_FILE, {})
-    return reg if isinstance(reg, dict) else {}
+    if not isinstance(reg, dict):
+        reg = {}
+
+    changed = False
+    for h in get_post_history():
+        if not isinstance(h, dict):
+            continue
+        if h.get("mode") == "simulation":
+            continue
+        vid_id = str(h.get("video_id", "") or "").strip()
+        fb_res = (h.get("results") or {}).get("facebook") or {}
+        if vid_id and fb_res.get("ok") is True and vid_id not in reg:
+            reg[vid_id] = {
+                "page_id": str(fb_res.get("page_id", "") or ""),
+                "page_name": str(fb_res.get("page_name", "") or ""),
+                "posted_at": str(h.get("posted_at", "") or ""),
+            }
+            changed = True
+
+    if changed:
+        config.save_json(config.POSTED_VIDEO_IDS_FILE, reg)
+    return reg
 
 
 def mark_video_posted_and_free_storage(video_id: str, page_id: str = "", page_name: str = "", posted_at: str = "") -> List[str]:
@@ -259,15 +284,47 @@ def post_video_to_social(
     page_id: Optional[str] = None,
     custom_caption: Optional[str] = None,
     simulate: bool = False,
+    allow_duplicate: bool = True,
 ) -> Dict[str, Any]:
     """
     Đăng 1 video Teaser lên Facebook Fanpage & Threads + Tự động bình luận link Web Player
     """
-    meta_path = config.FULL_DIR / f"{video_id}_meta.json"
-    if not meta_path.exists():
-        raise FileNotFoundError(f"Không tìm thấy metadata cho video '{video_id}' tại {meta_path}")
+    if not simulate and not allow_duplicate:
+        posted_reg = get_posted_video_registry()
+        if video_id in posted_reg:
+            prev = posted_reg[video_id]
+            logger.warning(
+                f"🛡️ [CHỐNG TRÙNG] Bỏ qua video '{video_id}' vì đã từng đăng lên Page '{prev.get('page_name')}' lúc {prev.get('posted_at')}!"
+            )
+            return {
+                "video_id": video_id,
+                "skipped_duplicate": True,
+                "previous_post": prev,
+                "results": {"facebook": {"ok": False, "skipped": True, "error": "Đã đăng trước đó"}},
+            }
 
-    meta = json.loads(meta_path.read_text(encoding="utf-8"))
+    meta_path = config.FULL_DIR / f"{video_id}_meta.json"
+    if meta_path.exists():
+        meta = json.loads(meta_path.read_text(encoding="utf-8"))
+    else:
+        # Fallback đọc từ web/videos_db.json nếu file meta trong storage đã được dọn
+        web_db_path = config.BASE_DIR / "web" / "videos_db.json"
+        vid_info = {}
+        if web_db_path.exists():
+            try:
+                db = json.loads(web_db_path.read_text(encoding="utf-8"))
+                vid_info = (db.get("videos") or {}).get(video_id) or {}
+            except Exception:
+                pass
+        if not vid_info:
+            raise FileNotFoundError(f"Không tìm thấy metadata cho video '{video_id}' tại {meta_path}")
+        meta = {
+            "id": video_id,
+            "title": vid_info.get("title", video_id),
+            "social_caption": vid_info.get("description") or vid_info.get("title", video_id),
+            "web_video_url": vid_info.get("videoUrl", f"videos/{video_id}.mp4"),
+            "target_web_url": f"https://tho-news.com/?v={video_id}",
+        }
     candidates = [
         config.TEASER_DIR / f"{video_id}_teaser.mp4",
         config.FULL_DIR / f"{video_id}.mp4",

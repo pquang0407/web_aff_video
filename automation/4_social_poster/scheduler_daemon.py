@@ -55,6 +55,7 @@ def check_and_run_due_posts() -> Optional[Dict[str, Any]]:
                 res = poster.post_video_to_social(
                     video_id=vid_id,
                     simulate=bool(sched.get("simulate_mode", False)),
+                    allow_duplicate=False,
                 )
                 config.save_scheduler_config({"last_auto_run": now.isoformat()})
                 return res
@@ -119,6 +120,7 @@ def check_and_run_due_posts() -> Optional[Dict[str, Any]]:
                     video_id=vid_id,
                     page_id=target_pid,
                     simulate=bool(sched.get("simulate_mode", False)),
+                    allow_duplicate=False,
                 )
                 batch_results.append(res)
             except Exception as post_err:
