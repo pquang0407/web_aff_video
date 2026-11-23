@@ -26,6 +26,18 @@ const CONFIG = {
     ]
   },
   "videos": {
+    "tho_gau_3d_20261123125749": {
+      "id": "tho_gau_3d_20261123125749",
+      "title": "[3D Thỏ & Gấu] Bong bóng AI liệu đã vỡ?",
+      "duration": "00:46",
+      "views": "129.5K",
+      "likes": "16.8K",
+      "uploadDate": "Vừa xong",
+      "category": "🐰🐻 VŨ TRỤ THỎ & GẤU 3D",
+      "videoUrl": "videos/tho_gau_3d_20261123125749.mp4",
+      "posterUrl": "videos/tho_gau_3d_20261123125749_poster.jpg",
+      "description": "Cổ phiếu AI sụt giảm mạnh khiến nhà đầu tư lo lắng liệu bong bóng công nghệ đã thực sự vỡ hay chưa. Cùng Thỏ Đỏ & Gấu Béo mổ xẻ ngay nhé! #BongBongAI #ThiGiaoDich #ThoVaGau #TinTuc3D"
+    },
     "tho_gau_3d_20261123123454": {
       "id": "tho_gau_3d_20261123123454",
       "title": "[3D Thỏ & Gấu] Vượt đèn đỏ sẽ bị phạt thế nào theo đề xuất mới?",
@@ -460,15 +472,15 @@ const CONFIG = {
     },
     "default": {
       "id": "default",
-      "title": "[3D Thỏ & Gấu] Vượt đèn đỏ sẽ bị phạt thế nào theo đề xuất mới?",
+      "title": "[3D Thỏ & Gấu] Bong bóng AI liệu đã vỡ?",
       "duration": "00:46",
-      "views": "150.5K",
-      "likes": "28.8K",
+      "views": "129.5K",
+      "likes": "16.8K",
       "uploadDate": "Vừa xong",
       "category": "🐰🐻 VŨ TRỤ THỎ & GẤU 3D",
-      "videoUrl": "videos/tho_gau_3d_20261123123454.mp4",
-      "posterUrl": "videos/tho_gau_3d_20261123123454_poster.jpg",
-      "description": "Thỏ Đỏ và Gấu Béo sẽ đưa bạn đi tìm hiểu ngay các mức xử phạt cực kỳ nghiêm khắc đối với hành vi vượt đèn đỏ theo đề xuất mới nhất nhé! #VuotDenDo #GiaoThong #ThoVaGau #TinNong"
+      "videoUrl": "videos/tho_gau_3d_20261123125749.mp4",
+      "posterUrl": "videos/tho_gau_3d_20261123125749_poster.jpg",
+      "description": "Cổ phiếu AI sụt giảm mạnh khiến nhà đầu tư lo lắng liệu bong bóng công nghệ đã thực sự vỡ hay chưa. Cùng Thỏ Đỏ & Gấu Béo mổ xẻ ngay nhé! #BongBongAI #ThiGiaoDich #ThoVaGau #TinTuc3D"
     }
   },
   "deals": [
