@@ -22,6 +22,18 @@
     ]
   },
   "videos": {
+    "tho_gau_3d_20261123132126": {
+      "id": "tho_gau_3d_20261123132126",
+      "title": "[3D Thỏ & Gấu] Hơn 40 thương hiệu tham gia triển lãm ôtô, xe máy lớn nhất Việt Nam 2026",
+      "duration": "00:46",
+      "views": "211.5K",
+      "likes": "12.8K",
+      "uploadDate": "Vừa xong",
+      "category": "🐰🐻 VŨ TRỤ THỎ & GẤU 3D",
+      "videoUrl": "videos/tho_gau_3d_20261123132126.mp4",
+      "posterUrl": "videos/tho_gau_3d_20261123132126_poster.jpg",
+      "description": "Đại tiệc siêu xe đổ bộ thủ đô Hà Nội, Thỏ Đỏ và Gấu Béo đã sẵn sàng lái thử chưa? Cùng khám phá triển lãm hoành tráng nhất năm nhé! #VietnamMobilityShow2026 #ThoVaGau #SieuXe #TrienLamOto"
+    },
     "tho_gau_3d_20261123125749": {
       "id": "tho_gau_3d_20261123125749",
       "title": "[3D Thỏ & Gấu] Bong bóng AI liệu đã vỡ?",
@@ -468,15 +480,15 @@
     },
     "default": {
       "id": "default",
-      "title": "[3D Thỏ & Gấu] Bong bóng AI liệu đã vỡ?",
+      "title": "[3D Thỏ & Gấu] Hơn 40 thương hiệu tham gia triển lãm ôtô, xe máy lớn nhất Việt Nam 2026",
       "duration": "00:46",
-      "views": "129.5K",
-      "likes": "16.8K",
+      "views": "211.5K",
+      "likes": "12.8K",
       "uploadDate": "Vừa xong",
       "category": "🐰🐻 VŨ TRỤ THỎ & GẤU 3D",
-      "videoUrl": "videos/tho_gau_3d_20261123125749.mp4",
-      "posterUrl": "videos/tho_gau_3d_20261123125749_poster.jpg",
-      "description": "Cổ phiếu AI sụt giảm mạnh khiến nhà đầu tư lo lắng liệu bong bóng công nghệ đã thực sự vỡ hay chưa. Cùng Thỏ Đỏ & Gấu Béo mổ xẻ ngay nhé! #BongBongAI #ThiGiaoDich #ThoVaGau #TinTuc3D"
+      "videoUrl": "videos/tho_gau_3d_20261123132126.mp4",
+      "posterUrl": "videos/tho_gau_3d_20261123132126_poster.jpg",
+      "description": "Đại tiệc siêu xe đổ bộ thủ đô Hà Nội, Thỏ Đỏ và Gấu Béo đã sẵn sàng lái thử chưa? Cùng khám phá triển lãm hoành tráng nhất năm nhé! #VietnamMobilityShow2026 #ThoVaGau #SieuXe #TrienLamOto"
     }
   },
   "deals": [
