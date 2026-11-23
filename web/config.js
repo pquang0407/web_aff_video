@@ -26,6 +26,18 @@ const CONFIG = {
     ]
   },
   "videos": {
+    "tho_gau_3d_20261123081008": {
+      "id": "tho_gau_3d_20261123081008",
+      "title": "[3D Thỏ & Gấu] Đang đi thì rụng rời trục bánh, hãng xe Trung Quốc triệu hồi hơn 50.000...",
+      "duration": "00:46",
+      "views": "134.5K",
+      "likes": "17.8K",
+      "uploadDate": "Vừa xong",
+      "category": "🐰🐻 VŨ TRỤ THỎ & GẤU 3D",
+      "videoUrl": "videos/tho_gau_3d_20261123081008.mp4",
+      "posterUrl": "videos/tho_gau_3d_20261123081008_poster.jpg",
+      "description": "Hãng xe Trung Quốc điêu đứng triệu hồi hơn năm mươi nghìn xe vì sự cố rụng rời trục bánh nguy hiểm! Xem ngay Thỏ Đỏ và Gấu Béo bóc trần sự thật xe có ảnh hưởng tại Việt Nam chưa nhé! #ThoVaGau #XeTrungQuoc #TrieuHoiXe #TinTuc3D"
+    },
     "tho_gau_3d_20261123074725": {
       "id": "tho_gau_3d_20261123074725",
       "title": "[3D Thỏ & Gấu] Tất cả người dùng điện thoại Samsung kiểm tra điện thoại sớm khi thấy...",
@@ -316,15 +328,15 @@ const CONFIG = {
     },
     "default": {
       "id": "default",
-      "title": "[3D Thỏ & Gấu] Tất cả người dùng điện thoại Samsung kiểm tra điện thoại sớm khi thấy...",
+      "title": "[3D Thỏ & Gấu] Đang đi thì rụng rời trục bánh, hãng xe Trung Quốc triệu hồi hơn 50.000...",
       "duration": "00:46",
-      "views": "333.5K",
-      "likes": "24.8K",
+      "views": "134.5K",
+      "likes": "17.8K",
       "uploadDate": "Vừa xong",
       "category": "🐰🐻 VŨ TRỤ THỎ & GẤU 3D",
-      "videoUrl": "videos/tho_gau_3d_20261123074725.mp4",
-      "posterUrl": "videos/tho_gau_3d_20261123074725_poster.jpg",
-      "description": "Điện thoại Samsung bỗng xuất hiện biểu tượng giọt nước chớ có hoảng hốt! Hãy xem ngay bí kíp xử lý cực chuẩn để cứu chiếc dế yêu khỏi nguy cơ chập mạch và hỏng vĩnh viễn nhé các bạn! #ThoVaGau #Samsung #CongNghe #MeoHay"
+      "videoUrl": "videos/tho_gau_3d_20261123081008.mp4",
+      "posterUrl": "videos/tho_gau_3d_20261123081008_poster.jpg",
+      "description": "Hãng xe Trung Quốc điêu đứng triệu hồi hơn năm mươi nghìn xe vì sự cố rụng rời trục bánh nguy hiểm! Xem ngay Thỏ Đỏ và Gấu Béo bóc trần sự thật xe có ảnh hưởng tại Việt Nam chưa nhé! #ThoVaGau #XeTrungQuoc #TrieuHoiXe #TinTuc3D"
     }
   },
   "deals": [
