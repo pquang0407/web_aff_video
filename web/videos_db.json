@@ -22,6 +22,18 @@
     ]
   },
   "videos": {
+    "tho_gau_3d_20261123063305": {
+      "id": "tho_gau_3d_20261123063305",
+      "title": "[3D Thỏ & Gấu] Chồng mất 4 năm, tôi muốn tái giá và đưa con trai theo, bố mẹ chồng bất...",
+      "duration": "00:46",
+      "views": "180.5K",
+      "likes": "25.8K",
+      "uploadDate": "Vừa xong",
+      "category": "🐰🐻 VŨ TRỤ THỎ & GẤU 3D",
+      "videoUrl": "videos/tho_gau_3d_20261123063305.mp4",
+      "posterUrl": "videos/tho_gau_3d_20261123063305_poster.jpg",
+      "description": "Câu chuyện đầy trăn trở về người vợ trẻ muốn tái giá sau 4 năm chồng mất và lời đề nghị bất ngờ từ bố mẹ chồng. Bạn sẽ chọn ở lại hay ra đi? #ThoVaGau #TinNong #GiaDinh #TamSu"
+    },
     "tho_gau_3d_20261123060846": {
       "id": "tho_gau_3d_20261123060846",
       "title": "[3D Thỏ & Gấu] Thắp hương xong nhớ hạ 3 thứ này khỏi bàn thờ",
@@ -264,15 +276,15 @@
     },
     "default": {
       "id": "default",
-      "title": "[3D Thỏ & Gấu] Thắp hương xong nhớ hạ 3 thứ này khỏi bàn thờ",
+      "title": "[3D Thỏ & Gấu] Chồng mất 4 năm, tôi muốn tái giá và đưa con trai theo, bố mẹ chồng bất...",
       "duration": "00:46",
-      "views": "237.5K",
-      "likes": "18.8K",
+      "views": "180.5K",
+      "likes": "25.8K",
       "uploadDate": "Vừa xong",
       "category": "🐰🐻 VŨ TRỤ THỎ & GẤU 3D",
-      "videoUrl": "videos/tho_gau_3d_20261123060846.mp4",
-      "posterUrl": "videos/tho_gau_3d_20261123060846_poster.jpg",
-      "description": "Thắp hương xong nhớ hạ ngay 3 thứ này khỏi bàn thờ để vừa giữ gìn vệ sinh vừa bảo đảm an toàn thực phẩm cho cả nhà nhé! #ThoVaGau #BanTho #PhongThucViet #AnToanThucPham"
+      "videoUrl": "videos/tho_gau_3d_20261123063305.mp4",
+      "posterUrl": "videos/tho_gau_3d_20261123063305_poster.jpg",
+      "description": "Câu chuyện đầy trăn trở về người vợ trẻ muốn tái giá sau 4 năm chồng mất và lời đề nghị bất ngờ từ bố mẹ chồng. Bạn sẽ chọn ở lại hay ra đi? #ThoVaGau #TinNong #GiaDinh #TamSu"
     }
   },
   "deals": [
