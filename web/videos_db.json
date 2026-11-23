@@ -22,6 +22,18 @@
     ]
   },
   "videos": {
+    "tho_gau_3d_20261123094956": {
+      "id": "tho_gau_3d_20261123094956",
+      "title": "[3D Thỏ & Gấu] Lớp yoga cười giữa chợ Đồng Xuân",
+      "duration": "00:46",
+      "views": "132.5K",
+      "likes": "24.8K",
+      "uploadDate": "Vừa xong",
+      "category": "🐰🐻 VŨ TRỤ THỎ & GẤU 3D",
+      "videoUrl": "videos/tho_gau_3d_20261123094956.mp4",
+      "posterUrl": "videos/tho_gau_3d_20261123094956_poster.jpg",
+      "description": "Cười thả ga cùng Thỏ Đỏ và Gấu Béo tại lớp yoga cười giữa chợ Đồng Xuân! Xem ngay video hoạt hình 3D Pixar cực kỳ hài hước và thư giãn nhé! #ThoVaGau #YogaCuoi #ChoDongXuan #PixarAnimation"
+    },
     "tho_gau_3d_20261123092750": {
       "id": "tho_gau_3d_20261123092750",
       "title": "[3D Thỏ & Gấu] Đảng Dân chủ giành thế đa số lớn nhất ở Hạ viện Mỹ từ đầu thế kỷ",
@@ -360,15 +372,15 @@
     },
     "default": {
       "id": "default",
-      "title": "[3D Thỏ & Gấu] Đảng Dân chủ giành thế đa số lớn nhất ở Hạ viện Mỹ từ đầu thế kỷ",
+      "title": "[3D Thỏ & Gấu] Lớp yoga cười giữa chợ Đồng Xuân",
       "duration": "00:46",
-      "views": "158.5K",
-      "likes": "18.8K",
+      "views": "132.5K",
+      "likes": "24.8K",
       "uploadDate": "Vừa xong",
       "category": "🐰🐻 VŨ TRỤ THỎ & GẤU 3D",
-      "videoUrl": "videos/tho_gau_3d_20261123092750.mp4",
-      "posterUrl": "videos/tho_gau_3d_20261123092750_poster.jpg",
-      "description": "Đảng Dân chủ chính thức xác lập thế đa số lớn nhất ở Hạ viện Mỹ trong thế kỷ 21! #ThoVaGau #TinNong #HaVienMy #DangDanChu"
+      "videoUrl": "videos/tho_gau_3d_20261123094956.mp4",
+      "posterUrl": "videos/tho_gau_3d_20261123094956_poster.jpg",
+      "description": "Cười thả ga cùng Thỏ Đỏ và Gấu Béo tại lớp yoga cười giữa chợ Đồng Xuân! Xem ngay video hoạt hình 3D Pixar cực kỳ hài hước và thư giãn nhé! #ThoVaGau #YogaCuoi #ChoDongXuan #PixarAnimation"
     }
   },
   "deals": [
