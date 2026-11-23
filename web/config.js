@@ -26,6 +26,18 @@ const CONFIG = {
     ]
   },
   "videos": {
+    "tho_gau_3d_20261123114408": {
+      "id": "tho_gau_3d_20261123114408",
+      "title": "[3D Thỏ & Gấu] Chưa từng có ở Việt Nam: 1 doanh nghiệp Việt vượt loạt \"ông lớn\" quốc...",
+      "duration": "00:46",
+      "views": "270.5K",
+      "likes": "34.8K",
+      "uploadDate": "Vừa xong",
+      "category": "🐰🐻 VŨ TRỤ THỎ & GẤU 3D",
+      "videoUrl": "videos/tho_gau_3d_20261123114408.mp4",
+      "posterUrl": "videos/tho_gau_3d_20261123114408_poster.jpg",
+      "description": "Viettel chính thức trở thành nhà mạng đầu tiên tại Việt Nam đạt chứng nhận Mạng tự trị Cấp độ 4 từ TM Forum, vượt qua nhiều ông lớn quốc tế! 🚀 #Viettel #MangTuTri #CongNgheVietNam #TMForum"
+    },
     "tho_gau_3d_20261123112104": {
       "id": "tho_gau_3d_20261123112104",
       "title": "[3D Thỏ & Gấu] Chuyên gia phong thủy: 4 loại cây nên trồng trong phòng khách, ban công...",
@@ -424,15 +436,15 @@ const CONFIG = {
     },
     "default": {
       "id": "default",
-      "title": "[3D Thỏ & Gấu] Chuyên gia phong thủy: 4 loại cây nên trồng trong phòng khách, ban công...",
+      "title": "[3D Thỏ & Gấu] Chưa từng có ở Việt Nam: 1 doanh nghiệp Việt vượt loạt \"ông lớn\" quốc...",
       "duration": "00:46",
-      "views": "253.5K",
-      "likes": "28.8K",
+      "views": "270.5K",
+      "likes": "34.8K",
       "uploadDate": "Vừa xong",
       "category": "🐰🐻 VŨ TRỤ THỎ & GẤU 3D",
-      "videoUrl": "videos/tho_gau_3d_20261123112104.mp4",
-      "posterUrl": "videos/tho_gau_3d_20261123112104_poster.jpg",
-      "description": "Khám phá ngay 4 loại cây phong thủy cực kỳ ý nghĩa giúp phòng khách và ban công nhà bạn hút tài lộc, may mắn theo chuyên gia! #VuTruThoVaGau #CayPhongThuy #NhaDep #MeoHay"
+      "videoUrl": "videos/tho_gau_3d_20261123114408.mp4",
+      "posterUrl": "videos/tho_gau_3d_20261123114408_poster.jpg",
+      "description": "Viettel chính thức trở thành nhà mạng đầu tiên tại Việt Nam đạt chứng nhận Mạng tự trị Cấp độ 4 từ TM Forum, vượt qua nhiều ông lớn quốc tế! 🚀 #Viettel #MangTuTri #CongNgheVietNam #TMForum"
     }
   },
   "deals": [
