@@ -26,6 +26,18 @@ const CONFIG = {
     ]
   },
   "videos": {
+    "tho_gau_3d_20261123105841": {
+      "id": "tho_gau_3d_20261123105841",
+      "title": "[3D Thỏ & Gấu] Một loại ung thư đã được xác định nguyên nhân 80% ca bệnh: Người Việt...",
+      "duration": "00:46",
+      "views": "273.5K",
+      "likes": "23.8K",
+      "uploadDate": "Vừa xong",
+      "category": "🐰🐻 VŨ TRỤ THỎ & GẤU 3D",
+      "videoUrl": "videos/tho_gau_3d_20261123105841.mp4",
+      "posterUrl": "videos/tho_gau_3d_20261123105841_poster.jpg",
+      "description": "Căn bệnh nguy hiểm hàng đầu tại Việt Nam đã sáng tỏ nguyên nhân nhưng nhiều người vẫn chủ quan. Xem ngay để bảo vệ sức khỏe! #VuTruThoVaGau #UngThuPhoi #BaoVeSucKhoe #TinTuc24h"
+    },
     "tho_gau_3d_20261123103717": {
       "id": "tho_gau_3d_20261123103717",
       "title": "[3D Thỏ & Gấu] Tỷ phú Nguyễn Thị Phương Thảo vừa bắt tay DN Trung Quốc, làm 1 việc tại...",
@@ -400,15 +412,15 @@ const CONFIG = {
     },
     "default": {
       "id": "default",
-      "title": "[3D Thỏ & Gấu] Tỷ phú Nguyễn Thị Phương Thảo vừa bắt tay DN Trung Quốc, làm 1 việc tại...",
+      "title": "[3D Thỏ & Gấu] Một loại ung thư đã được xác định nguyên nhân 80% ca bệnh: Người Việt...",
       "duration": "00:46",
-      "views": "296.5K",
-      "likes": "33.8K",
+      "views": "273.5K",
+      "likes": "23.8K",
       "uploadDate": "Vừa xong",
       "category": "🐰🐻 VŨ TRỤ THỎ & GẤU 3D",
-      "videoUrl": "videos/tho_gau_3d_20261123103717.mp4",
-      "posterUrl": "videos/tho_gau_3d_20261123103717_poster.jpg",
-      "description": "Thỏ Đỏ và Gấu Béo cùng khám phá thương vụ Vietjet bắt tay đối tác Trung Quốc để nâng tầm hàng không Việt! #Vietjet #LongThanh #HangKhong #ThoVaGau"
+      "videoUrl": "videos/tho_gau_3d_20261123105841.mp4",
+      "posterUrl": "videos/tho_gau_3d_20261123105841_poster.jpg",
+      "description": "Căn bệnh nguy hiểm hàng đầu tại Việt Nam đã sáng tỏ nguyên nhân nhưng nhiều người vẫn chủ quan. Xem ngay để bảo vệ sức khỏe! #VuTruThoVaGau #UngThuPhoi #BaoVeSucKhoe #TinTuc24h"
     }
   },
   "deals": [
