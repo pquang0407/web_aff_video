@@ -193,7 +193,8 @@ Trả về duy nhất định dạng JSON thuần:
 
   const modelsToTry = ['gemini-3.5-flash-lite', 'gemini-3.1-flash-lite', 'gemini-3.1-flash-lite-preview'];
   let parsed = null;
-  const MAX_ROUNDS = 3;
+  const RETRY_WAIT_SECS = [20, 45, 90];
+  const MAX_ROUNDS = RETRY_WAIT_SECS.length + 1;
 
   for (let round = 1; round <= MAX_ROUNDS && !parsed; round++) {
     for (const modelName of modelsToTry) {
@@ -228,7 +229,7 @@ Trả về duy nhất định dạng JSON thuần:
       }
     }
     if (!parsed && round < MAX_ROUNDS) {
-      const waitSec = round * 6;
+      const waitSec = RETRY_WAIT_SECS[round - 1] || 60;
       console.log(`⏳ Gemini đang bận tạm thời (503/network), tự động retry sau ${waitSec} giây...`);
       await new Promise(r => setTimeout(r, waitSec * 1000));
     }
