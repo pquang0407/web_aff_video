@@ -26,6 +26,18 @@ const CONFIG = {
     ]
   },
   "videos": {
+    "tho_gau_3d_20261123092750": {
+      "id": "tho_gau_3d_20261123092750",
+      "title": "[3D Thỏ & Gấu] Đảng Dân chủ giành thế đa số lớn nhất ở Hạ viện Mỹ từ đầu thế kỷ",
+      "duration": "00:46",
+      "views": "158.5K",
+      "likes": "18.8K",
+      "uploadDate": "Vừa xong",
+      "category": "🐰🐻 VŨ TRỤ THỎ & GẤU 3D",
+      "videoUrl": "videos/tho_gau_3d_20261123092750.mp4",
+      "posterUrl": "videos/tho_gau_3d_20261123092750_poster.jpg",
+      "description": "Đảng Dân chủ chính thức xác lập thế đa số lớn nhất ở Hạ viện Mỹ trong thế kỷ 21! #ThoVaGau #TinNong #HaVienMy #DangDanChu"
+    },
     "tho_gau_3d_20261123090419": {
       "id": "tho_gau_3d_20261123090419",
       "title": "[3D Thỏ & Gấu] Hàng nghìn người chiêm bái hộp đựng xá lị hơn 1.000 năm",
@@ -352,15 +364,15 @@ const CONFIG = {
     },
     "default": {
       "id": "default",
-      "title": "[3D Thỏ & Gấu] Hàng nghìn người chiêm bái hộp đựng xá lị hơn 1.000 năm",
+      "title": "[3D Thỏ & Gấu] Đảng Dân chủ giành thế đa số lớn nhất ở Hạ viện Mỹ từ đầu thế kỷ",
       "duration": "00:46",
-      "views": "280.5K",
-      "likes": "29.8K",
+      "views": "158.5K",
+      "likes": "18.8K",
       "uploadDate": "Vừa xong",
       "category": "🐰🐻 VŨ TRỤ THỎ & GẤU 3D",
-      "videoUrl": "videos/tho_gau_3d_20261123090419.mp4",
-      "posterUrl": "videos/tho_gau_3d_20261123090419_poster.jpg",
-      "description": "Hàng nghìn người chiêm bái hộp đựng xá lị hơn 1.000 năm tại Bảo tàng Nghệ An - Xô Viết Nghệ Tĩnh. Khám phá ngay! #XáLị1000Năm #BảoTàngNghệAn #VũTrụThỏGấu #Tintuc"
+      "videoUrl": "videos/tho_gau_3d_20261123092750.mp4",
+      "posterUrl": "videos/tho_gau_3d_20261123092750_poster.jpg",
+      "description": "Đảng Dân chủ chính thức xác lập thế đa số lớn nhất ở Hạ viện Mỹ trong thế kỷ 21! #ThoVaGau #TinNong #HaVienMy #DangDanChu"
     }
   },
   "deals": [
