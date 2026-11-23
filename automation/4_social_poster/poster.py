@@ -25,11 +25,53 @@ logging.basicConfig(
 logger = logging.getLogger("SocialPoster")
 
 
+def get_posted_video_registry() -> Dict[str, Any]:
+    """Danh sách vĩnh viễn các video ID đã đăng lên Facebook (chống trùng 100% ngay cả sau khi xóa file trong storage/)"""
+    reg = config.load_json(config.POSTED_VIDEO_IDS_FILE, {})
+    return reg if isinstance(reg, dict) else {}
+
+
+def mark_video_posted_and_free_storage(video_id: str, page_id: str = "", page_name: str = "", posted_at: str = "") -> List[str]:
+    """
+    Phương án A: Ghi nhận đã đăng vĩnh viễn (chống trùng 100%) + xóa ngay 2 bản .mp4 nặng trong storage/2_web_full & storage/3_social_teaser
+    để giải phóng ~70% ổ cứng Cloud VM, nhưng VẪN GIỮ nguyên bản trên web/videos/ (tho-news.com) cho link comment Facebook!
+    """
+    reg = get_posted_video_registry()
+    reg[video_id] = {
+        "page_id": str(page_id or ""),
+        "page_name": str(page_name or ""),
+        "posted_at": posted_at or datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
+    }
+    config.save_json(config.POSTED_VIDEO_IDS_FILE, reg)
+
+    freed: List[str] = []
+    redundant_files = [
+        config.FULL_DIR / f"{video_id}.mp4",
+        config.FULL_DIR / f"{video_id}_poster.jpg",
+        config.FULL_DIR / f"{video_id}_meta.json",
+        config.TEASER_DIR / f"{video_id}_teaser.mp4",
+        config.TEASER_DIR / f"{video_id}_caption.txt",
+    ]
+    for fp in redundant_files:
+        if fp.exists():
+            try:
+                fp.unlink(missing_ok=True)
+                freed.append(str(fp.relative_to(config.BASE_DIR)))
+            except Exception as e:
+                logger.warning(f"Không thể xóa file tạm storage {fp}: {e}")
+    if freed:
+        logger.info(f"🧹 [FREE DISK] Đã giải phóng {len(freed)} file thừa trong storage/ cho video '{video_id}' (vẫn giữ trên tho-news.com)!")
+    return freed
+
+
 def get_social_queue() -> List[Dict[str, Any]]:
     """
     Lấy danh sách tất cả các video 3D Thỏ & Gấu (gộp từ storage/2_web_full và web/videos_db.json)
     để Admin luôn nhìn thấy 100% video đang có trên Web tho-news.com để đăng hoặc xóa.
+    Đồng thời đối chiếu posted_video_ids.json để đảm bảo 0% đăng trùng!
     """
+    posted_reg = get_posted_video_registry()
+
     for stale in list(config.FULL_DIR.glob("*_meta.json")):
         if not stale.name.startswith("tho_gau_"):
             try:
@@ -50,6 +92,19 @@ def get_social_queue() -> List[Dict[str, Any]]:
             vid_id = str(data.get("id") or mp.stem.replace("_meta", ""))
             data["id"] = vid_id
             data["meta_file"] = str(mp)
+            # Nếu video đã từng đăng (từ meta cũ) -> ghi vào registry & dọn luôn file thừa trong storage/
+            if data.get("status") == "posted_to_social" and vid_id not in posted_reg:
+                mark_video_posted_and_free_storage(
+                    vid_id,
+                    page_id=data.get("posted_page_id", ""),
+                    page_name=data.get("posted_page_name", ""),
+                    posted_at=data.get("last_posted_at", ""),
+                )
+                posted_reg = get_posted_video_registry()
+            if vid_id in posted_reg:
+                data["status"] = "posted_to_social"
+                data["posted_page_id"] = posted_reg[vid_id].get("page_id", "")
+                data["posted_page_name"] = posted_reg[vid_id].get("page_name", "")
             items.append(data)
             seen_ids.add(vid_id)
         except Exception:
@@ -63,7 +118,8 @@ def get_social_queue() -> List[Dict[str, Any]]:
             for vid_id, vid in (db.get("videos") or {}).items():
                 if vid_id == "default" or vid_id in seen_ids or not isinstance(vid, dict):
                     continue
-                items.append({
+                is_posted = vid_id in posted_reg
+                entry = {
                     "id": vid_id,
                     "title": vid.get("title", vid_id),
                     "duration": vid.get("duration", "00:46"),
@@ -72,8 +128,12 @@ def get_social_queue() -> List[Dict[str, Any]]:
                     "web_video_url": vid.get("videoUrl", f"videos/{vid_id}.mp4"),
                     "web_poster_url": vid.get("posterUrl", f"videos/{vid_id}_poster.jpg"),
                     "target_web_url": f"https://tho-news.com/?v={vid_id}",
-                    "status": "published_to_web",
-                })
+                    "status": "posted_to_social" if is_posted else "published_to_web",
+                }
+                if is_posted:
+                    entry["posted_page_id"] = posted_reg[vid_id].get("page_id", "")
+                    entry["posted_page_name"] = posted_reg[vid_id].get("page_name", "")
+                items.append(entry)
                 seen_ids.add(vid_id)
         except Exception:
             pass
@@ -269,14 +329,27 @@ def post_video_to_social(
     # 3. Lưu trạng thái vào metadata và lịch sử (chỉ đánh dấu đã đăng nếu Facebook ok hoặc simulate)
     now_iso = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
     fb_ok = bool(results.get("facebook", {}).get("ok"))
-    if fb_ok or simulate:
+    freed_files: List[str] = []
+    if fb_ok and not simulate:
+        p_id = str(results.get("facebook", {}).get("page_id", "") or "")
+        p_name = str(results.get("facebook", {}).get("page_name", "") or "")
+        freed_files = mark_video_posted_and_free_storage(
+            video_id=video_id,
+            page_id=p_id,
+            page_name=p_name,
+            posted_at=now_iso,
+        )
+    elif simulate:
         meta["status"] = "posted_to_social"
-        if results.get("facebook", {}).get("page_id"):
-            meta["posted_page_id"] = str(results["facebook"]["page_id"])
-            meta["posted_page_name"] = str(results["facebook"].get("page_name", ""))
-    meta["last_posted_at"] = now_iso
-    meta["social_results"] = results
-    meta_path.write_text(json.dumps(meta, ensure_ascii=False, indent=2), encoding="utf-8")
+        meta["last_posted_at"] = now_iso
+        meta["social_results"] = results
+        if meta_path.exists():
+            meta_path.write_text(json.dumps(meta, ensure_ascii=False, indent=2), encoding="utf-8")
+    else:
+        meta["last_posted_at"] = now_iso
+        meta["social_results"] = results
+        if meta_path.exists():
+            meta_path.write_text(json.dumps(meta, ensure_ascii=False, indent=2), encoding="utf-8")
 
     history_entry = {
         "video_id": video_id,

@@ -24,6 +24,7 @@ FB_APP_CONFIG_FILE = DATA_DIR / "fb_app_config.json"
 THREADS_CONFIG_FILE = DATA_DIR / "threads_config.json"
 TIKTOK_CONFIG_FILE = DATA_DIR / "tiktok_config.json"
 POST_HISTORY_FILE = DATA_DIR / "post_history.json"
+POSTED_VIDEO_IDS_FILE = DATA_DIR / "posted_video_ids.json"
 SCHEDULER_CONFIG_FILE = DATA_DIR / "scheduler_config.json"
 
 # Thư mục facebook_bot sẵn có của bạn
