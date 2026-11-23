@@ -26,6 +26,18 @@ const CONFIG = {
     ]
   },
   "videos": {
+    "tho_gau_3d_20261123084025": {
+      "id": "tho_gau_3d_20261123084025",
+      "title": "[3D Thỏ & Gấu] Hai mẹ con cựu Chủ tịch Sen Tài Thu ra tòa trong vụ lừa đảo nghìn tỷ",
+      "duration": "00:46",
+      "views": "180.5K",
+      "likes": "30.8K",
+      "uploadDate": "Vừa xong",
+      "category": "🐰🐻 VŨ TRỤ THỎ & GẤU 3D",
+      "videoUrl": "videos/tho_gau_3d_20261123084025.mp4",
+      "posterUrl": "videos/tho_gau_3d_20261123084025_poster.jpg",
+      "description": "Vụ án Sen Tài Thu chấn động khi hai mẹ con cựu Chủ tịch hầu tòa cùng chiêu trò lừa đảo nghìn tỷ và màn chạy án dở khóc dở cười. #SenTaiThu #TinNóng #PhápLuật #ThỏVàGấu"
+    },
     "tho_gau_3d_20261123081008": {
       "id": "tho_gau_3d_20261123081008",
       "title": "[3D Thỏ & Gấu] Đang đi thì rụng rời trục bánh, hãng xe Trung Quốc triệu hồi hơn 50.000...",
@@ -328,15 +340,15 @@ const CONFIG = {
     },
     "default": {
       "id": "default",
-      "title": "[3D Thỏ & Gấu] Đang đi thì rụng rời trục bánh, hãng xe Trung Quốc triệu hồi hơn 50.000...",
+      "title": "[3D Thỏ & Gấu] Hai mẹ con cựu Chủ tịch Sen Tài Thu ra tòa trong vụ lừa đảo nghìn tỷ",
       "duration": "00:46",
-      "views": "134.5K",
-      "likes": "17.8K",
+      "views": "180.5K",
+      "likes": "30.8K",
       "uploadDate": "Vừa xong",
       "category": "🐰🐻 VŨ TRỤ THỎ & GẤU 3D",
-      "videoUrl": "videos/tho_gau_3d_20261123081008.mp4",
-      "posterUrl": "videos/tho_gau_3d_20261123081008_poster.jpg",
-      "description": "Hãng xe Trung Quốc điêu đứng triệu hồi hơn năm mươi nghìn xe vì sự cố rụng rời trục bánh nguy hiểm! Xem ngay Thỏ Đỏ và Gấu Béo bóc trần sự thật xe có ảnh hưởng tại Việt Nam chưa nhé! #ThoVaGau #XeTrungQuoc #TrieuHoiXe #TinTuc3D"
+      "videoUrl": "videos/tho_gau_3d_20261123084025.mp4",
+      "posterUrl": "videos/tho_gau_3d_20261123084025_poster.jpg",
+      "description": "Vụ án Sen Tài Thu chấn động khi hai mẹ con cựu Chủ tịch hầu tòa cùng chiêu trò lừa đảo nghìn tỷ và màn chạy án dở khóc dở cười. #SenTaiThu #TinNóng #PhápLuật #ThỏVàGấu"
     }
   },
   "deals": [
