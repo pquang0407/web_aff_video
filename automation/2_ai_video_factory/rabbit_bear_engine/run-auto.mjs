@@ -130,55 +130,62 @@ function ensureRichVoiceText(text, sceneIdx) {
   return `${text.trim()} ${fillers[sceneIdx] || fillers[4]}`;
 }
 
-async function generateScript(articleText, articleTitle = '') {
-  console.log(`\n🤖 [2/6] AI Director: Biên kịch cốt truyện 4 hồi liền mạch trong Vũ trụ Thỏ & Gấu 3D...`);
-  const prompt = `Bạn là Tổng Đạo diễn kiêm Biên tập viên cho kênh video hoạt hình tin tức 3D Pixar triệu view "Vũ trụ Thỏ & Gấu".
+async function generateScript(articleText, articleTitle = '', customStylePrompt = '') {
+  console.log(`\n🤖 [2/6] AI Director: Gemini tự do biên kịch 4 cảnh tự nhiên (không intro/outro cố định)...`);
+  const styleBlock = customStylePrompt
+    ? `1. PHONG CÁCH HÌNH ẢNH TÙY CHỈNH (BẮT BUỘC ÁP DỤNG 100% CHO CẢ 4 CẢNH):
+   - Bối cảnh, ánh sáng, thẩm mỹ và chuyển động camera PHẢI tuân thủ tuyệt đối phong cách sau:
+     """
+     ${customStylePrompt}
+     """
+   - Không cần nhồi nhét nhân vật Thỏ & Gấu nếu phong cách yêu cầu là cảnh quan/điện ảnh thuần túy; hãy kết hợp chuyển động camera điện ảnh mượt mà khớp với cảm xúc lời bình từng cảnh.`
+    : `1. VŨ TRỤ NHÂN VẬT THỎ & GẤU CỐ ĐỊNH 100%:
+   - Nhân vật chính: Luôn là THỎ ĐỎ (Cute agile bunny rabbit wearing a bright red hoodie or red jersey, long expressive ears, witty and energetic).
+   - Nhân vật đồng hành / đối thủ: Luôn là GẤU BÉO (Chubby fluffy white bear companion/rival, round belly, clumsy, lovable and funny).
+   - Tuyệt đối không dùng nhân vật người thật, toàn bộ câu chuyện phải được diễn xuất bởi Thỏ Đỏ và Gấu Béo trong cùng một bối cảnh xuyên suốt.`;
+
+  const prompt = `Bạn là Tổng Đạo diễn kiêm Biên tập viên cho kênh video tin tức hoạt hình ngắn triệu view.
 Tiêu đề gốc của bài báo: "${articleTitle}"
 Dưới đây là nội dung bài báo nguồn:
 """
 ${articleText}
 """
 
-HÃY CHUYỂN THỂ BÀI BÁO THÀNH KỊCH BẢN 4 PHÂN CẢNH LIỀN MẠCH (4-ACT CONTINUOUS STORY) VỚI CÁC QUY TẮC BẮT BUỘC SAU:
+HÃY CHUYỂN THỂ BÀI BÁO THÀNH KỊCH BẢN 4 PHÂN CẢNH LIỀN MẠCH (40 GIÂY) VỚI CÁC QUY TẮC SAU:
 0. QUY TẮC TIÊU ĐỀ (BẮT BUỘC):
    - Tiêu đề (headline cảnh 1 và ticker) PHẢI LẤY TRỰC TIẾP TỪ TIÊU ĐỀ BÁO GỐC ("${articleTitle}"), nếu dài quá thì chỉ rút gọn cho vừa khung, TUYỆT ĐỐI KHÔNG tự sáng tạo/bịa ra tiêu đề khác lệch với bài báo!
-1. VŨ TRỤ NHÂN VẬT THỎ & GẤU CỐ ĐỊNH 100%:
-   - Nhân vật chính: Luôn là THỎ ĐỎ (Cute agile bunny rabbit wearing a bright red hoodie or red jersey, long expressive ears, witty and energetic).
-   - Nhân vật đồng hành / đối thủ: Luôn là GẤU BÉO (Chubby fluffy white bear companion/rival, round belly, clumsy, lovable and funny).
-   - Tuyệt đối không dùng nhân vật người thật, toàn bộ câu chuyện phải được diễn xuất bởi Thỏ Đỏ và Gấu Béo trong cùng một bối cảnh xuyên suốt.
+${styleBlock}
 
-2. LIÊN KẾT MẠCH LẠC GIỮA CÁC CẢNH (KHÔNG RỜI RẠC):
-   - Cảnh 1 (Mở đầu & Bối cảnh): Dẫn nhập sự kiện nóng hổi với sự xuất hiện của Thỏ Đỏ & Gấu Béo.
-   - Cảnh 2 (Diễn biến leo thang): Bắt đầu bằng từ nối mượt mà ("Chưa dừng lại ở đó...", "Bước sang chặng tiếp theo...", "Thử thách thực sự bắt đầu khi...").
-   - Cảnh 3 (Cao trào / Cú twist hài hước): Bắt đầu bằng từ nối cao trào ("Ấy thế mà đúng lúc gay cấn nhất...", "Đỉnh điểm của màn tấu hài là khi...").
-   - Cảnh 4 (Kết cục trọn vẹn): Bắt đầu bằng từ nối kết ("Khép lại hành trình đáng nhớ...", "Sau tất cả những pha dở khóc dở cười...").
+2. TỰ DO BIÊN KỊCH TỰ NHIÊN (KHÔNG DÙNG INTRO / OUTRO KHUÔN MẪU CỨNG NHẮC):
+   - KHÔNG cần câu chào mở đầu sáo rỗng, KHÔNG cần câu kêu gọi Like/Follow cố định ở cuối.
+   - Hãy để lời kể đi thẳng vào điểm hấp dẫn nhất của bài báo ngay từ giây đầu tiên (Cảnh 1), phát triển tự nhiên qua Cảnh 2 và Cảnh 3, rồi chốt lại trọn vẹn/gợi mở tự nhiên ở Cảnh 4 theo đúng tinh thần bài báo (giọng kể tự nhiên, cuốn hút, không lặp lại các câu khuôn mẫu như "Mở đầu hành trình..." hay "Khép lại hành trình...").
 
 3. ĐỘ DÀI LỜI BÌNH (voiceText) CHUẨN KHỚP 10 GIÂY (KHÔNG BỊ NGẮN / KHÔNG DƯ THỜI GIAN CHẾT):
    - Mỗi cảnh video dài 10 giây. Vì vậy mỗi lời bình (voiceText) BẮT BUỘC phải gồm 2 câu văn sinh động, độ dài từ 42 đến 50 TỪ (âm tiết tiếng Việt).
    - Tuyệt đối không viết ngắn dưới 40 từ để tránh việc đọc xong sớm rồi dư 4-5 giây im lặng!
 
 4. VISUAL PROMPT ĐỒNG NHẤT & AN TOÀN 100% CHO MUSE.AI:
-   - Mỗi visualPrompt BẮT BUỘC bắt đầu bằng: "Create a 16:9 aspect ratio video clip, 10 seconds long. Directly render the video now without asking options. Stylized 3D Pixar animation..."
-   - Phải mô tả rõ ngoại hình đồng nhất của "cute bunny rabbit in bright red hoodie/jersey with long ears" và "chubby fluffy white bear", cùng hành động khớp với lời bình của cảnh đó.
-   - QUY TẮC AN TOÀN MUSE.AI (BẮT BUỘC): Trong visualPrompt tiếng Anh TUYỆT ĐỐI KHÔNG dùng các từ nhạy cảm bị bộ lọc AI chặn như: dead, death, die, killed, murder, blood, gore, fatal crash, corpse, hit by truck. Nếu bài báo nói về tai nạn hoặc vụ án, hãy mô tả cảnh 3D ẩn dụ an toàn (ví dụ: "reckless truck making a sharp turn at an intersection causing a tense near-miss traffic stop", "police officers with flashing lights questioning the regretful bear driver beside the truck", "solemn family reflection and traffic safety lesson").
-   - QUY TẮC QUỐC KỲ (BẮT BUỘC): TUYỆT ĐỐI KHÔNG vẽ quốc kỳ hoặc lá cờ có ngôi sao trong visualPrompt (AI video rất hay vẽ biến dạng sai lệch số ngôi sao trên quốc kỳ Việt Nam!). Khi làm tin bóng đá/thể thao Việt Nam, hãy thay bằng pháo hoa, cúp vàng, khán đài rực sáng và áo đấu thể thao màu đỏ có số áo (KHÔNG vẽ cờ).
-   - Nếu bài báo là tin thời sự / pháp luật / giao thông nghiêm túc, hãy dùng giọng bình luận thời sự kịch tính, sâu sắc và cảnh tỉnh (không dùng từ 'tấu hài' cho tin buồn), đồng thời đặt brandBadge là "24H TIN NÓNG" hoặc "24H GIAO THÔNG".
+   - Mỗi visualPrompt BẮT BUỘC bắt đầu bằng: "${customStylePrompt ? 'Create a 9:16 aspect ratio video clip, 10 seconds long. Directly render the video now without asking options.' : 'Create a 16:9 aspect ratio video clip, 10 seconds long. Directly render the video now without asking options. Stylized 3D Pixar animation...'}"
+   - Mô tả chi tiết bối cảnh, ánh sáng, hành động và chuyển động camera khớp với lời bình của từng cảnh.
+   - QUY TẮC AN TOÀN MUSE.AI (BẮT BUỘC): Trong visualPrompt tiếng Anh TUYỆT ĐỐI KHÔNG dùng các từ nhạy cảm bị bộ lọc AI chặn như: dead, death, die, killed, murder, blood, gore, fatal crash, corpse, hit by truck. Nếu bài báo nói về tai nạn hoặc vụ án, hãy mô tả cảnh ẩn dụ an toàn.
+   - QUY TẮC QUỐC KỲ (BẮT BUỘC): TUYỆT ĐỐI KHÔNG vẽ quốc kỳ hoặc lá cờ có ngôi sao trong visualPrompt (AI video rất hay vẽ biến dạng sai lệch số ngôi sao trên quốc kỳ Việt Nam!).
+   - Điều chỉnh giọng kể và brandBadge phù hợp sắc thái bài báo ("24H TIN NÓNG", "24H KHÁM PHÁ", "24H BÓNG ĐÁ", "24H ĐỜI SỐNG"...).
 
 Trả về duy nhất định dạng JSON thuần:
 {
   "matchTitle": "TIÊU ĐỀ NGẮN (TỐI ĐA 18 KÝ TỰ)",
-  "brandBadge": "24H KHÁM PHÁ hoặc 24H BÓNG ĐÁ",
-  "ticker": "DÒNG CHỮ CHẠY CUỐI MÀN HÌNH TÓM TẮT BẢN TIN THỎ & GẤU",
-  "socialCaption": "Caption hấp dẫn đăng Facebook/Threads kèm 4 hashtag",
+  "brandBadge": "24H TIN NÓNG",
+  "ticker": "DÒNG CHỮ CHẠY CUỐI MÀN HÌNH TÓM TẮT BÀI BÁO",
+  "socialCaption": "Caption hấp dẫn đăng Facebook/TikTok/Threads kèm 4 hashtag",
   "scenes": [
     {
       "index": 1,
-      "tag": "🔥 TIÊU ĐIỂM 1 • MỞ MÀN",
-      "headline": "TIÊU ĐỀ IN HOA GIẬT GÂN KÈM ICON",
-      "sub": "Mô tả phụ dí dỏm tóm tắt cảnh 1",
+      "tag": "🔥 TIÊU ĐIỂM 1",
+      "headline": "TIÊU ĐỀ BÁM SÁT BÁO GỐC",
+      "sub": "Mô tả phụ tóm tắt cảnh 1",
       "color": "#00B4D8",
-      "voiceText": "2 câu dẫn chuyện liên kết mạch lạc độ dài từ 42 đến 50 từ...",
-      "visualPrompt": "Create a 16:9 aspect ratio video clip, 10 seconds long. Directly render the video now without asking options. Stylized 3D Pixar animation..."
+      "voiceText": "2 câu dẫn chuyện tự nhiên độ dài từ 42 đến 50 từ...",
+      "visualPrompt": "..."
     },
     { "index": 2, "tag": "...", "headline": "...", "sub": "...", "color": "#FF9900", "voiceText": "...", "visualPrompt": "..." },
     { "index": 3, "tag": "...", "headline": "...", "sub": "...", "color": "#06D6A0", "voiceText": "...", "visualPrompt": "..." },
@@ -552,19 +559,12 @@ async function compositeFinalVideo(outDir, finalVideoPath) {
     execSync(`ffmpeg -y -i "${vPath}" -i "${aPath}" -i "${oPath}" -filter_complex "[0:v]scale=270:480:force_original_aspect_ratio=increase,crop=270:480,boxblur=6:2,scale=1080:1920:flags=bilinear[bg]; [0:v]scale=1080:1920:force_original_aspect_ratio=decrease[fg]; [bg][fg]overlay=(W-w)/2:(H-h)/2[vid]; [vid][2:v]overlay=0:0[v]; [1:a]apad=pad_dur=10[a]" -map "[v]" -map "[a]" -t 10 -c:v libx264 -preset superfast -crf 23 -threads 1 -pix_fmt yuv420p -c:a aac -b:a 192k "${formatted}"`);
   }
 
+  // Bỏ hoàn toàn cảnh 5 Outro cố định — nối đúng 4 cảnh tự nhiên (40 giây trọn vẹn) do Gemini biên kịch
   const concatList = path.join(outDir, 'concat_all.txt');
-  const sharedOutro = path.join(SHARED_DIR, 'fixed_outro_formatted_916.mp4');
-
-  if (fs.existsSync(sharedOutro)) {
-    const localOutro = path.join(outDir, 'scene-5-formatted.mp4');
-    fs.copyFileSync(sharedOutro, localOutro);
-    fs.writeFileSync(concatList, `file 'scene-1-formatted.mp4'\nfile 'scene-2-formatted.mp4'\nfile 'scene-3-formatted.mp4'\nfile 'scene-4-formatted.mp4'\nfile 'scene-5-formatted.mp4'\n`);
-  } else {
-    fs.writeFileSync(concatList, `file 'scene-1-formatted.mp4'\nfile 'scene-2-formatted.mp4'\nfile 'scene-3-formatted.mp4'\nfile 'scene-4-formatted.mp4'\n`);
-  }
+  fs.writeFileSync(concatList, `file 'scene-1-formatted.mp4'\nfile 'scene-2-formatted.mp4'\nfile 'scene-3-formatted.mp4'\nfile 'scene-4-formatted.mp4'\n`);
 
   execSync(`ffmpeg -y -f concat -safe 0 -i "${concatList}" -c copy "${finalVideoPath}"`);
-  console.log(`\n🏆 MASTER VIDEO HOÀN TẤT TẠI: ${finalVideoPath}`);
+  console.log(`\n🏆 MASTER VIDEO HOÀN TẤT (40s, không Outro cố định) TẠI: ${finalVideoPath}`);
 }
 
 /**
@@ -726,9 +726,12 @@ async function main() {
   const urlArg = args.find(a => a.startsWith('http')) || args[0];
   const chatIdIdx = args.indexOf('--chat-id');
   const chatId = (chatIdIdx !== -1 && args[chatIdIdx + 1]) ? args[chatIdIdx + 1] : '';
+  const styleIdx = args.indexOf('--style-prompt');
+  const customStylePrompt = (styleIdx !== -1 && args[styleIdx + 1]) ? args[styleIdx + 1] : '';
+  const skipPublish = args.includes('--no-publish');
 
   if (!urlArg) {
-    console.error('Cách dùng: node scripts/run-auto.mjs <LINK_BAI_BAO> [--chat-id <CHAT_ID>]');
+    console.error('Cách dùng: node scripts/run-auto.mjs <LINK_BAI_BAO> [--chat-id <CHAT_ID>] [--style-prompt "<PROMPT>"] [--no-publish]');
     process.exit(1);
   }
 
@@ -738,7 +741,7 @@ async function main() {
   fs.mkdirSync(outDir, { recursive: true });
 
   const article = await fetchArticle(urlArg);
-  const scriptData = await generateScript(article.text, article.title);
+  const scriptData = await generateScript(article.text, article.title, customStylePrompt);
   fs.writeFileSync(path.join(outDir, 'script.json'), JSON.stringify(scriptData, null, 2));
 
   generateSceneAudios(scriptData.scenes, outDir);
@@ -781,14 +784,18 @@ async function main() {
   const finalVideo = path.join(outDir, 'master_video.mp4');
   await compositeFinalVideo(outDir, finalVideo);
 
-  publishToWebAffEcosystem(videoId, finalVideo, scriptData, urlArg);
-  await sendTelegramCompletionNotice(chatId, videoId, scriptData);
+  if (!skipPublish) {
+    publishToWebAffEcosystem(videoId, finalVideo, scriptData, urlArg);
+    await sendTelegramCompletionNotice(chatId, videoId, scriptData);
 
-  // Tự động dọn thư mục tạm sau khi xuất bản xong để không đầy ổ cứng Cloud VM
-  try {
-    fs.rmSync(outDir, { recursive: true, force: true });
-    console.log(`🧹 Đã dọn thư mục tạm: ${outDir}`);
-  } catch (e) {}
+    // Tự động dọn thư mục tạm sau khi xuất bản xong để không đầy ổ cứng Cloud VM
+    try {
+      fs.rmSync(outDir, { recursive: true, force: true });
+      console.log(`🧹 Đã dọn thư mục tạm: ${outDir}`);
+    } catch (e) {}
+  } else {
+    console.log(`🧪 [TEST MODE --no-publish] Video thử nghiệm được giữ lại tại: ${finalVideo}`);
+  }
 }
 
 main().catch(err => {
