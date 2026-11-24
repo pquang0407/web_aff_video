@@ -22,6 +22,18 @@
     ]
   },
   "videos": {
+    "tho_gau_3d_20261124111909": {
+      "id": "tho_gau_3d_20261124111909",
+      "title": "[3D Thỏ & Gấu] TikToker",
+      "duration": "00:46",
+      "views": "204.5K",
+      "likes": "30.8K",
+      "uploadDate": "Vừa xong",
+      "category": "🐰🐻 VŨ TRỤ THỎ & GẤU 3D",
+      "videoUrl": "videos/tho_gau_3d_20261124111909.mp4",
+      "posterUrl": "videos/tho_gau_3d_20261124111909_poster.jpg",
+      "description": "Đừng vì lợi ích trước mắt mà đánh đổi tương lai tươi sáng các bạn nhé! Cùng Thỏ Đỏ và Gấu Béo nhìn nhận lại sự việc này. #TikToker #TinNong #ThoVaGau #CanhBao"
+    },
     "tho_gau_3d_20261124105627": {
       "id": "tho_gau_3d_20261124105627",
       "title": "[3D Thỏ & Gấu] Bản Tin 3D Thỏ & Gấu",
@@ -612,15 +624,15 @@
     },
     "default": {
       "id": "default",
-      "title": "[3D Thỏ & Gấu] Bản Tin 3D Thỏ & Gấu",
+      "title": "[3D Thỏ & Gấu] TikToker",
       "duration": "00:46",
-      "views": "149.5K",
-      "likes": "19.8K",
+      "views": "204.5K",
+      "likes": "30.8K",
       "uploadDate": "Vừa xong",
       "category": "🐰🐻 VŨ TRỤ THỎ & GẤU 3D",
-      "videoUrl": "videos/tho_gau_3d_20261124105627.mp4",
-      "posterUrl": "videos/tho_gau_3d_20261124105627_poster.jpg",
-      "description": "Khi máy chủ đình công và Thỏ Đỏ với Gấu Béo phải xoay sở với đống code hỗn loạn. Ai đã từng gặp cảnh này chưa? #ThoVaGau #TinCongNghe #ServerLoi #HaiHuoc"
+      "videoUrl": "videos/tho_gau_3d_20261124111909.mp4",
+      "posterUrl": "videos/tho_gau_3d_20261124111909_poster.jpg",
+      "description": "Đừng vì lợi ích trước mắt mà đánh đổi tương lai tươi sáng các bạn nhé! Cùng Thỏ Đỏ và Gấu Béo nhìn nhận lại sự việc này. #TikToker #TinNong #ThoVaGau #CanhBao"
     }
   },
   "deals": [
