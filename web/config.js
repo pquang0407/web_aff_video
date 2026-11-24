@@ -26,6 +26,18 @@ const CONFIG = {
     ]
   },
   "videos": {
+    "tho_gau_3d_20261124103145": {
+      "id": "tho_gau_3d_20261124103145",
+      "title": "[3D Thỏ & Gấu] Điểm ngắm pháo hoa tránh đông người Ngày Văn hóa Việt Nam ở TP HCM",
+      "duration": "00:46",
+      "views": "313.5K",
+      "likes": "36.8K",
+      "uploadDate": "Vừa xong",
+      "category": "🐰🐻 VŨ TRỤ THỎ & GẤU 3D",
+      "videoUrl": "videos/tho_gau_3d_20261124103145.mp4",
+      "posterUrl": "videos/tho_gau_3d_20261124103145_poster.jpg",
+      "description": "Cùng Thỏ Đỏ và Gấu Béo khám phá những tọa độ ngắm pháo hoa cực chill, không lo chen chúc tại TP.HCM nhân Ngày Văn hóa Việt Nam nhé! #ThoVaGau #PhaoHoaTPHCM #NgayVanHoaVietNam #KhamPhaSG"
+    },
     "tho_gau_3d_20261124100645": {
       "id": "tho_gau_3d_20261124100645",
       "title": "[3D Thỏ & Gấu] Dinh Độc Lập đông nghịt khách ngày mở cửa miễn phí",
@@ -592,15 +604,15 @@ const CONFIG = {
     },
     "default": {
       "id": "default",
-      "title": "[3D Thỏ & Gấu] Dinh Độc Lập đông nghịt khách ngày mở cửa miễn phí",
+      "title": "[3D Thỏ & Gấu] Điểm ngắm pháo hoa tránh đông người Ngày Văn hóa Việt Nam ở TP HCM",
       "duration": "00:46",
-      "views": "120.5K",
+      "views": "313.5K",
       "likes": "36.8K",
       "uploadDate": "Vừa xong",
       "category": "🐰🐻 VŨ TRỤ THỎ & GẤU 3D",
-      "videoUrl": "videos/tho_gau_3d_20261124100645.mp4",
-      "posterUrl": "videos/tho_gau_3d_20261124100645_poster.jpg",
-      "description": "Thỏ Đỏ và Gấu Béo tá hỏa khi thấy dòng người xếp hàng dài kỷ lục tại Dinh Độc Lập! #DinhDocLap #VuTruThoGau #KhuyenMai #KhamPha"
+      "videoUrl": "videos/tho_gau_3d_20261124103145.mp4",
+      "posterUrl": "videos/tho_gau_3d_20261124103145_poster.jpg",
+      "description": "Cùng Thỏ Đỏ và Gấu Béo khám phá những tọa độ ngắm pháo hoa cực chill, không lo chen chúc tại TP.HCM nhân Ngày Văn hóa Việt Nam nhé! #ThoVaGau #PhaoHoaTPHCM #NgayVanHoaVietNam #KhamPhaSG"
     }
   },
   "deals": [
