@@ -26,6 +26,18 @@ const CONFIG = {
     ]
   },
   "videos": {
+    "tho_gau_3d_20261124081502": {
+      "id": "tho_gau_3d_20261124081502",
+      "title": "[3D Thỏ & Gấu] Jensen Huang tái xuất cho thấy tầm ảnh hưởng khó thay thế",
+      "duration": "00:46",
+      "views": "164.5K",
+      "likes": "22.8K",
+      "uploadDate": "Vừa xong",
+      "category": "🐰🐻 VŨ TRỤ THỎ & GẤU 3D",
+      "videoUrl": "videos/tho_gau_3d_20261124081502.mp4",
+      "posterUrl": "videos/tho_gau_3d_20261124081502_poster.jpg",
+      "description": "Màn tái xuất chấn động của CEO Jensen Huang khiến cả Phố Wall và giới công nghệ dậy sóng! #ThoVaGau #JensenHuang #Nvidia #AI"
+    },
     "tho_gau_3d_20261123154402": {
       "id": "tho_gau_3d_20261123154402",
       "title": "[3D Thỏ & Gấu] Gần 30 tuổi, bạn trai vẫn chưa tích góp được đồng nào",
@@ -532,15 +544,15 @@ const CONFIG = {
     },
     "default": {
       "id": "default",
-      "title": "[3D Thỏ & Gấu] Gần 30 tuổi, bạn trai vẫn chưa tích góp được đồng nào",
+      "title": "[3D Thỏ & Gấu] Jensen Huang tái xuất cho thấy tầm ảnh hưởng khó thay thế",
       "duration": "00:46",
-      "views": "229.5K",
-      "likes": "14.8K",
+      "views": "164.5K",
+      "likes": "22.8K",
       "uploadDate": "Vừa xong",
       "category": "🐰🐻 VŨ TRỤ THỎ & GẤU 3D",
-      "videoUrl": "videos/tho_gau_3d_20261123154402.mp4",
-      "posterUrl": "videos/tho_gau_3d_20261123154402_poster.jpg",
-      "description": "Gần 30 tuổi, bạn trai vẫn chưa tích góp được đồng nào, tiêu xài thoải mái và tin rằng sau này cưới sẽ tự khắc có trách nhiệm. Liệu cô gái có nên tiếp tục tin tưởng? #ThoVaGau #TaiChinhGiaDinh #HonNhan #TinTuc3D"
+      "videoUrl": "videos/tho_gau_3d_20261124081502.mp4",
+      "posterUrl": "videos/tho_gau_3d_20261124081502_poster.jpg",
+      "description": "Màn tái xuất chấn động của CEO Jensen Huang khiến cả Phố Wall và giới công nghệ dậy sóng! #ThoVaGau #JensenHuang #Nvidia #AI"
     }
   },
   "deals": [
