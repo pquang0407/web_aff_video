@@ -131,7 +131,7 @@ function ensureRichVoiceText(text, sceneIdx) {
 }
 
 async function generateScript(articleText, articleTitle = '', customStylePrompt = '') {
-  console.log(`\n🤖 [2/6] AI Director: Gemini tự do biên kịch 4 cảnh tự nhiên (không intro/outro cố định)...`);
+  console.log(`\n🤖 [2/6] AI Director: Gemini tự biên kịch 4 cảnh chi tiết, giàu ý chính (giữ Outro kêu gọi follow)...`);
   const styleBlock = customStylePrompt
     ? `1. PHONG CÁCH HÌNH ẢNH TÙY CHỈNH (BẮT BUỘC ÁP DỤNG 100% CHO CẢ 4 CẢNH):
    - Bối cảnh, ánh sáng, thẩm mỹ và chuyển động camera PHẢI tuân thủ tuyệt đối phong cách sau:
@@ -144,25 +144,26 @@ async function generateScript(articleText, articleTitle = '', customStylePrompt 
    - Nhân vật đồng hành / đối thủ: Luôn là GẤU BÉO (Chubby fluffy white bear companion/rival, round belly, clumsy, lovable and funny).
    - Tuyệt đối không dùng nhân vật người thật, toàn bộ câu chuyện phải được diễn xuất bởi Thỏ Đỏ và Gấu Béo trong cùng một bối cảnh xuyên suốt.`;
 
-  const prompt = `Bạn là Tổng Đạo diễn kiêm Biên tập viên cho kênh video tin tức hoạt hình ngắn triệu view.
+  const prompt = `Bạn là Tổng Đạo diễn kiêm Biên tập viên tin tức ngắn triệu view.
 Tiêu đề gốc của bài báo: "${articleTitle}"
 Dưới đây là nội dung bài báo nguồn:
 """
 ${articleText}
 """
 
-HÃY CHUYỂN THỂ BÀI BÁO THÀNH KỊCH BẢN 4 PHÂN CẢNH LIỀN MẠCH (40 GIÂY) VỚI CÁC QUY TẮC SAU:
+HÃY CHUYỂN THỂ BÀI BÁO THÀNH KỊCH BẢN 4 PHÂN CẢNH LIỀN MẠCH (40 GIÂY NỘI DUNG — SAU ĐÓ HỆ THỐNG SẼ TỰ GHÉP ĐOẠN OUTRO KÊU GỌI FOLLOW RIÊNG) VỚI CÁC QUY TẮC SAU:
 0. QUY TẮC TIÊU ĐỀ (BẮT BUỘC):
    - Tiêu đề (headline cảnh 1 và ticker) PHẢI LẤY TRỰC TIẾP TỪ TIÊU ĐỀ BÁO GỐC ("${articleTitle}"), nếu dài quá thì chỉ rút gọn cho vừa khung, TUYỆT ĐỐI KHÔNG tự sáng tạo/bịa ra tiêu đề khác lệch với bài báo!
 ${styleBlock}
 
-2. TỰ DO BIÊN KỊCH TỰ NHIÊN (KHÔNG DÙNG INTRO / OUTRO KHUÔN MẪU CỨNG NHẮC):
-   - KHÔNG cần câu chào mở đầu sáo rỗng, KHÔNG cần câu kêu gọi Like/Follow cố định ở cuối.
-   - Hãy để lời kể đi thẳng vào điểm hấp dẫn nhất của bài báo ngay từ giây đầu tiên (Cảnh 1), phát triển tự nhiên qua Cảnh 2 và Cảnh 3, rồi chốt lại trọn vẹn/gợi mở tự nhiên ở Cảnh 4 theo đúng tinh thần bài báo (giọng kể tự nhiên, cuốn hút, không lặp lại các câu khuôn mẫu như "Mở đầu hành trình..." hay "Khép lại hành trình...").
+2. TỰ SOẠN KỊCH BẢN TỰ NHIÊN, CHI TIẾT, LẤY TỐI ĐA Ý CHÍNH (CẤM CÂU KHUÔN MẪU SÁO RỖNG):
+   - TUYỆT ĐỐI CẤM dùng các câu nối văn mẫu gây cấn tai, lặp đi lặp lại như: "Mở đầu hành trình...", "Chưa dừng lại ở đó...", "Trong lúc gay cấn nhất...", "Đỉnh điểm của màn tấu hài...", "Khép lại hành trình đáng nhớ...", "Khép lại chuyến phiêu lưu...".
+   - KHÔNG viết câu kêu gọi like/follow trong 4 cảnh này (vì video đã có sẵn đoạn kết Outro kêu gọi follow riêng ở cuối).
+   - HÃY TỰ SOẠN mạch kể hoàn toàn tự nhiên, gãy gọn, cuốn hút như người dẫn bản tin thật: đi thẳng vào thông tin đắt giá nhất ngay câu đầu Cảnh 1, rồi triển khai chi tiết, chắt lọc NHIỀU Ý CHÍNH NHẤT CÓ THỂ từ bài báo gốc (con số cụ thể, địa điểm, thời gian, tên nhân vật/sự kiện, nguyên nhân, diễn biến đáng chú ý, kết quả/chi tiết thú vị). Không viết chung chung lan man.
 
-3. ĐỘ DÀI LỜI BÌNH (voiceText) CHUẨN KHỚP 10 GIÂY (KHÔNG BỊ NGẮN / KHÔNG DƯ THỜI GIAN CHẾT):
-   - Mỗi cảnh video dài 10 giây. Vì vậy mỗi lời bình (voiceText) BẮT BUỘC phải gồm 2 câu văn sinh động, độ dài từ 42 đến 50 TỪ (âm tiết tiếng Việt).
-   - Tuyệt đối không viết ngắn dưới 40 từ để tránh việc đọc xong sớm rồi dư 4-5 giây im lặng!
+3. ĐỘ DÀI LỜI BÌNH (voiceText) ĐỒNG ĐỀU MỌI VIDEO (CHUẨN TỐC ĐỘ ĐỌC MƯỢT CHO 10 GIÂY/CẢNH):
+   - Mỗi cảnh dài đúng 10 giây. Để tốc độ giọng đọc luôn đều đặn, rõ chữ, không quá chậm cũng không quá gấp ở mọi video, mỗi voiceText BẮT BUỘC dài từ 44 đến 50 TỪ (âm tiết tiếng Việt), gồm 2–3 câu ngắn giàu thông tin.
+   - Tuyệt đối không viết dưới 42 từ hoặc vượt quá 54 từ!
 
 4. VISUAL PROMPT ĐỒNG NHẤT & AN TOÀN 100% CHO MUSE.AI:
    - Mỗi visualPrompt BẮT BUỘC bắt đầu bằng: "${customStylePrompt ? 'Create a 9:16 aspect ratio video clip, 10 seconds long. Directly render the video now without asking options.' : 'Create a 16:9 aspect ratio video clip, 10 seconds long. Directly render the video now without asking options. Stylized 3D Pixar animation...'}"
@@ -184,7 +185,7 @@ Trả về duy nhất định dạng JSON thuần:
       "headline": "TIÊU ĐỀ BÁM SÁT BÁO GỐC",
       "sub": "Mô tả phụ tóm tắt cảnh 1",
       "color": "#00B4D8",
-      "voiceText": "2 câu dẫn chuyện tự nhiên độ dài từ 42 đến 50 từ...",
+      "voiceText": "Lời dẫn chi tiết giàu thông tin, tự nhiên, dài 44-50 từ...",
       "visualPrompt": "..."
     },
     { "index": 2, "tag": "...", "headline": "...", "sub": "...", "color": "#FF9900", "voiceText": "...", "visualPrompt": "..." },
@@ -300,7 +301,8 @@ function synthesizeSyncedAudio(text, outMp3, targetVideoDur = 10.0, targetSpeech
 
   const pureDur = probeDuration(trimMp3);
   let tempo = pureDur / targetSpeechDur;
-  tempo = Math.max(0.88, Math.min(1.55, tempo));
+  // Giữ tốc độ giọng đọc đồng đều ở mức mượt chuẩn (~1.05x - 1.32x) cho mọi video
+  tempo = Math.max(1.05, Math.min(1.32, tempo));
 
   execSync(`ffmpeg -y -i "${trimMp3}" -af "atempo=${tempo.toFixed(4)},adelay=100|100,apad=pad_dur=${targetVideoDur}" -t ${targetVideoDur} -b:a 192k "${outMp3}"`);
 
@@ -559,12 +561,24 @@ async function compositeFinalVideo(outDir, finalVideoPath) {
     execSync(`ffmpeg -y -i "${vPath}" -i "${aPath}" -i "${oPath}" -filter_complex "[0:v]scale=270:480:force_original_aspect_ratio=increase,crop=270:480,boxblur=6:2,scale=1080:1920:flags=bilinear[bg]; [0:v]scale=1080:1920:force_original_aspect_ratio=decrease[fg]; [bg][fg]overlay=(W-w)/2:(H-h)/2[vid]; [vid][2:v]overlay=0:0[v]; [1:a]apad=pad_dur=10[a]" -map "[v]" -map "[a]" -t 10 -c:v libx264 -preset superfast -crf 23 -threads 1 -pix_fmt yuv420p -c:a aac -b:a 192k "${formatted}"`);
   }
 
-  // Bỏ hoàn toàn cảnh 5 Outro cố định — nối đúng 4 cảnh tự nhiên (40 giây trọn vẹn) do Gemini biên kịch
+  // Giữ nguyên cảnh 5 Outro cố định (6s kêu gọi follow/tương tác) theo yêu cầu khách hàng
+  const outroFormatted = path.join(SHARED_DIR, 'fixed_outro_formatted_916.mp4');
   const concatList = path.join(outDir, 'concat_all.txt');
-  fs.writeFileSync(concatList, `file 'scene-1-formatted.mp4'\nfile 'scene-2-formatted.mp4'\nfile 'scene-3-formatted.mp4'\nfile 'scene-4-formatted.mp4'\n`);
+  const lines = [
+    `file 'scene-1-formatted.mp4'`,
+    `file 'scene-2-formatted.mp4'`,
+    `file 'scene-3-formatted.mp4'`,
+    `file 'scene-4-formatted.mp4'`
+  ];
+  if (fs.existsSync(outroFormatted)) {
+    const localOutro = path.join(outDir, 'scene-5-outro.mp4');
+    fs.copyFileSync(outroFormatted, localOutro);
+    lines.push(`file 'scene-5-outro.mp4'`);
+  }
+  fs.writeFileSync(concatList, lines.join('\n') + '\n');
 
   execSync(`ffmpeg -y -f concat -safe 0 -i "${concatList}" -c copy "${finalVideoPath}"`);
-  console.log(`\n🏆 MASTER VIDEO HOÀN TẤT (40s, không Outro cố định) TẠI: ${finalVideoPath}`);
+  console.log(`\n🏆 MASTER VIDEO HOÀN TẤT (${fs.existsSync(outroFormatted) ? '46s, giữ Outro Follow' : '40s'}) TẠI: ${finalVideoPath}`);
 }
 
 /**
@@ -728,10 +742,12 @@ async function main() {
   const chatId = (chatIdIdx !== -1 && args[chatIdIdx + 1]) ? args[chatIdIdx + 1] : '';
   const styleIdx = args.indexOf('--style-prompt');
   const customStylePrompt = (styleIdx !== -1 && args[styleIdx + 1]) ? args[styleIdx + 1] : '';
+  const scriptJsonIdx = args.indexOf('--script-json');
+  const scriptJsonPath = (scriptJsonIdx !== -1 && args[scriptJsonIdx + 1]) ? args[scriptJsonIdx + 1] : '';
   const skipPublish = args.includes('--no-publish');
 
-  if (!urlArg) {
-    console.error('Cách dùng: node scripts/run-auto.mjs <LINK_BAI_BAO> [--chat-id <CHAT_ID>] [--style-prompt "<PROMPT>"] [--no-publish]');
+  if (!urlArg && !scriptJsonPath) {
+    console.error('Cách dùng: node scripts/run-auto.mjs <LINK_BAI_BAO> [--chat-id <CHAT_ID>] [--style-prompt "<PROMPT>"] [--script-json <FILE>] [--no-publish]');
     process.exit(1);
   }
 
@@ -740,8 +756,14 @@ async function main() {
   const outDir = path.join(ENGINE_ROOT, 'output', `auto-${timestamp}`);
   fs.mkdirSync(outDir, { recursive: true });
 
-  const article = await fetchArticle(urlArg);
-  const scriptData = await generateScript(article.text, article.title, customStylePrompt);
+  let scriptData;
+  if (scriptJsonPath && fs.existsSync(scriptJsonPath)) {
+    console.log(`\n📄 [1-2/6] Đang nạp kịch bản trực tiếp từ: ${scriptJsonPath}`);
+    scriptData = JSON.parse(fs.readFileSync(scriptJsonPath, 'utf8'));
+  } else {
+    const article = await fetchArticle(urlArg);
+    scriptData = await generateScript(article.text, article.title, customStylePrompt);
+  }
   fs.writeFileSync(path.join(outDir, 'script.json'), JSON.stringify(scriptData, null, 2));
 
   generateSceneAudios(scriptData.scenes, outDir);
