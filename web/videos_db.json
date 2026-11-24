@@ -22,6 +22,18 @@
     ]
   },
   "videos": {
+    "tho_gau_3d_20261124100645": {
+      "id": "tho_gau_3d_20261124100645",
+      "title": "[3D Thỏ & Gấu] Dinh Độc Lập đông nghịt khách ngày mở cửa miễn phí",
+      "duration": "00:46",
+      "views": "120.5K",
+      "likes": "36.8K",
+      "uploadDate": "Vừa xong",
+      "category": "🐰🐻 VŨ TRỤ THỎ & GẤU 3D",
+      "videoUrl": "videos/tho_gau_3d_20261124100645.mp4",
+      "posterUrl": "videos/tho_gau_3d_20261124100645_poster.jpg",
+      "description": "Thỏ Đỏ và Gấu Béo tá hỏa khi thấy dòng người xếp hàng dài kỷ lục tại Dinh Độc Lập! #DinhDocLap #VuTruThoGau #KhuyenMai #KhamPha"
+    },
     "tho_gau_3d_20261124094256": {
       "id": "tho_gau_3d_20261124094256",
       "title": "[3D Thỏ & Gấu] 30 nhà khoa học trẻ Việt Nam được chọn dự đại hội tại Nga",
@@ -576,15 +588,15 @@
     },
     "default": {
       "id": "default",
-      "title": "[3D Thỏ & Gấu] 30 nhà khoa học trẻ Việt Nam được chọn dự đại hội tại Nga",
+      "title": "[3D Thỏ & Gấu] Dinh Độc Lập đông nghịt khách ngày mở cửa miễn phí",
       "duration": "00:46",
-      "views": "273.5K",
-      "likes": "12.8K",
+      "views": "120.5K",
+      "likes": "36.8K",
       "uploadDate": "Vừa xong",
       "category": "🐰🐻 VŨ TRỤ THỎ & GẤU 3D",
-      "videoUrl": "videos/tho_gau_3d_20261124094256.mp4",
-      "posterUrl": "videos/tho_gau_3d_20261124094256_poster.jpg",
-      "description": "Thỏ Đỏ và Gấu Béo cùng điểm tin nóng hổi về hành trình vươn tầm thế giới của trí tuệ Việt Nam tại xứ sở Bạch Dương! Chúc các bạn trẻ gặt hái nhiều thành công rực rỡ tại Nga. #ThoVaGau #KhoaHocTre #VietNam #TinTucKhoaHoc"
+      "videoUrl": "videos/tho_gau_3d_20261124100645.mp4",
+      "posterUrl": "videos/tho_gau_3d_20261124100645_poster.jpg",
+      "description": "Thỏ Đỏ và Gấu Béo tá hỏa khi thấy dòng người xếp hàng dài kỷ lục tại Dinh Độc Lập! #DinhDocLap #VuTruThoGau #KhuyenMai #KhamPha"
     }
   },
   "deals": [
