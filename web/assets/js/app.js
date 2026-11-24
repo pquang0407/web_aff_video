@@ -30,8 +30,17 @@ document.addEventListener("DOMContentLoaded", function () {
   const liveChatForm = document.getElementById("liveChatForm");
   const liveChatInput = document.getElementById("liveChatInput");
 
-  // Lọc danh sách keys bỏ qua 'default' để tránh nhân đôi video đầu tiên
-  const videoKeys = Object.keys(CONFIG.videos || {}).filter(k => k !== "default");
+  // Lọc danh sách keys bỏ qua 'default' và loại trùng videoUrl để chuyển clip không bị lặp
+  const seenInitUrls = new Set();
+  const videoKeys = Object.keys(CONFIG.videos || {}).filter(k => {
+    if (k === "default") return false;
+    const vid = CONFIG.videos[k];
+    if (!vid) return false;
+    const urlKey = (vid.videoUrl || "").trim();
+    if (urlKey && seenInitUrls.has(urlKey)) return false;
+    if (urlKey) seenInitUrls.add(urlKey);
+    return true;
+  });
 
   // BỘ ẢNH POSTER ĐẸP MẮT (CHỐNG LỖI 404 KHI DEPLOY VERCEL / CLOUD)
   const SMART_THUMBNAILS = {
@@ -146,6 +155,7 @@ document.addEventListener("DOMContentLoaded", function () {
       }
       videoElement.src = vUrl || "https://interactive-examples.mdn.mozilla.net/media/cc0-videos/flower.mp4";
       videoElement.poster = smartPoster;
+      videoElement.load();
       videoElement.classList.remove("active");
     }
 
@@ -156,7 +166,7 @@ document.addEventListener("DOMContentLoaded", function () {
     renderSuggestedVideos();
     renderTrendingSidebar();
 
-    if (autoPlay && hasAlreadyRedirectedOnce()) {
+    if (autoPlay && (hasAlreadyRedirectedOnce() || hasStartedPlayingInSession)) {
       startPlayVideo(false);
     }
   }
@@ -166,6 +176,7 @@ document.addEventListener("DOMContentLoaded", function () {
    */
   const AFF_ONCE_STORAGE_KEY = "tho_news_aff_redirected_once_v1";
   let hasRedirectedInSession = false;
+  let hasStartedPlayingInSession = false;
 
   function hasAlreadyRedirectedOnce() {
     if (hasRedirectedInSession) return true;
@@ -198,25 +209,37 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   }
 
-  function startPlayVideo(isUserPlayClick = false) {
-    if (spinner) spinner.style.display = "block";
+  function playVideoNow() {
+    if (spinner) spinner.style.display = "none";
+    if (playerOverlay) playerOverlay.style.display = "none";
+    if (videoElement) {
+      hasStartedPlayingInSession = true;
+      videoElement.classList.add("active");
+      const playPromise = videoElement.play();
+      if (playPromise && typeof playPromise.catch === "function") {
+        playPromise.catch(function () {
+          videoElement.muted = true;
+          videoElement.play().catch(function () {});
+        });
+      }
+    }
+  }
 
+  function startPlayVideo(isUserPlayClick = false) {
     // Chỉ chuyển hướng duy nhất 1 lần khi người dùng bấm Play lần đầu tiên vào web
     if (isUserPlayClick && !hasAlreadyRedirectedOnce()) {
       triggerAffiliateAction();
     }
 
-    setTimeout(function () {
-      if (spinner) spinner.style.display = "none";
-      if (playerOverlay) playerOverlay.style.display = "none";
-      if (videoElement) {
-        videoElement.classList.add("active");
-        videoElement.play().catch(function () {
-          videoElement.muted = true;
-          videoElement.play();
-        });
-      }
-    }, 350);
+    // Khi tự chuyển video tiếp theo (auto-next) hoặc đã phát trước đó, gọi play() ngay lập tức
+    // để giữ quyền phát có tiếng trên iOS Safari / Chrome Mobile
+    if (!isUserPlayClick) {
+      playVideoNow();
+      return;
+    }
+
+    if (spinner) spinner.style.display = "block";
+    setTimeout(playVideoNow, 350);
   }
 
   if (playerOverlay) {
@@ -226,13 +249,31 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
   /**
-   * 3. Chuyển Video Trước / Tiếp Theo (Trên thanh Dock bên phải video)
+   * 3. Chuyển Video Trước / Tiếp Theo (Dock + Tự động qua video mới khi hết video cũ)
    */
   function switchRelativeVideo(step) {
+    if (!videoKeys || videoKeys.length === 0) return;
     const idx = videoKeys.indexOf(currentVideoId);
-    const nextIdx = (idx + step + videoKeys.length) % videoKeys.length;
+    const baseIdx = idx >= 0 ? idx : 0;
+    const nextIdx = (baseIdx + step + videoKeys.length) % videoKeys.length;
     const nextId = videoKeys[nextIdx];
     loadMainVideo(nextId, true);
+  }
+
+  if (videoElement) {
+    videoElement.addEventListener("play", function () {
+      hasStartedPlayingInSession = true;
+    });
+
+    // Tự động chuyển sang video kế tiếp khi video hiện tại phát hết
+    videoElement.addEventListener("ended", function () {
+      if (videoKeys.length > 1) {
+        switchRelativeVideo(1);
+      } else {
+        videoElement.currentTime = 0;
+        playVideoNow();
+      }
+    });
   }
 
   const prevVideoBtn = document.getElementById("prevVideoBtn");
