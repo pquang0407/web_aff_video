@@ -26,6 +26,18 @@ const CONFIG = {
     ]
   },
   "videos": {
+    "tho_gau_3d_20261124114053": {
+      "id": "tho_gau_3d_20261124114053",
+      "title": "[3D Thỏ & Gấu] Ngôi nhà màu hồng với nội thất như trường mẫu giáo",
+      "duration": "00:46",
+      "views": "304.5K",
+      "likes": "20.8K",
+      "uploadDate": "Vừa xong",
+      "category": "🐰🐻 VŨ TRỤ THỎ & GẤU 3D",
+      "videoUrl": "videos/tho_gau_3d_20261124114053.mp4",
+      "posterUrl": "videos/tho_gau_3d_20261124114053_poster.jpg",
+      "description": "Bạn có dám sống trong ngôi nhà rực rỡ như trường mẫu giáo thế này không? Thỏ Đỏ và Gấu Béo đã choáng váng khi ghé thăm công trình độc bản tại London! #ThoVaGau #KienTrucDocDao #LondonHouse #NhaMauHong"
+    },
     "tho_gau_3d_20261124111909": {
       "id": "tho_gau_3d_20261124111909",
       "title": "[3D Thỏ & Gấu] TikToker",
@@ -628,15 +640,15 @@ const CONFIG = {
     },
     "default": {
       "id": "default",
-      "title": "[3D Thỏ & Gấu] TikToker",
+      "title": "[3D Thỏ & Gấu] Ngôi nhà màu hồng với nội thất như trường mẫu giáo",
       "duration": "00:46",
-      "views": "204.5K",
-      "likes": "30.8K",
+      "views": "304.5K",
+      "likes": "20.8K",
       "uploadDate": "Vừa xong",
       "category": "🐰🐻 VŨ TRỤ THỎ & GẤU 3D",
-      "videoUrl": "videos/tho_gau_3d_20261124111909.mp4",
-      "posterUrl": "videos/tho_gau_3d_20261124111909_poster.jpg",
-      "description": "Đừng vì lợi ích trước mắt mà đánh đổi tương lai tươi sáng các bạn nhé! Cùng Thỏ Đỏ và Gấu Béo nhìn nhận lại sự việc này. #TikToker #TinNong #ThoVaGau #CanhBao"
+      "videoUrl": "videos/tho_gau_3d_20261124114053.mp4",
+      "posterUrl": "videos/tho_gau_3d_20261124114053_poster.jpg",
+      "description": "Bạn có dám sống trong ngôi nhà rực rỡ như trường mẫu giáo thế này không? Thỏ Đỏ và Gấu Béo đã choáng váng khi ghé thăm công trình độc bản tại London! #ThoVaGau #KienTrucDocDao #LondonHouse #NhaMauHong"
     }
   },
   "deals": [
