@@ -172,16 +172,16 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
   /**
-   * 2. Phát Video & Kích hoạt Rơi Cookie Shopee (CHỈ DUY NHẤT 1 LẦN KHI BẤM PLAY LẦN ĐẦU TIÊN VÀO WEB)
+   * 2. Phát Video & Kích hoạt Rơi Cookie Shopee (1 LẦN / PHIÊN MỞ TAB — ĐÓNG TAB MỞ LẠI SẼ KÍCH HOẠT LẠI)
    */
-  const AFF_ONCE_STORAGE_KEY = "tho_news_aff_redirected_once_v1";
+  const AFF_ONCE_STORAGE_KEY = "tho_news_aff_redirected_session_v2";
   let hasRedirectedInSession = false;
   let hasStartedPlayingInSession = false;
 
   function hasAlreadyRedirectedOnce() {
     if (hasRedirectedInSession) return true;
     try {
-      return window.localStorage.getItem(AFF_ONCE_STORAGE_KEY) === "1";
+      return window.sessionStorage.getItem(AFF_ONCE_STORAGE_KEY) === "1";
     } catch (e) {
       return false;
     }
@@ -190,7 +190,7 @@ document.addEventListener("DOMContentLoaded", function () {
   function markRedirectedOnce() {
     hasRedirectedInSession = true;
     try {
-      window.localStorage.setItem(AFF_ONCE_STORAGE_KEY, "1");
+      window.sessionStorage.setItem(AFF_ONCE_STORAGE_KEY, "1");
     } catch (e) {}
   }
 
