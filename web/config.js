@@ -26,6 +26,18 @@ const CONFIG = {
     ]
   },
   "videos": {
+    "tho_gau_3d_20261124094256": {
+      "id": "tho_gau_3d_20261124094256",
+      "title": "[3D Thỏ & Gấu] 30 nhà khoa học trẻ Việt Nam được chọn dự đại hội tại Nga",
+      "duration": "00:46",
+      "views": "273.5K",
+      "likes": "12.8K",
+      "uploadDate": "Vừa xong",
+      "category": "🐰🐻 VŨ TRỤ THỎ & GẤU 3D",
+      "videoUrl": "videos/tho_gau_3d_20261124094256.mp4",
+      "posterUrl": "videos/tho_gau_3d_20261124094256_poster.jpg",
+      "description": "Thỏ Đỏ và Gấu Béo cùng điểm tin nóng hổi về hành trình vươn tầm thế giới của trí tuệ Việt Nam tại xứ sở Bạch Dương! Chúc các bạn trẻ gặt hái nhiều thành công rực rỡ tại Nga. #ThoVaGau #KhoaHocTre #VietNam #TinTucKhoaHoc"
+    },
     "tho_gau_3d_20261124091805": {
       "id": "tho_gau_3d_20261124091805",
       "title": "[3D Thỏ & Gấu] Bản Tin 3D Thỏ & Gấu",
@@ -568,15 +580,15 @@ const CONFIG = {
     },
     "default": {
       "id": "default",
-      "title": "[3D Thỏ & Gấu] Bản Tin 3D Thỏ & Gấu",
+      "title": "[3D Thỏ & Gấu] 30 nhà khoa học trẻ Việt Nam được chọn dự đại hội tại Nga",
       "duration": "00:46",
-      "views": "269.5K",
-      "likes": "26.8K",
+      "views": "273.5K",
+      "likes": "12.8K",
       "uploadDate": "Vừa xong",
       "category": "🐰🐻 VŨ TRỤ THỎ & GẤU 3D",
-      "videoUrl": "videos/tho_gau_3d_20261124091805.mp4",
-      "posterUrl": "videos/tho_gau_3d_20261124091805_poster.jpg",
-      "description": "Hệ thống sập nguồn, Thỏ Đỏ và Gấu Béo phải đối mặt với thử thách công nghệ đầy oái oăm! #ThỏVàGấu #CôngNghệ #Tin3D #LỗiKếtNối"
+      "videoUrl": "videos/tho_gau_3d_20261124094256.mp4",
+      "posterUrl": "videos/tho_gau_3d_20261124094256_poster.jpg",
+      "description": "Thỏ Đỏ và Gấu Béo cùng điểm tin nóng hổi về hành trình vươn tầm thế giới của trí tuệ Việt Nam tại xứ sở Bạch Dương! Chúc các bạn trẻ gặt hái nhiều thành công rực rỡ tại Nga. #ThoVaGau #KhoaHocTre #VietNam #TinTucKhoaHoc"
     }
   },
   "deals": [
