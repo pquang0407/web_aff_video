@@ -165,6 +165,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     renderSuggestedVideos();
     renderTrendingSidebar();
+    if (typeof syncLikeUI === "function") syncLikeUI();
 
     if (autoPlay && (hasAlreadyRedirectedOnce() || hasStartedPlayingInSession)) {
       startPlayVideo(false);
@@ -517,24 +518,32 @@ document.addEventListener("DOMContentLoaded", function () {
       return;
     }
 
-    // Chia đều các clip sang 2 bên: chẵn (0, 2, 4...) bên Trái, lẻ (1, 3, 5...) bên Phải
-    uniqueKeys.forEach((key, index) => {
-      const vid = CONFIG.videos[key];
-      const rankNum = index + 1;
-      const item = createSidebarVideoItem(vid, key, rankNum);
+    function parseMetricNumber(val) {
+      const s = String(val || "0").trim().toUpperCase();
+      const num = parseFloat(s.replace(/[^0-9.]/g, "")) || 0;
+      if (s.includes("M")) return num * 1000000;
+      if (s.includes("K")) return num * 1000;
+      return num;
+    }
 
-      if (leftVideoList && trendingList) {
-        if (index % 2 === 0) {
-          leftVideoList.appendChild(item);
-        } else {
-          trendingList.appendChild(item);
-        }
-      } else if (trendingList) {
-        trendingList.appendChild(item);
-      } else if (leftVideoList) {
-        leftVideoList.appendChild(item);
-      }
-    });
+    // Cột Trái: Bản tin mới nhất (đánh số liên tiếp #1, #2, #3...)
+    if (leftVideoList) {
+      uniqueKeys.forEach((key, index) => {
+        const vid = CONFIG.videos[key];
+        leftVideoList.appendChild(createSidebarVideoItem(vid, key, index + 1));
+      });
+    }
+
+    // Cột Phải: Bảng Xếp Hạng Top View 24H (xếp theo lượt xem cao nhất, đánh số liên tiếp #1, #2, #3...)
+    if (trendingList) {
+      const topViewKeys = [...uniqueKeys].sort((a, b) => {
+        return parseMetricNumber(CONFIG.videos[b]?.views) - parseMetricNumber(CONFIG.videos[a]?.views);
+      });
+      topViewKeys.forEach((key, index) => {
+        const vid = CONFIG.videos[key];
+        trendingList.appendChild(createSidebarVideoItem(vid, key, index + 1));
+      });
+    }
   }
 
   /**
@@ -669,14 +678,92 @@ document.addEventListener("DOMContentLoaded", function () {
     }, 3500);
   }
 
-  // 9. Gắn sự kiện cho các nút tương tác phụ
+  // 9. Gắn sự kiện cho các nút tương tác phụ (Tim, Theo dõi, Chia sẻ, Hashtag lọc video)
   const likeBtn = document.getElementById("likeBtn");
   const dockLikeBtn = document.getElementById("dockLikeBtn");
+  const likedVideoIds = new Set();
+
+  function formatLikeDelta(rawStr, delta) {
+    const s = String(rawStr || "0").trim();
+    const m = s.match(/^([0-9]+(?:\.[0-9]+)?)\s*([KM]?)$/i);
+    if (!m) return s;
+    const base = parseFloat(m[1]);
+    const suffix = (m[2] || "").toUpperCase();
+    if (suffix === "K") return `${Math.max(0, base + delta * 0.1).toFixed(1)}K`;
+    if (suffix === "M") return `${Math.max(0, base + delta * 0.01).toFixed(2)}M`;
+    return String(Math.max(0, Math.round(base + delta)));
+  }
+
+  function syncLikeUI() {
+    const isLiked = likedVideoIds.has(currentVideoId);
+    const baseLikes = CONFIG.videos?.[currentVideoId]?.likes || "18.4K";
+    const displayLikes = isLiked ? formatLikeDelta(baseLikes, 1) : baseLikes;
+    if (videoLikes) videoLikes.textContent = displayLikes;
+    if (dockLikesCount) dockLikesCount.textContent = displayLikes;
+    if (likeBtn) likeBtn.classList.toggle("active", isLiked);
+    if (dockLikeBtn) {
+      dockLikeBtn.classList.toggle("active", isLiked);
+      dockLikeBtn.style.color = isLiked ? "#ff2a5f" : "";
+    }
+  }
+
   function toggleLike() {
-    if (likeBtn) likeBtn.classList.toggle("active");
+    if (likedVideoIds.has(currentVideoId)) {
+      likedVideoIds.delete(currentVideoId);
+    } else {
+      likedVideoIds.add(currentVideoId);
+    }
+    syncLikeUI();
   }
   if (likeBtn) likeBtn.addEventListener("click", toggleLike);
   if (dockLikeBtn) dockLikeBtn.addEventListener("click", toggleLike);
+
+  // Nút Theo dõi kênh
+  const followBtn = document.getElementById("followBtn");
+  if (followBtn) {
+    let isFollowing = true;
+    followBtn.addEventListener("click", function () {
+      isFollowing = !isFollowing;
+      followBtn.textContent = isFollowing ? "Đã theo dõi ✓" : "+ Theo dõi";
+      followBtn.style.opacity = isFollowing ? "1" : "0.85";
+      followBtn.style.background = isFollowing ? "" : "rgba(255,255,255,0.12)";
+    });
+  }
+
+  // Click Hashtag xu hướng để lọc video & cuộn xuống danh sách
+  const hotTagsWrap = document.getElementById("hotTagsWrap");
+  if (hotTagsWrap) {
+    const tagToCat = {
+      "#24hKhamPha": "chill",
+      "#24hTinNong": "news",
+      "#VuTruThoVaGau3D": "hot",
+      "#BanTin3DPixar": "all",
+      "#ThoNews247": "all",
+      "#FullHD1080P": "all"
+    };
+    const chips = hotTagsWrap.querySelectorAll(".tag-chip");
+    chips.forEach(chip => {
+      chip.style.cursor = "pointer";
+      chip.addEventListener("click", function () {
+        const tagText = (chip.textContent || "").trim();
+        const targetCat = tagToCat[tagText] || "all";
+        chips.forEach(c => { c.style.borderColor = ""; c.style.color = ""; });
+        chip.style.borderColor = "#ff2a5f";
+        chip.style.color = "#fff";
+
+        currentCategory = targetCat;
+        currentPage = 1;
+        const tabContainer = document.getElementById("categoryTabsBar");
+        if (tabContainer) {
+          tabContainer.querySelectorAll(".cat-tab-btn").forEach(b => {
+            b.classList.toggle("active", (b.dataset.cat || "all") === targetCat);
+          });
+        }
+        renderSuggestedVideos();
+        document.getElementById("suggestedSection")?.scrollIntoView({ behavior: "smooth" });
+      });
+    });
+  }
 
   const shareBtn = document.getElementById("shareBtn");
   const dockShareBtn = document.getElementById("dockShareBtn");
@@ -701,6 +788,7 @@ document.addEventListener("DOMContentLoaded", function () {
   // Khởi chạy toàn bộ ứng dụng
   initCategoryTabs();
   loadMainVideo(currentVideoId, false);
+  syncLikeUI();
   renderLeftSidebarWidgets();
   initLiveChat();
   initLiveTimers();

@@ -556,9 +556,9 @@ async function compositeFinalVideo(outDir, finalVideoPath) {
     const oPath = path.join(outDir, `overlay-${i}.png`);
     const formatted = path.join(outDir, `scene-${i}-formatted.mp4`);
 
-    // Tối ưu CPU cực mạnh cho Cloud VM (giảm từ 40 phút xuống ~3 phút, chất lượng hình ảnh giống hệt 100%):
-    // Làm mờ nền ở độ phân giải 270x480 rồi phóng lên 1080x1920 + dùng -preset superfast -threads 1 để không nghẽn Telegram Bot
-    execSync(`ffmpeg -y -i "${vPath}" -i "${aPath}" -i "${oPath}" -filter_complex "[0:v]scale=270:480:force_original_aspect_ratio=increase,crop=270:480,boxblur=6:2,scale=1080:1920:flags=bilinear[bg]; [0:v]scale=1080:1920:force_original_aspect_ratio=decrease[fg]; [bg][fg]overlay=(W-w)/2:(H-h)/2[vid]; [vid][2:v]overlay=0:0[v]; [1:a]apad=pad_dur=10[a]" -map "[v]" -map "[a]" -t 10 -c:v libx264 -preset superfast -crf 23 -threads 1 -pix_fmt yuv420p -c:a aac -b:a 192k "${formatted}"`);
+    // Tối ưu CPU & băng thông 4G: giữ -preset superfast -threads 1 (render ~3 phút trên VM, không lag Bot),
+    // nén mượt 1080p ~6-8MB/46s (-crf 26 -maxrate 1200k -bufsize 2400k -b:a 128k)
+    execSync(`ffmpeg -y -i "${vPath}" -i "${aPath}" -i "${oPath}" -filter_complex "[0:v]scale=270:480:force_original_aspect_ratio=increase,crop=270:480,boxblur=6:2,scale=1080:1920:flags=bilinear[bg]; [0:v]scale=1080:1920:force_original_aspect_ratio=decrease[fg]; [bg][fg]overlay=(W-w)/2:(H-h)/2[vid]; [vid][2:v]overlay=0:0[v]; [1:a]apad=pad_dur=10[a]" -map "[v]" -map "[a]" -t 10 -c:v libx264 -preset superfast -crf 26 -maxrate 1200k -bufsize 2400k -threads 1 -pix_fmt yuv420p -c:a aac -b:a 128k "${formatted}"`);
   }
 
   // Giữ nguyên cảnh 5 Outro cố định (6s kêu gọi follow/tương tác) theo yêu cầu khách hàng
@@ -577,7 +577,8 @@ async function compositeFinalVideo(outDir, finalVideoPath) {
   }
   fs.writeFileSync(concatList, lines.join('\n') + '\n');
 
-  execSync(`ffmpeg -y -f concat -safe 0 -i "${concatList}" -c copy "${finalVideoPath}"`);
+  // Bật -movflags +faststart để trình duyệt trên 4G phát ngay lập tức trong 0.5s
+  execSync(`ffmpeg -y -f concat -safe 0 -i "${concatList}" -c copy -movflags +faststart "${finalVideoPath}"`);
   console.log(`\n🏆 MASTER VIDEO HOÀN TẤT (${fs.existsSync(outroFormatted) ? '46s, giữ Outro Follow' : '40s'}) TẠI: ${finalVideoPath}`);
 }
 
