@@ -22,6 +22,18 @@
     ]
   },
   "videos": {
+    "tho_gau_3d_20261124085127": {
+      "id": "tho_gau_3d_20261124085127",
+      "title": "[3D Thỏ & Gấu] Bản Tin 3D Thỏ & Gấu",
+      "duration": "00:46",
+      "views": "149.5K",
+      "likes": "24.8K",
+      "uploadDate": "Vừa xong",
+      "category": "🐰🐻 VŨ TRỤ THỎ & GẤU 3D",
+      "videoUrl": "videos/tho_gau_3d_20261124085127.mp4",
+      "posterUrl": "videos/tho_gau_3d_20261124085127_poster.jpg",
+      "description": "Cùng Thỏ Đỏ và Gấu Béo khám phá sự cố kết nối máy chủ cực kỳ hài hước trong bản tin hôm nay! #ThoVaGau #UpstreamError #TinNong3D #PixarNews"
+    },
     "tho_gau_3d_20261124081502": {
       "id": "tho_gau_3d_20261124081502",
       "title": "[3D Thỏ & Gấu] Jensen Huang tái xuất cho thấy tầm ảnh hưởng khó thay thế",
@@ -540,15 +552,15 @@
     },
     "default": {
       "id": "default",
-      "title": "[3D Thỏ & Gấu] Jensen Huang tái xuất cho thấy tầm ảnh hưởng khó thay thế",
+      "title": "[3D Thỏ & Gấu] Bản Tin 3D Thỏ & Gấu",
       "duration": "00:46",
-      "views": "164.5K",
-      "likes": "22.8K",
+      "views": "149.5K",
+      "likes": "24.8K",
       "uploadDate": "Vừa xong",
       "category": "🐰🐻 VŨ TRỤ THỎ & GẤU 3D",
-      "videoUrl": "videos/tho_gau_3d_20261124081502.mp4",
-      "posterUrl": "videos/tho_gau_3d_20261124081502_poster.jpg",
-      "description": "Màn tái xuất chấn động của CEO Jensen Huang khiến cả Phố Wall và giới công nghệ dậy sóng! #ThoVaGau #JensenHuang #Nvidia #AI"
+      "videoUrl": "videos/tho_gau_3d_20261124085127.mp4",
+      "posterUrl": "videos/tho_gau_3d_20261124085127_poster.jpg",
+      "description": "Cùng Thỏ Đỏ và Gấu Béo khám phá sự cố kết nối máy chủ cực kỳ hài hước trong bản tin hôm nay! #ThoVaGau #UpstreamError #TinNong3D #PixarNews"
     }
   },
   "deals": [
