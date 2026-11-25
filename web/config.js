@@ -26,6 +26,18 @@ const CONFIG = {
     ]
   },
   "videos": {
+    "tho_gau_3d_20261125022620": {
+      "id": "tho_gau_3d_20261125022620",
+      "title": "[3D Thỏ & Gấu] Những bông hồng ra đời trong khói lửa chiến tranh",
+      "duration": "00:46",
+      "views": "136.5K",
+      "likes": "16.8K",
+      "uploadDate": "Vừa xong",
+      "category": "🐰🐻 VŨ TRỤ THỎ & GẤU 3D",
+      "videoUrl": "videos/tho_gau_3d_20261125022620.mp4",
+      "posterUrl": "videos/tho_gau_3d_20261125022620_poster.jpg",
+      "description": "Hành trình đầy cảm xúc của 4 nữ cựu sinh viên Khoa Văn Đại học Tổng hợp Hà Nội viết văn giữa khói lửa chiến tranh qua tập sách mới. #BongHongTrongLua #VanHocVietNam #KyUcChienTranh #24HKhamPha"
+    },
     "tho_gau_3d_20261124120400": {
       "id": "tho_gau_3d_20261124120400",
       "title": "[3D Thỏ & Gấu] 8 trận được chờ đợi nhất lượt năm Champions League",
@@ -652,15 +664,15 @@ const CONFIG = {
     },
     "default": {
       "id": "default",
-      "title": "[3D Thỏ & Gấu] 8 trận được chờ đợi nhất lượt năm Champions League",
+      "title": "[3D Thỏ & Gấu] Những bông hồng ra đời trong khói lửa chiến tranh",
       "duration": "00:46",
-      "views": "240.5K",
-      "likes": "28.8K",
+      "views": "136.5K",
+      "likes": "16.8K",
       "uploadDate": "Vừa xong",
       "category": "🐰🐻 VŨ TRỤ THỎ & GẤU 3D",
-      "videoUrl": "videos/tho_gau_3d_20261124120400.mp4",
-      "posterUrl": "videos/tho_gau_3d_20261124120400_poster.jpg",
-      "description": "Cùng Thỏ Đỏ và Gấu Béo điểm mặt 8 trận cầu siêu đỉnh cao tại lượt năm Champions League tuần này! #ThoVaGau #ChampionsLeague #BongDa #24hBongDa"
+      "videoUrl": "videos/tho_gau_3d_20261125022620.mp4",
+      "posterUrl": "videos/tho_gau_3d_20261125022620_poster.jpg",
+      "description": "Hành trình đầy cảm xúc của 4 nữ cựu sinh viên Khoa Văn Đại học Tổng hợp Hà Nội viết văn giữa khói lửa chiến tranh qua tập sách mới. #BongHongTrongLua #VanHocVietNam #KyUcChienTranh #24HKhamPha"
     }
   },
   "deals": [
