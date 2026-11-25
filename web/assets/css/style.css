@@ -184,15 +184,15 @@ body {
 }
 
 /* ==========================================================================
-   3-COLUMN FULL LAYOUT (CÂN ĐỐI, LẤP ĐẦY 2 BÊN)
+   2-COLUMN MODERN CINEMA LAYOUT (THOÁNG MẮT, KHÔNG NGẬP CLIP XUNG QUANH)
    ========================================================================== */
 .main-layout {
-  max-width: 1480px;
+  max-width: 1280px;
   margin: 0 auto;
   display: grid;
-  grid-template-columns: 320px minmax(0, 1fr) 350px;
-  gap: 20px;
-  padding: 18px 20px 85px 20px;
+  grid-template-columns: minmax(0, 1fr) 360px;
+  gap: 24px;
+  padding: 22px 24px 60px 24px;
   align-items: start;
 }
 
@@ -1532,20 +1532,15 @@ body {
    RESPONSIVE BREAKPOINTS
    ========================================================================== */
 @media (max-width: 1280px) {
-  .stage-side-info {
-    display: none;
-  }
   .main-layout {
-    grid-template-columns: 280px minmax(0, 1fr) 310px;
+    grid-template-columns: minmax(0, 1fr) 330px;
   }
 }
 
 @media (max-width: 1024px) {
   .main-layout {
-    grid-template-columns: minmax(0, 1fr) 320px;
-  }
-  .sidebar-left {
-    display: none;
+    grid-template-columns: minmax(0, 1fr) 300px;
+    gap: 18px;
   }
   .header-nav {
     display: none;

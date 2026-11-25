@@ -523,22 +523,15 @@ document.addEventListener("DOMContentLoaded", function () {
       return;
     }
 
-    const SIDEBAR_MAX_ITEMS = 8;
+    const UP_NEXT_COUNT = 4;
 
-    // Cột Trái: Top 8 Bản tin mới nhất (đánh số liên tiếp #1..#8, gọn đẹp không kéo dài trang)
-    if (leftVideoList) {
-      uniqueKeys.slice(0, SIDEBAR_MAX_ITEMS).forEach((key, index) => {
-        const vid = CONFIG.videos[key];
-        leftVideoList.appendChild(createSidebarVideoItem(vid, key, index + 1));
-      });
-    }
-
-    // Cột Phải: Top 8 Clip nổi bật khác (ưu tiên clip tiếp theo nếu đủ, đánh số liên tiếp #1..#8)
+    // Cột Phải: Phát tiếp theo (chỉ hiện gọn 4 clip kế tiếp để không bị ngợp màn hình)
     if (trendingList) {
-      const rightPool = uniqueKeys.length > SIDEBAR_MAX_ITEMS
-        ? uniqueKeys.slice(SIDEBAR_MAX_ITEMS, SIDEBAR_MAX_ITEMS * 2)
-        : uniqueKeys.slice(0, SIDEBAR_MAX_ITEMS);
-      rightPool.forEach((key, index) => {
+      const curIdx = uniqueKeys.indexOf(currentVideoId);
+      const ordered = curIdx >= 0
+        ? [...uniqueKeys.slice(curIdx + 1), ...uniqueKeys.slice(0, curIdx)]
+        : uniqueKeys;
+      ordered.slice(0, UP_NEXT_COUNT).forEach((key, index) => {
         const vid = CONFIG.videos[key];
         trendingList.appendChild(createSidebarVideoItem(vid, key, index + 1));
       });
@@ -562,7 +555,7 @@ document.addEventListener("DOMContentLoaded", function () {
       return {
         badge: "THỂ THAO",
         items: [
-          { title: "Giày Đá Bóng Sân Cỏ Nhân Tạo Nike / Chính Hãng", tag: "Bán chạy Shopee", subtitle: "Freeship + Hoàn tiền Thỏ", img: "https://images.unsplash.com/photo-1511886929837-354d827aae26?w=240&auto=format&fit=crop&q=80", url: buildShopeeAffSearchUrl("giày đá bóng nam chính hãng") },
+          { title: "Giày Đá Bóng Sân Cỏ Nhân Tạo Nike / Chính Hãng", tag: "Bán chạy Shopee", subtitle: "Freeship + Ưu đãi Shopee", img: "https://images.unsplash.com/photo-1511886929837-354d827aae26?w=240&auto=format&fit=crop&q=80", url: buildShopeeAffSearchUrl("giày đá bóng nam chính hãng") },
           { title: "Áo Đấu Đội Tuyển & Câu Lạc Bộ Bản Đẹp", tag: "Hot Trend", subtitle: "Vải mè Thái thoáng mát", img: "https://images.unsplash.com/photo-1580087256394-dc596e1c8f4f?w=240&auto=format&fit=crop&q=80", url: buildShopeeAffSearchUrl("áo bóng đá đội tuyển") },
           { title: "Quả Bóng Đá Thi Đấu Chuẩn Size 5", tag: "Deal Hời", subtitle: "Tặng kim bơm & lưới đựng", img: "https://images.unsplash.com/photo-1575361204480-aadea25e6e68?w=240&auto=format&fit=crop&q=80", url: buildShopeeAffSearchUrl("quả bóng đá chuẩn size 5") }
         ]
@@ -573,9 +566,9 @@ document.addEventListener("DOMContentLoaded", function () {
       return {
         badge: "SÁCH HAY",
         items: [
-          { title: "Sách Hoàng Tử Bé (Bản In Màu Bìa Cứng)", tag: "Bestseller", subtitle: "Giảm tới 30% + Hoàn tiền", img: "https://images.unsplash.com/photo-1512820790803-83ca734da794?w=240&auto=format&fit=crop&q=80", url: buildShopeeAffSearchUrl("sách Hoàng Tử Bé") },
+          { title: "Sách Hoàng Tử Bé (Bản In Màu Bìa Cứng)", tag: "Bestseller", subtitle: "Giảm tới 30% trên Shopee", img: "https://images.unsplash.com/photo-1512820790803-83ca734da794?w=240&auto=format&fit=crop&q=80", url: buildShopeeAffSearchUrl("sách Hoàng Tử Bé") },
           { title: "Sách Lịch Sử & Văn Hóa Kinh Điển", tag: "Shopee Mall", subtitle: "Sách chính hãng NXB Trẻ / Nhã Nam", img: "https://images.unsplash.com/photo-1495446815901-a7297e633e8d?w=240&auto=format&fit=crop&q=80", url: buildShopeeAffSearchUrl("sách lịch sử việt nam hay") },
-          { title: "Đèn Đọc Sách Chống Cận & Đèn Ngủ Tiểu Hành Tinh", tag: "Đánh giá 5★", subtitle: "Ánh sáng dịu mắt ban đêm", img: "https://images.unsplash.com/photo-1507473885765-e6ed057f782c?w=240&auto=format&fit=crop&q=80", url: buildShopeeAffSearchUrl("đèn ngủ mặt trăng đọc sách") }
+          { title: "Đèn Đọc Sách Chống Cận & Đèn Ngủ Tiểu Hành Tinh", tag: "Đánh giá cao", subtitle: "Ánh sáng dịu mắt ban đêm", img: "https://images.unsplash.com/photo-1507473885765-e6ed057f782c?w=240&auto=format&fit=crop&q=80", url: buildShopeeAffSearchUrl("đèn ngủ mặt trăng đọc sách") }
         ]
       };
     }
@@ -586,7 +579,7 @@ document.addEventListener("DOMContentLoaded", function () {
         items: [
           { title: "Vòng Tay Đá Phong Thủy Hút Tài Lộc", tag: "Bán chạy Shopee", subtitle: "Đủ mệnh Kim - Mộc - Thủy - Hỏa - Thổ", img: "https://images.unsplash.com/photo-1611591437281-460bfbe1220a?w=240&auto=format&fit=crop&q=80", url: buildShopeeAffSearchUrl("vòng tay đá phong thủy tài lộc") },
           { title: "Ví Da Nam Nữ Dáng Dài Giữ Lộc", tag: "Deal Hot", subtitle: "Da thật cao cấp, nhiều ngăn", img: "https://images.unsplash.com/photo-1627123424574-724758594e93?w=240&auto=format&fit=crop&q=80", url: buildShopeeAffSearchUrl("ví da nam nữ cao cấp") },
-          { title: "Tượng Tỳ Hưu & Mèo Thần Tài Để Bàn", tag: "Hoàn tiền Thỏ", subtitle: "Trang trí bàn làm việc may mắn", img: "https://images.unsplash.com/photo-1513519245088-0e12902e5a38?w=240&auto=format&fit=crop&q=80", url: buildShopeeAffSearchUrl("mèo thần tài để bàn") }
+          { title: "Tượng Tỳ Hưu & Mèo Thần Tài Để Bàn", tag: "Ưu đãi Shopee", subtitle: "Trang trí bàn làm việc may mắn", img: "https://images.unsplash.com/photo-1513519245088-0e12902e5a38?w=240&auto=format&fit=crop&q=80", url: buildShopeeAffSearchUrl("mèo thần tài để bàn") }
         ]
       };
     }
@@ -597,7 +590,7 @@ document.addEventListener("DOMContentLoaded", function () {
         items: [
           { title: "Balo Du Lịch Chống Nước Đa Năng", tag: "Bán chạy Shopee", subtitle: "Đựng laptop + quần áo 3-5 ngày", img: "https://images.unsplash.com/photo-1553062407-98eeb64c6a62?w=240&auto=format&fit=crop&q=80", url: buildShopeeAffSearchUrl("balo du lịch chống nước") },
           { title: "Vali Kéo Du Lịch Size 20 Chống Vỡ", tag: "Shopee Mall", subtitle: "Khóa số TSA an toàn đi máy bay", img: "https://images.unsplash.com/photo-1565026057447-bc90a3dceb87?w=240&auto=format&fit=crop&q=80", url: buildShopeeAffSearchUrl("vali kéo du lịch size 20") },
-          { title: "Sạc Dự Phòng Sạc Nhanh 20.000mAh", tag: "Hoàn tiền Thỏ", subtitle: "Nhỏ gọn mang lên máy bay", img: "https://images.unsplash.com/photo-1609091839311-d5365f9ff1c5?w=240&auto=format&fit=crop&q=80", url: buildShopeeAffSearchUrl("sạc dự phòng 20000mah sạc nhanh") }
+          { title: "Sạc Dự Phòng Sạc Nhanh 20.000mAh", tag: "Ưu đãi Shopee", subtitle: "Nhỏ gọn mang lên máy bay", img: "https://images.unsplash.com/photo-1609091839311-d5365f9ff1c5?w=240&auto=format&fit=crop&q=80", url: buildShopeeAffSearchUrl("sạc dự phòng 20000mah sạc nhanh") }
         ]
       };
     }
@@ -608,7 +601,7 @@ document.addEventListener("DOMContentLoaded", function () {
         items: [
           { title: "Áo Khoác Gió Giữ Nhiệt Chống Nước", tag: "Bán chạy Shopee", subtitle: "Form đẹp mặc đôi nam nữ", img: "https://images.unsplash.com/photo-1551028719-00167b16eac5?w=240&auto=format&fit=crop&q=80", url: buildShopeeAffSearchUrl("áo khoác gió giữ nhiệt") },
           { title: "Bình Giữ Nhiệt Inox 304 LocknLock", tag: "Shopee Mall", subtitle: "Giữ nóng lạnh suốt 12 giờ", img: "https://images.unsplash.com/photo-1602143407151-7111542de6e8?w=240&auto=format&fit=crop&q=80", url: buildShopeeAffSearchUrl("bình giữ nhiệt inox 304") },
-          { title: "Đồ Gia Dụng Thông Minh Sale Tới 50%", tag: "Hoàn tiền Thỏ", subtitle: "Top đồ tiện ích bán chạy nhất", img: "https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=240&auto=format&fit=crop&q=80", url: buildShopeeAffSearchUrl("đồ gia dụng thông minh") }
+          { title: "Đồ Gia Dụng Thông Minh Sale Tới 50%", tag: "Ưu đãi Shopee", subtitle: "Top đồ tiện ích bán chạy nhất", img: "https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=240&auto=format&fit=crop&q=80", url: buildShopeeAffSearchUrl("đồ gia dụng thông minh") }
         ]
       };
     }
@@ -618,7 +611,7 @@ document.addEventListener("DOMContentLoaded", function () {
       items: [
         { title: "Tai Nghe Bluetooth Chống Ồn Pin Trâu", tag: "Bán chạy Shopee", subtitle: "Âm thanh nổi xem clip cực đã", img: "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=240&auto=format&fit=crop&q=80", url: buildShopeeAffSearchUrl("tai nghe bluetooth chống ồn") },
         { title: "Giá Đỡ Điện Thoại Xoay 360° Để Bàn", tag: "Deal 1K - 29K", subtitle: "Hợp kim chắc chắn xem video rảnh tay", img: "https://images.unsplash.com/photo-1586953208448-b95a79798f07?w=240&auto=format&fit=crop&q=80", url: buildShopeeAffSearchUrl("giá đỡ điện thoại để bàn") },
-        { title: "Sạc Dự Phòng Mini Sạc Nhanh 22.5W", tag: "Hoàn tiền Thỏ", subtitle: "Freeship 0Đ + Mã giảm toàn sàn", img: "https://images.unsplash.com/photo-1609091839311-d5365f9ff1c5?w=240&auto=format&fit=crop&q=80", url: buildShopeeAffSearchUrl("sạc dự phòng sạc nhanh") }
+        { title: "Sạc Dự Phòng Mini Sạc Nhanh 22.5W", tag: "Ưu đãi Shopee", subtitle: "Freeship 0Đ + Mã giảm toàn sàn", img: "https://images.unsplash.com/photo-1609091839311-d5365f9ff1c5?w=240&auto=format&fit=crop&q=80", url: buildShopeeAffSearchUrl("sạc dự phòng sạc nhanh") }
       ]
     };
   }

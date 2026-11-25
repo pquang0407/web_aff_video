@@ -79,7 +79,7 @@ def _build_related_products(meta: Dict[str, Any]) -> List[Dict[str, str]]:
                 logger.warning(f"Không convert được link sản phẩm '{kw}': {e}")
         products.append({
             "title": kw[:46],
-            "tag": "Bán chạy Shopee" if idx == 0 else "Hoàn tiền Thỏ",
+            "tag": "Bán chạy Shopee" if idx == 0 else "Ưu đãi Shopee",
             "subtitle": "Xem top shop uy tín & mã giảm giá",
             "img": _pick_contextual_image(kw),
             "url": aff_url,

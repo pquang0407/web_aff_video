@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <!-- Ẩn hoàn toàn Referrer để bảo vệ tài khoản Affiliate trước các bộ quét sàn -->
+  <!-- Ẩn hoàn toàn Referrer để bảo vệ tài khoản Affiliate -->
   <meta name="referrer" content="no-referrer">
   <title>Vũ Trụ Thỏ & Gấu 3D • Bản Tin Hoạt Hình 24/7</title>
   <meta name="description" content="Xem bản tin hoạt hình 3D Thỏ Đỏ & Gấu Béo sắc nét Full HD 1080p, cập nhật liên tục 24/7.">
@@ -14,7 +14,7 @@
   <meta property="og:type" content="video.other">
 
   <!-- CSS Stylesheet -->
-  <link rel="stylesheet" href="assets/css/style.css">
+  <link rel="stylesheet" href="assets/css/style.css?v=20261125">
 </head>
 <body>
 
@@ -29,9 +29,9 @@
         </div>
       </a>
       <nav class="header-nav">
-        <a href="#top" class="nav-pill active">Đang Nóng</a>
+        <a href="#top" class="nav-pill active">Đang Phát</a>
         <a href="#suggestedSection" class="nav-pill">Kho Bản Tin 3D</a>
-        <a href="#trendingList" class="nav-pill">Bảng Xếp Hạng</a>
+        <a href="#relatedProductsWidget" class="nav-pill">Gợi Ý Mua Sắm</a>
       </nav>
     </div>
 
@@ -43,42 +43,11 @@
     </div>
   </header>
 
-  <!-- 3-Column Clean Balanced Layout -->
+  <!-- 2-Column Modern Cinema Layout -->
   <main class="main-layout" id="top">
 
     <!-- =================================================================
-         CỘT BÊN TRÁI (320px): SẢN PHẨM LIÊN QUAN + TOP 8 BẢN TIN MỚI NHẤT
-         ================================================================= -->
-    <aside class="sidebar-left">
-      <div class="sidebar-sticky-inner">
-
-        <!-- Widget 0: Sản Phẩm Shopee Liên Quan Trực Tiếp Tới Video Đang Xem -->
-        <div class="widget-box highlight-border" id="relatedProductsWidget">
-          <div class="widget-header-row">
-            <h3 class="widget-title">SẢN PHẨM LIÊN QUAN</h3>
-            <span class="live-tag" id="relatedTopicBadge">THỎ HOÀN TIỀN</span>
-          </div>
-          <div id="relatedProductsList" class="flash-products-list">
-            <!-- Render tự động theo từng video từ app.js -->
-          </div>
-        </div>
-
-        <!-- Widget 1: Top 8 Bản Tin 3D Mới Nhất -->
-        <div class="widget-box">
-          <div class="widget-header-row">
-            <h3 class="widget-title">BẢN TIN MỚI NHẤT</h3>
-            <span class="live-tag">HD 1080P</span>
-          </div>
-          <div id="leftVideoList" class="trending-list">
-            <!-- Render tối đa 8 clip mới nhất từ app.js -->
-          </div>
-        </div>
-
-      </div>
-    </aside>
-
-    <!-- =================================================================
-         CỘT CHÍNH (CENTER): SÂN KHẤU VIDEO 9:16 + KHO VIDEO ĐỀ XUẤT PHÂN TRANG
+         CỘT CHÍNH (TRÁI): SÂN KHẤU VIDEO 9:16 + KHO BẢN TIN 3D PHÂN TRANG
          ================================================================= -->
     <section class="main-column">
 
@@ -195,7 +164,7 @@
       <section class="suggested-section" id="suggestedSection">
         <div class="section-heading">
           <div style="display:flex; align-items:center; gap:8px;">
-            <span>KHO BẢN TIN 3D TIẾP THEO</span>
+            <span>KHO BẢN TIN 3D</span>
             <span class="badge-total-clips" id="totalClipsBadge">0 Clip</span>
           </div>
           <span class="section-sub" id="paginationStatus">Trang 1 / 1</span>
@@ -222,23 +191,34 @@
     </section>
 
     <!-- =================================================================
-         CỘT BÊN PHẢI (360px): TOP 8 CLIP NỔI BẬT + TỪ KHÓA
+         CỘT PHỤ (PHẢI - 360px): GỢI Ý MUA SẮM + 4 CLIP TIẾP THEO + CHỦ ĐỀ
          ================================================================= -->
     <aside class="sidebar-right">
       <div class="sidebar-sticky-inner">
 
-        <!-- Widget 1: Top 8 Clip Nổi Bật -->
-        <div class="widget-box">
+        <!-- Widget 1: Sản Phẩm Shopee Liên Quan Trực Tiếp Tới Video Đang Xem -->
+        <div class="widget-box highlight-border" id="relatedProductsWidget">
           <div class="widget-header-row">
-            <h3 class="widget-title">CLIP NỔI BẬT</h3>
-            <span class="live-tag">TOP 8</span>
+            <h3 class="widget-title">GỢI Ý MUA SẮM</h3>
+            <span class="live-tag" id="relatedTopicBadge">SHOPEE</span>
           </div>
-          <div id="trendingList" class="trending-list">
-            <!-- Render tối đa 8 clip nổi bật từ app.js -->
+          <div id="relatedProductsList" class="flash-products-list">
+            <!-- Render tự động theo từng video từ app.js -->
           </div>
         </div>
 
-        <!-- Widget 2: Từ khóa xu hướng -->
+        <!-- Widget 2: Phát Tiếp Theo (chỉ 4 clip gọn gàng) -->
+        <div class="widget-box">
+          <div class="widget-header-row">
+            <h3 class="widget-title">PHÁT TIẾP THEO</h3>
+            <span class="live-tag">TỰ ĐỘNG</span>
+          </div>
+          <div id="trendingList" class="trending-list">
+            <!-- Render 4 clip tiếp theo từ app.js -->
+          </div>
+        </div>
+
+        <!-- Widget 3: Chủ đề nổi bật -->
         <div class="widget-box">
           <h3 class="widget-title">CHỦ ĐỀ NỔI BẬT</h3>
           <div class="hot-tags-wrap" id="hotTagsWrap">
@@ -259,6 +239,6 @@
   <!-- Scripts -->
   <script src="config.js"></script>
   <script src="assets/js/deeplink.js"></script>
-  <script src="assets/js/app.js?v=20261125b"></script>
+  <script src="assets/js/app.js?v=20261125c"></script>
 </body>
 </html>
