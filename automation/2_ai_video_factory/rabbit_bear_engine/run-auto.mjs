@@ -178,6 +178,7 @@ Trả về duy nhất định dạng JSON thuần:
   "brandBadge": "24H TIN NÓNG",
   "ticker": "DÒNG CHỮ CHẠY CUỐI MÀN HÌNH TÓM TẮT BÀI BÁO",
   "socialCaption": "Caption hấp dẫn đăng Facebook/TikTok/Threads kèm 4 hashtag",
+  "relatedKeywords": ["Từ khóa sản phẩm Shopee sát bài 1 (VD: Giày đá bóng nam)", "Từ khóa sản phẩm Shopee sát bài 2", "Từ khóa sản phẩm Shopee sát bài 3"],
   "scenes": [
     {
       "index": 1,
@@ -644,6 +645,7 @@ function publishToWebAffEcosystem(videoId, finalVideoPath, scriptData, sourceUrl
     web_poster_url: `videos/${videoId}_poster.jpg`,
     target_web_url: `https://tho-news.com/?v=${videoId}`,
     social_caption: socialCaption,
+    related_keywords: Array.isArray(scriptData.relatedKeywords) ? scriptData.relatedKeywords.slice(0, 4) : [],
     status: 'published_to_web',
     published_at: new Date().toISOString()
   };

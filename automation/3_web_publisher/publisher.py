@@ -10,13 +10,23 @@ Luồng xử lý:
 import argparse
 import json
 import logging
+import sys
 from datetime import datetime
 from pathlib import Path
 from typing import Any, Dict, List, Optional
+from urllib.parse import quote
 
 import config
 import config_updater
 import r2_uploader
+
+AUTOMATION_DIR = Path(__file__).resolve().parent.parent
+if str(AUTOMATION_DIR) not in sys.path:
+    sys.path.insert(0, str(AUTOMATION_DIR))
+try:
+    import deal_voucher_service
+except Exception:
+    deal_voucher_service = None
 
 logging.basicConfig(
     level=logging.INFO,
@@ -29,6 +39,52 @@ logger = logging.getLogger("WebPublisher")
 def _clean_views_str(raw_views: str) -> str:
     """Chuẩn hóa chuỗi lượt xem (bỏ chữ 'lượt xem' thừa nếu có)"""
     return raw_views.replace("lượt xem", "").strip()
+
+
+def _pick_contextual_image(keyword: str) -> str:
+    t = (keyword or "").lower()
+    if any(k in t for k in ["bóng đá", "giày đá bóng", "áo đấu", "cầu thủ", "thể thao", "chạy bộ"]):
+        return "https://images.unsplash.com/photo-1511886929837-354d827aae26?w=240&auto=format&fit=crop&q=80"
+    if any(k in t for k in ["sách", "truyện", "hoàng tử bé", "tiểu thuyết", "lịch sử"]):
+        return "https://images.unsplash.com/photo-1512820790803-83ca734da794?w=240&auto=format&fit=crop&q=80"
+    if any(k in t for k in ["balo", "vali", "du lịch", "cắm trại", "lều"]):
+        return "https://images.unsplash.com/photo-1553062407-98eeb64c6a62?w=240&auto=format&fit=crop&q=80"
+    if any(k in t for k in ["phong thủy", "vòng tay", "tài lộc", "tỳ hưu", "ví da"]):
+        return "https://images.unsplash.com/photo-1611591437281-460bfbe1220a?w=240&auto=format&fit=crop&q=80"
+    if any(k in t for k in ["áo khoác", "giữ nhiệt", "thời trang", "váy", "quần", "giày"]):
+        return "https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=240&auto=format&fit=crop&q=80"
+    if any(k in t for k in ["đèn", "bình giữ nhiệt", "máy lọc", "gia dụng", "bếp"]):
+        return "https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=240&auto=format&fit=crop&q=80"
+    if any(k in t for k in ["sạc", "pin", "tai nghe", "điện thoại", "chuột", "bàn phím", "laptop"]):
+        return "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=240&auto=format&fit=crop&q=80"
+    return "https://images.unsplash.com/photo-1607082348824-0a96f2a4b9da?w=240&auto=format&fit=crop&q=80"
+
+
+def _build_related_products(meta: Dict[str, Any]) -> List[Dict[str, str]]:
+    """Tạo danh sách sản phẩm Shopee liên quan theo từ khóa video, bọc qua shp.tho-hoantien.com (0% link chết)"""
+    raw_keywords = meta.get("related_keywords") or []
+    keywords = [str(k).strip() for k in raw_keywords if str(k).strip()][:3]
+    if not keywords:
+        return []
+
+    products: List[Dict[str, str]] = []
+    for idx, kw in enumerate(keywords):
+        search_url = f"https://shopee.vn/search?keyword={quote(kw)}&sortBy=sales"
+        aff_url = search_url
+        if deal_voucher_service:
+            try:
+                converted = deal_voucher_service.convert_via_tho_hoantien(search_url)
+                aff_url = converted.get("short") or converted.get("affiliate") or search_url
+            except Exception as e:
+                logger.warning(f"Không convert được link sản phẩm '{kw}': {e}")
+        products.append({
+            "title": kw[:46],
+            "tag": "Bán chạy Shopee" if idx == 0 else "Hoàn tiền Thỏ",
+            "subtitle": "Xem top shop uy tín & mã giảm giá",
+            "img": _pick_contextual_image(kw),
+            "url": aff_url,
+        })
+    return products
 
 
 def publish_single_metadata(
@@ -72,7 +128,8 @@ def publish_single_metadata(
         simulate_cloud=simulate_cloud,
     )
 
-    # 2. Tạo cấu trúc dữ liệu cho web/config.js
+    # 2. Tạo cấu trúc dữ liệu cho web/config.js (kèm sản phẩm Shopee liên quan theo chủ đề video)
+    related_products = _build_related_products(meta)
     video_entry = {
         "id": video_id,
         "title": meta.get("title", f"Clip nóng đang gây chú ý ({video_id})"),
@@ -86,6 +143,8 @@ def publish_single_metadata(
         "description": (meta.get("social_caption") or "").split("\n")[0]
         or "Xem trọn vẹn bản ghi chất lượng cao Full HD không che.",
     }
+    if related_products:
+        video_entry["relatedProducts"] = related_products
 
     # 3. Cập nhật vào web/config.js
     config_updater.upsert_video_into_config(video_entry, set_as_default=set_as_default)
