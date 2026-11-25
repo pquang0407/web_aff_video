@@ -22,6 +22,18 @@
     ]
   },
   "videos": {
+    "tho_gau_3d_20261125031647": {
+      "id": "tho_gau_3d_20261125031647",
+      "title": "[3D Thỏ & Gấu] Bản Tin 3D Thỏ & Gấu",
+      "duration": "00:46",
+      "views": "318.5K",
+      "likes": "36.8K",
+      "uploadDate": "Vừa xong",
+      "category": "🐰🐻 VŨ TRỤ THỎ & GẤU 3D",
+      "videoUrl": "videos/tho_gau_3d_20261125031647.mp4",
+      "posterUrl": "videos/tho_gau_3d_20261125031647_poster.jpg",
+      "description": "Cùng Thỏ Đỏ và Gấu Béo khám phá bản tin 3D siêu thú vị ngày hôm nay nhé! #ThoVaGau #BanTin3D #KhamPha #TinHot"
+    },
     "tho_gau_3d_20261125025055": {
       "id": "tho_gau_3d_20261125025055",
       "title": "[3D Thỏ & Gấu] Sách Hoàng tử bé | Tóm tắt sách & Review",
@@ -672,15 +684,15 @@
     },
     "default": {
       "id": "default",
-      "title": "[3D Thỏ & Gấu] Sách Hoàng tử bé | Tóm tắt sách & Review",
+      "title": "[3D Thỏ & Gấu] Bản Tin 3D Thỏ & Gấu",
       "duration": "00:46",
-      "views": "277.5K",
-      "likes": "13.8K",
+      "views": "318.5K",
+      "likes": "36.8K",
       "uploadDate": "Vừa xong",
       "category": "🐰🐻 VŨ TRỤ THỎ & GẤU 3D",
-      "videoUrl": "videos/tho_gau_3d_20261125025055.mp4",
-      "posterUrl": "videos/tho_gau_3d_20261125025055_poster.jpg",
-      "description": "Khám phá thế giới kỳ diệu và triết lý sâu sắc trong cuốn sách kinh điển Hoàng Tử Bé cùng Thỏ Đỏ và Gấu Béo! #HoangTuBe #ReviewSach #DocSach #ThichVietLach"
+      "videoUrl": "videos/tho_gau_3d_20261125031647.mp4",
+      "posterUrl": "videos/tho_gau_3d_20261125031647_poster.jpg",
+      "description": "Cùng Thỏ Đỏ và Gấu Béo khám phá bản tin 3D siêu thú vị ngày hôm nay nhé! #ThoVaGau #BanTin3D #KhamPha #TinHot"
     }
   },
   "deals": [
