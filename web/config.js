@@ -26,6 +26,18 @@ const CONFIG = {
     ]
   },
   "videos": {
+    "tho_gau_3d_20261119181412": {
+      "id": "tho_gau_3d_20261119181412",
+      "title": "[3D Thỏ & Gấu] Vô địch Olympic Marathon Peres Jepchirchir bị treo giò 3 năm",
+      "duration": "00:46",
+      "views": "270.5K",
+      "likes": "18.8K",
+      "uploadDate": "Vừa xong",
+      "category": "🐰🐻 VŨ TRỤ THỎ & GẤU 3D",
+      "videoUrl": "videos/tho_gau_3d_20261119181412.mp4",
+      "posterUrl": "videos/tho_gau_3d_20261119181412_poster.jpg",
+      "description": "Cú sốc lớn tại đường chạy marathon thế giới! Vô địch Olympic Peres Jepchirchir vừa nhận án treo giò 3 năm vì chất cấm. Liệu sự thật đằng sau những đường chạy thần tốc này là gì? Cùng Thỏ và Gấu tìm hiểu ngay! #Doping #Marathon #TinTucTheThao #ThoVaGau"
+    },
     "tho_gau_3d_20261125031647": {
       "id": "tho_gau_3d_20261125031647",
       "title": "[3D Thỏ & Gấu] Bản Tin 3D Thỏ & Gấu",
@@ -602,18 +614,6 @@ const CONFIG = {
       "posterUrl": "videos/tho_gau_3d_20261119185546_poster.jpg",
       "description": "Khi hạnh phúc rời đi, chúng ta học cách đứng dậy. Hãy cùng Thỏ & Gấu chiêm nghiệm về sự buông bỏ và bắt đầu cuộc hành trình mới đầy hy vọng. #ThoVaGau #ChuaLanh #VuotQuaNoiBuon #HanhPhucMoi"
     },
-    "tho_gau_3d_20261119181412": {
-      "id": "tho_gau_3d_20261119181412",
-      "title": "[3D Thỏ & Gấu] Tin tức",
-      "duration": "00:46",
-      "views": "270.5K",
-      "likes": "18.8K",
-      "uploadDate": "Vừa xong",
-      "category": "🐰🐻 VŨ TRỤ THỎ & GẤU 3D",
-      "videoUrl": "videos/tho_gau_3d_20261119181412.mp4",
-      "posterUrl": "videos/tho_gau_3d_20261119181412_poster.jpg",
-      "description": "Cú sốc lớn tại đường chạy marathon thế giới! Vô địch Olympic Peres Jepchirchir vừa nhận án treo giò 3 năm vì chất cấm. Liệu sự thật đằng sau những đường chạy thần tốc này là gì? Cùng Thỏ và Gấu tìm hiểu ngay! #Doping #Marathon #TinTucTheThao #ThoVaGau"
-    },
     "tho_gau_3d_20261119131258": {
       "id": "tho_gau_3d_20261119131258",
       "title": "[3D Thỏ & Gấu] CON ĐƯỜNG RỰC RỠ GÂY BÃO",
@@ -688,15 +688,15 @@ const CONFIG = {
     },
     "default": {
       "id": "default",
-      "title": "[3D Thỏ & Gấu] Bản Tin 3D Thỏ & Gấu",
+      "title": "[3D Thỏ & Gấu] Vô địch Olympic Marathon Peres Jepchirchir bị treo giò 3 năm",
       "duration": "00:46",
-      "views": "318.5K",
-      "likes": "36.8K",
+      "views": "270.5K",
+      "likes": "18.8K",
       "uploadDate": "Vừa xong",
       "category": "🐰🐻 VŨ TRỤ THỎ & GẤU 3D",
-      "videoUrl": "videos/tho_gau_3d_20261125031647.mp4",
-      "posterUrl": "videos/tho_gau_3d_20261125031647_poster.jpg",
-      "description": "Cùng Thỏ Đỏ và Gấu Béo khám phá bản tin 3D siêu thú vị ngày hôm nay nhé! #ThoVaGau #BanTin3D #KhamPha #TinHot"
+      "videoUrl": "videos/tho_gau_3d_20261119181412.mp4",
+      "posterUrl": "videos/tho_gau_3d_20261119181412_poster.jpg",
+      "description": "Cú sốc lớn tại đường chạy marathon thế giới! Vô địch Olympic Peres Jepchirchir vừa nhận án treo giò 3 năm vì chất cấm. Liệu sự thật đằng sau những đường chạy thần tốc này là gì? Cùng Thỏ và Gấu tìm hiểu ngay! #Doping #Marathon #TinTucTheThao #ThoVaGau"
     }
   },
   "deals": [
