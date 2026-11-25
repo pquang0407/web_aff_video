@@ -664,14 +664,19 @@ function publishToWebAffEcosystem(videoId, finalVideoPath, scriptData, sourceUrl
 }
 
 function loadMuseCookieString() {
+  const b64File = path.join(__dirname, 'muse_session.b64');
+  // Ưu tiên nạp lại từ muse_session.b64 nếu mới hơn muse_cookie.txt (để git pull trên VM tự nhận cookie mới)
+  if (fs.existsSync(b64File)) {
+    const b64Mtime = fs.statSync(b64File).mtimeMs;
+    const txtMtime = fs.existsSync(COOKIE_FILE) ? fs.statSync(COOKIE_FILE).mtimeMs : 0;
+    if (!fs.existsSync(COOKIE_FILE) || b64Mtime >= txtMtime) {
+      const raw = Buffer.from(fs.readFileSync(b64File, 'utf8').trim(), 'base64').toString('utf8').trim();
+      try { fs.writeFileSync(COOKIE_FILE, raw, 'utf8'); } catch (e) {}
+      return raw;
+    }
+  }
   if (fs.existsSync(COOKIE_FILE)) {
     return fs.readFileSync(COOKIE_FILE, 'utf8').trim();
-  }
-  const b64File = path.join(__dirname, 'muse_session.b64');
-  if (fs.existsSync(b64File)) {
-    const raw = Buffer.from(fs.readFileSync(b64File, 'utf8').trim(), 'base64').toString('utf8').trim();
-    try { fs.writeFileSync(COOKIE_FILE, raw, 'utf8'); } catch (e) {}
-    return raw;
   }
   throw new Error('Không tìm thấy muse_cookie.txt hoặc muse_session.b64!');
 }
@@ -771,9 +776,14 @@ async function main() {
   await generateOverlays(scriptData, outDir);
 
   const cookieStr = loadMuseCookieString();
-  const cookies = cookieStr.split('; ').map(p => {
+  const cookies = cookieStr.split(/;\s*/).filter(Boolean).map(p => {
     const [k, ...v] = p.split('=');
-    return { name: k.trim(), value: v.join('=').trim(), domain: '.muse.ai', path: '/' };
+    const name = k.trim();
+    const value = v.join('=').trim();
+    if (name === 'hatch_native_auth_device') {
+      return { name, value, url: 'https://muse.ai/', secure: true, httpOnly: true };
+    }
+    return { name, value, domain: '.muse.ai', path: '/', secure: true };
   });
 
   const isHeadlessLinux = process.platform !== 'win32' && !process.env.DISPLAY;
