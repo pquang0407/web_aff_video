@@ -173,9 +173,12 @@
         <!-- BỘ LỌC DANH MỤC -->
         <div class="category-tabs-bar" id="categoryTabsBar">
           <button type="button" class="cat-tab-btn active" data-cat="all">Tất cả</button>
-          <button type="button" class="cat-tab-btn" data-cat="sports">Bóng Đá & Thể Thao</button>
-          <button type="button" class="cat-tab-btn" data-cat="explore">Khám Phá & Đời Sống</button>
-          <button type="button" class="cat-tab-btn" data-cat="news">Tin Nóng & Công Nghệ</button>
+          <button type="button" class="cat-tab-btn" data-cat="tech">Công nghệ</button>
+          <button type="button" class="cat-tab-btn" data-cat="life">Đời sống</button>
+          <button type="button" class="cat-tab-btn" data-cat="culture">Văn hóa</button>
+          <button type="button" class="cat-tab-btn" data-cat="sports">Thể thao</button>
+          <button type="button" class="cat-tab-btn" data-cat="travel">Du lịch</button>
+          <button type="button" class="cat-tab-btn" data-cat="news">Thời sự</button>
         </div>
 
         <div id="suggestedGrid" class="suggested-grid">
@@ -218,16 +221,17 @@
           </div>
         </div>
 
-        <!-- Widget 3: Chủ đề nổi bật -->
+        <!-- Widget 3: Chủ đề nổi bật (click lọc đúng chủ đề) -->
         <div class="widget-box">
           <h3 class="widget-title">CHỦ ĐỀ NỔI BẬT</h3>
           <div class="hot-tags-wrap" id="hotTagsWrap">
-            <span class="tag-chip">#VuTruThoVaGau3D</span>
-            <span class="tag-chip">#BanTin3D</span>
-            <span class="tag-chip">#24hTinNong</span>
-            <span class="tag-chip">#24hKhamPha</span>
-            <span class="tag-chip">#ThoNews247</span>
-            <span class="tag-chip">#FullHD1080P</span>
+            <span class="tag-chip" data-cat="tech">#CongNghe</span>
+            <span class="tag-chip" data-cat="life">#DoiSong</span>
+            <span class="tag-chip" data-cat="culture">#VanHoa</span>
+            <span class="tag-chip" data-cat="sports">#TheThao</span>
+            <span class="tag-chip" data-cat="travel">#DuLich</span>
+            <span class="tag-chip" data-cat="news">#ThoiSu</span>
+            <span class="tag-chip" data-cat="all">#TatCa</span>
           </div>
         </div>
 
@@ -239,6 +243,6 @@
   <!-- Scripts -->
   <script src="config.js"></script>
   <script src="assets/js/deeplink.js"></script>
-  <script src="assets/js/app.js?v=20261125d"></script>
+  <script src="assets/js/app.js?v=20261125e"></script>
 </body>
 </html>

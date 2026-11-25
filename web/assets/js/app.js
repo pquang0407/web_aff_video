@@ -76,15 +76,31 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
   function getVideoCategoryKey(vid) {
-    if (!vid) return "explore";
+    if (!vid) return "life";
     const text = `${vid.id || ""} ${vid.title || ""} ${vid.description || ""}`.toLowerCase();
-    if (/bóng đá|man utd|pochettino|liverpool|champions league|messi|neymar|yamal|ronaldo|u17|u23|đội tuyển|marathon|yoga|pilates|vận động viên|thể thao|phạt đền|sân cỏ|trận đấu|hlv|cầu thủ|cup|lượt năm/.test(text)) {
+
+    // 1. Thể thao & Bóng đá
+    if (/bóng đá|bóng rổ|man utd|pochettino|liverpool|champions league|messi|neymar|yamal|ronaldo|la liga|mls|u17|u23|đội tuyển|clb|marathon|vận động viên|thể thao|phạt đền|sân cỏ|trận đấu|cầu thủ|bơi lội|pilates|chạy bộ|công an hà nội thua/.test(text)) {
       return "sports";
     }
-    if (/ra tòa|lừa đảo|chủ tịch|đảng dân chủ|jensen huang|nvidia|chip|ai|điện thoại|công nghệ|tiktoker|vụ án|pháp luật|tử vong|tai nạn|không khí lạnh|cảnh báo|chính trị|quốc hội|bầu cử/.test(text)) {
+    // 2. Công nghệ, Khoa học, Xe & Game
+    if (/jensen huang|nvidia|bong bóng ai|trí tuệ nhân tạo|chip|khoa học|điện thoại|samsung|gta 6|game|triển lãm ôtô|xe máy|hãng xe|triệu hồi|công nghệ|máy chủ|tiktoker|code|upstream/.test(text)) {
+      return "tech";
+    }
+    // 3. Văn hóa, Sách, Lịch sử & Tâm linh
+    if (/hoàng tử bé|sách|bông hồng|chiến tranh|ngày văn hóa|dinh độc lập|xá lị|nhà lê|vị vua|nhà ngô|bùi thị xuân|thời tống|kinh đô|lịch sử|thắp hương|bàn thờ|con giáp|phong thủy|tài lộc/.test(text)) {
+      return "culture";
+    }
+    // 4. Du lịch & Khám phá
+    if (/á đinh|tứ xuyên|đà lạt của miền bắc|du lịch|khám phá|pháo hoa|con đường rực rỡ|tiên cảnh|leo núi/.test(text)) {
+      return "travel";
+    }
+    // 5. Thời sự, Kinh tế, Thời tiết & Pháp luật
+    if (/ra tòa|lừa đảo|sen tài thu|đảng dân chủ|hạ viện|vượt đèn đỏ|bị phạt|mưa trên 750|không khí lạnh|cú rẽ tử thần|nhà ở xã hội|tỷ phú|doanh nghiệp việt|pháp luật|chính trị|thời sự/.test(text)) {
       return "news";
     }
-    return "explore";
+    // 6. Đời sống, Gia đình, Ẩm thực & Sức khỏe
+    return "life";
   }
 
   // Quản lý Phân trang & Danh mục (Hỗ trợ khi có từ 20 đến 100+ clip)
@@ -311,17 +327,13 @@ document.addEventListener("DOMContentLoaded", function () {
       return true;
     });
 
-    // 2. Lọc theo Danh mục đang chọn
+    // 2. Lọc theo Danh mục đang chọn (không fallback về all để luôn hiện đúng chủ đề)
     let filteredKeys = allOtherKeys;
     if (currentCategory !== "all") {
       filteredKeys = allOtherKeys.filter(k => {
         const vid = CONFIG.videos[k];
         return getVideoCategoryKey(vid) === currentCategory;
       });
-      // Nếu danh mục lọc tạm thời rỗng, fallback về all để luôn có clip
-      if (filteredKeys.length === 0) {
-        filteredKeys = allOtherKeys;
-      }
     }
 
     // 3. Tính toán Phân trang
@@ -884,23 +896,14 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   }
 
-  // Click Hashtag xu hướng để lọc video & cuộn xuống danh sách
+  // Click Hashtag chủ đề nổi bật để lọc đúng chủ đề & đồng bộ tab danh mục
   const hotTagsWrap = document.getElementById("hotTagsWrap");
   if (hotTagsWrap) {
-    const tagToCat = {
-      "#24hKhamPha": "explore",
-      "#24hTinNong": "news",
-      "#VuTruThoVaGau3D": "all",
-      "#BanTin3D": "all",
-      "#ThoNews247": "all",
-      "#FullHD1080P": "all"
-    };
     const chips = hotTagsWrap.querySelectorAll(".tag-chip");
     chips.forEach(chip => {
       chip.style.cursor = "pointer";
       chip.addEventListener("click", function () {
-        const tagText = (chip.textContent || "").trim();
-        const targetCat = tagToCat[tagText] || "all";
+        const targetCat = chip.dataset.cat || "all";
         chips.forEach(c => { c.style.borderColor = ""; c.style.color = ""; });
         chip.style.borderColor = "#ff2a5f";
         chip.style.color = "#fff";
