@@ -26,6 +26,18 @@ const CONFIG = {
     ]
   },
   "videos": {
+    "tho_gau_3d_20261125025055": {
+      "id": "tho_gau_3d_20261125025055",
+      "title": "[3D Thỏ & Gấu] Sách Hoàng tử bé | Tóm tắt sách & Review",
+      "duration": "00:46",
+      "views": "277.5K",
+      "likes": "13.8K",
+      "uploadDate": "Vừa xong",
+      "category": "🐰🐻 VŨ TRỤ THỎ & GẤU 3D",
+      "videoUrl": "videos/tho_gau_3d_20261125025055.mp4",
+      "posterUrl": "videos/tho_gau_3d_20261125025055_poster.jpg",
+      "description": "Khám phá thế giới kỳ diệu và triết lý sâu sắc trong cuốn sách kinh điển Hoàng Tử Bé cùng Thỏ Đỏ và Gấu Béo! #HoangTuBe #ReviewSach #DocSach #ThichVietLach"
+    },
     "tho_gau_3d_20261125022620": {
       "id": "tho_gau_3d_20261125022620",
       "title": "[3D Thỏ & Gấu] Những bông hồng ra đời trong khói lửa chiến tranh",
@@ -664,15 +676,15 @@ const CONFIG = {
     },
     "default": {
       "id": "default",
-      "title": "[3D Thỏ & Gấu] Những bông hồng ra đời trong khói lửa chiến tranh",
+      "title": "[3D Thỏ & Gấu] Sách Hoàng tử bé | Tóm tắt sách & Review",
       "duration": "00:46",
-      "views": "136.5K",
-      "likes": "16.8K",
+      "views": "277.5K",
+      "likes": "13.8K",
       "uploadDate": "Vừa xong",
       "category": "🐰🐻 VŨ TRỤ THỎ & GẤU 3D",
-      "videoUrl": "videos/tho_gau_3d_20261125022620.mp4",
-      "posterUrl": "videos/tho_gau_3d_20261125022620_poster.jpg",
-      "description": "Hành trình đầy cảm xúc của 4 nữ cựu sinh viên Khoa Văn Đại học Tổng hợp Hà Nội viết văn giữa khói lửa chiến tranh qua tập sách mới. #BongHongTrongLua #VanHocVietNam #KyUcChienTranh #24HKhamPha"
+      "videoUrl": "videos/tho_gau_3d_20261125025055.mp4",
+      "posterUrl": "videos/tho_gau_3d_20261125025055_poster.jpg",
+      "description": "Khám phá thế giới kỳ diệu và triết lý sâu sắc trong cuốn sách kinh điển Hoàng Tử Bé cùng Thỏ Đỏ và Gấu Béo! #HoangTuBe #ReviewSach #DocSach #ThichVietLach"
     }
   },
   "deals": [
