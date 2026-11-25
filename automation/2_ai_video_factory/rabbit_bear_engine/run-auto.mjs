@@ -213,9 +213,11 @@ Trả về duy nhất định dạng JSON thuần:
             method: 'POST',
             headers: { 'Content-Type': 'application/json', 'Content-Length': Buffer.byteLength(body) }
           }, res => {
-            let d = '';
-            res.on('data', c => d += c);
+            // Ghép Buffer chuẩn UTF-8 để tuyệt đối không cắt đôi ký tự tiếng Việt 3-byte thành dấu ? ()
+            const chunks = [];
+            res.on('data', c => chunks.push(Buffer.isBuffer(c) ? c : Buffer.from(c)));
             res.on('end', () => {
+              const d = Buffer.concat(chunks).toString('utf8');
               try {
                 const r = JSON.parse(d);
                 let t = r.candidates?.[0]?.content?.parts?.[0]?.text;
@@ -323,18 +325,31 @@ function generateSceneAudios(scenes, outDir) {
   }
 }
 
+function cleanOverlayText(str) {
+  return String(str || '')
+    .replace(/\uFFFD/g, '')
+    .replace(/[\u{1F300}-\u{1FAFF}\u{2600}-\u{27BF}\uFE0F]/gu, '')
+    .replace(/\s+/g, ' ')
+    .trim();
+}
+
 async function generateOverlays(scriptData, outDir) {
   console.log(`\n🎨 [4/6] Đang dựng 4 lớp đồ họa tin tức 1080x1920 PNG trong suốt...`);
   const browser = await puppeteer.launch({ executablePath: CHROME_PATH, headless: true, args: ['--no-sandbox'] });
   const page = await browser.newPage();
   await page.setViewport({ width: 1080, height: 1920, deviceScaleFactor: 1 });
 
-  const brandText = scriptData.brandBadge || '24H KHÁM PHÁ';
+  const brandText = cleanOverlayText(scriptData.brandBadge || '24H KHÁM PHÁ');
+  const tickerText = cleanOverlayText(scriptData.ticker || 'BẢN TIN HOẠT HÌNH 3D THỎ ĐỎ & GẤU BÉO 24/7');
+  const matchText = cleanOverlayText(scriptData.matchTitle || 'TIN NÓNG');
 
   for (const item of scriptData.scenes) {
+    const tagText = cleanOverlayText(item.tag || `TIÊU ĐIỂM ${item.index}`);
+    const headlineText = cleanOverlayText(item.headline || '');
+    const subText = cleanOverlayText(item.sub || '');
     const html = `
       <!DOCTYPE html>
-      <html>
+      <html lang="vi">
       <head>
         <meta charset="utf-8">
         <style>
@@ -342,7 +357,7 @@ async function generateOverlays(scriptData, outDir) {
           * { margin: 0; padding: 0; box-sizing: border-box; }
           body {
             width: 1080px; height: 1920px; background: transparent;
-            font-family: 'Be Vietnam Pro', sans-serif; position: relative; overflow: hidden;
+            font-family: 'Be Vietnam Pro', 'DejaVu Sans', 'Liberation Sans', Arial, sans-serif; position: relative; overflow: hidden;
           }
           .header-bar {
             position: absolute; top: 70px; left: 50px; right: 50px;
@@ -351,7 +366,7 @@ async function generateOverlays(scriptData, outDir) {
           .brand-badge {
             background: linear-gradient(135deg, #FF3366 0%, #FF0033 100%);
             color: #FFFFFF; padding: 10px 26px; border-radius: 30px;
-            font-family: 'Montserrat', sans-serif; font-weight: 900; font-size: 24px;
+            font-family: 'Montserrat', 'Be Vietnam Pro', sans-serif; font-weight: 900; font-size: 24px;
             letter-spacing: 1.5px; box-shadow: 0 8px 25px rgba(255, 51, 102, 0.4);
           }
           .live-badge {
@@ -373,7 +388,7 @@ async function generateOverlays(scriptData, outDir) {
             margin-bottom: 14px; text-transform: uppercase;
           }
           .headline-title {
-            color: #FFFFFF; font-family: 'Montserrat', sans-serif; font-size: 34px; font-weight: 900;
+            color: #FFFFFF; font-family: 'Montserrat', 'Be Vietnam Pro', sans-serif; font-size: 34px; font-weight: 900;
             line-height: 1.25; text-transform: uppercase; margin-bottom: 8px;
           }
           .headline-sub { color: #FFDD55; font-size: 23px; font-weight: 700; line-height: 1.35; }
@@ -386,7 +401,7 @@ async function generateOverlays(scriptData, outDir) {
           .ticker-text { color: #FFFFFF; font-weight: 800; font-size: 21px; }
           .match-score {
             background: rgba(255, 255, 255, 0.15); padding: 8px 18px; border-radius: 12px;
-            font-weight: 900; font-size: 22px; color: #FFF; font-family: 'Montserrat', sans-serif;
+            font-weight: 900; font-size: 22px; color: #FFF; font-family: 'Montserrat', 'Be Vietnam Pro', sans-serif;
           }
         </style>
       </head>
@@ -396,19 +411,20 @@ async function generateOverlays(scriptData, outDir) {
           <div class="live-badge"><div class="live-dot"></div><span>VŨ TRỤ THỎ & GẤU 3D</span></div>
         </div>
         <div class="headline-card">
-          <div class="tag-pill">${item.tag}</div>
-          <div class="headline-title">${item.headline}</div>
-          <div class="headline-sub">${item.sub}</div>
+          <div class="tag-pill">${tagText}</div>
+          <div class="headline-title">${headlineText}</div>
+          <div class="headline-sub">${subText}</div>
         </div>
         <div class="bottom-ticker">
-          <div class="ticker-text">📢 ${scriptData.ticker || 'BẢN TIN HOẠT HÌNH 3D THỎ ĐỎ & GẤU BÉO 24/7'}</div>
-          <div class="match-score">${scriptData.matchTitle || 'TIN NÓNG'}</div>
+          <div class="ticker-text">${tickerText}</div>
+          <div class="match-score">${matchText}</div>
         </div>
       </body>
       </html>
     `;
     await page.setContent(html, { waitUntil: 'domcontentloaded' });
-    await new Promise(r => setTimeout(r, 400));
+    await page.evaluate(() => Promise.race([document.fonts.ready, new Promise(r => setTimeout(r, 2000))])).catch(() => {});
+    await new Promise(r => setTimeout(r, 300));
     const outPath = path.join(outDir, `overlay-${item.index}.png`);
     await page.screenshot({ path: outPath, omitBackground: true });
     console.log(`✅ Đã lưu overlay cảnh ${item.index}: ${outPath}`);

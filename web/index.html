@@ -6,11 +6,11 @@
   <!-- Ẩn hoàn toàn Referrer để bảo vệ tài khoản Affiliate trước các bộ quét sàn -->
   <meta name="referrer" content="no-referrer">
   <title>Vũ Trụ Thỏ & Gấu 3D • Bản Tin Hoạt Hình 24/7</title>
-  <meta name="description" content="Xem bản tin hoạt hình 3D Pixar Thỏ Đỏ & Gấu Béo sắc nét Full HD 1080p, cập nhật tin nóng 24/7 kèm kho Voucher Shopee 0Đ.">
+  <meta name="description" content="Xem bản tin hoạt hình 3D Thỏ Đỏ & Gấu Béo sắc nét Full HD 1080p, cập nhật liên tục 24/7.">
 
   <!-- Open Graph Preview -->
   <meta property="og:title" content="Vũ Trụ Thỏ & Gấu 3D • Bản Tin Hoạt Hình 24/7">
-  <meta property="og:description" content="Bản tin hoạt hình 3D Pixar độ nét cao không giật lag.">
+  <meta property="og:description" content="Bản tin hoạt hình 3D độ nét cao Full HD 1080p.">
   <meta property="og:type" content="video.other">
 
   <!-- CSS Stylesheet -->
@@ -29,84 +29,48 @@
         </div>
       </a>
       <nav class="header-nav">
-        <a href="#top" class="nav-pill active">🔥 Đang Nóng</a>
-        <a href="#suggestedSection" class="nav-pill">🎬 Kho Bản Tin 3D</a>
-        <a href="#trendingList" class="nav-pill">🏆 Bảng Xếp Hạng 24H</a>
+        <a href="#top" class="nav-pill active">Đang Nóng</a>
+        <a href="#suggestedSection" class="nav-pill">Kho Bản Tin 3D</a>
+        <a href="#trendingList" class="nav-pill">Bảng Xếp Hạng</a>
       </nav>
     </div>
 
     <div class="header-right">
-      <div class="online-counter">
-        <span class="online-dot"></span>
-        <span id="headerOnlineCount">1,428</span> người đang xem
-      </div>
       <div class="header-status">
         <span class="status-dot"></span>
-        <span>TRỰC TIẾP HD</span>
+        <span>FULL HD 1080P</span>
       </div>
     </div>
   </header>
 
-  <!-- 3-Column Full Layout -->
+  <!-- 3-Column Clean Balanced Layout -->
   <main class="main-layout" id="top">
 
     <!-- =================================================================
-         CỘT BÊN TRÁI (320px): KHO BẢN TIN 3D MỚI NHẤT (CHIA ĐỀU 2 BÊN) + TIN NÓNG 24H
+         CỘT BÊN TRÁI (320px): SẢN PHẨM LIÊN QUAN + TOP 8 BẢN TIN MỚI NHẤT
          ================================================================= -->
     <aside class="sidebar-left">
       <div class="sidebar-sticky-inner">
 
-        <!-- Widget 0: Sản Phẩm Shopee Liên Quan Trực Tiếp Tới Video Đang Xem (Contextual Affiliate) -->
+        <!-- Widget 0: Sản Phẩm Shopee Liên Quan Trực Tiếp Tới Video Đang Xem -->
         <div class="widget-box highlight-border" id="relatedProductsWidget">
           <div class="widget-header-row">
-            <h3 class="widget-title">
-              <span class="icon-hot">🛍️</span> SẢN PHẨM LIÊN QUAN
-            </h3>
+            <h3 class="widget-title">SẢN PHẨM LIÊN QUAN</h3>
             <span class="live-tag" id="relatedTopicBadge">THỎ HOÀN TIỀN</span>
           </div>
           <div id="relatedProductsList" class="flash-products-list">
-            <!-- Render tự động theo từng video từ app.js (0ms, không reload trang) -->
+            <!-- Render tự động theo từng video từ app.js -->
           </div>
         </div>
 
-        <!-- Widget 1: Danh sách Clip Bản Tin 3D (Nửa trái - chia đều với cột phải) -->
-        <div class="widget-box highlight-border">
+        <!-- Widget 1: Top 8 Bản Tin 3D Mới Nhất -->
+        <div class="widget-box">
           <div class="widget-header-row">
-            <h3 class="widget-title">
-              <span class="icon-hot">🎬</span> BẢN TIN 3D MỚI NHẤT
-            </h3>
+            <h3 class="widget-title">BẢN TIN MỚI NHẤT</h3>
             <span class="live-tag">HD 1080P</span>
           </div>
           <div id="leftVideoList" class="trending-list">
-            <!-- Render tự động chia đều 2 bên từ app.js -->
-          </div>
-        </div>
-
-        <!-- Widget 2: Tin Vắn & Diễn Biến 24h -->
-        <div class="widget-box">
-          <h3 class="widget-title">📡 CẬP NHẬT NHANH 24H</h3>
-          <div class="timeline-list">
-            <div class="timeline-item">
-              <span class="timeline-dot live"></span>
-              <div class="timeline-content">
-                <div class="news-time">Vừa xong • Nóng</div>
-                Đã phát sóng bản tin 3D Thỏ & Gấu Full HD 1080p sắc nét mới nhất.
-              </div>
-            </div>
-            <div class="timeline-item">
-              <span class="timeline-dot"></span>
-              <div class="timeline-content">
-                <div class="news-time">12 phút trước</div>
-                Hơn 18.000 lượt chia sẻ bản tin 3D trên các hội nhóm Facebook & Threads.
-              </div>
-            </div>
-            <div class="timeline-item">
-              <span class="timeline-dot"></span>
-              <div class="timeline-content">
-                <div class="news-time">28 phút trước</div>
-                Cập nhật liên tục bản tin hoạt hình 3D Pixar 24/7 sắc nét không giật lag.
-              </div>
-            </div>
+            <!-- Render tối đa 8 clip mới nhất từ app.js -->
           </div>
         </div>
 
@@ -114,29 +78,13 @@
     </aside>
 
     <!-- =================================================================
-         CỘT CHÍNH (CENTER): SÂN KHẤU VIDEO 9:16 + ĐỀ XUẤT + BÌNH LUẬN
+         CỘT CHÍNH (CENTER): SÂN KHẤU VIDEO 9:16 + KHO VIDEO ĐỀ XUẤT PHÂN TRANG
          ================================================================= -->
     <section class="main-column">
 
-      <!-- Sân khấu Trình phát Video (Khung 9:16 dọc + 2 Dải tương tác 2 bên) -->
+      <!-- Sân khấu Trình phát Video -->
       <div class="player-stage" id="playerStage">
-        <!-- Lớp nền Ambient mờ tự động theo Poster -->
         <div class="stage-ambient-bg" id="stageAmbientBg"></div>
-
-        <!-- Panel phụ bên trái khung 9:16 (Lấp đầy khoảng trống sân khấu) -->
-        <div class="stage-side-info">
-          <div class="stage-card">
-            <div class="stage-live-pill">
-              <span class="status-dot"></span> SERVER VIP #1
-            </div>
-            <div class="stage-stat-num" id="stageViewers">1,428</div>
-            <div class="stage-stat-label">Người đang xem cùng bạn</div>
-            <div class="stage-divider"></div>
-            <div class="stage-meta-item">🎞️ Định dạng: <strong>9:16 Full HD</strong></div>
-            <div class="stage-meta-item">🔊 Âm thanh: <strong>Gốc + AI Sub</strong></div>
-            <div class="stage-meta-item">⚡ Tốc độ: <strong>Cloudflare CDN</strong></div>
-          </div>
-        </div>
 
         <!-- Khung Video 9:16 Chính Giữa -->
         <div class="player-wrapper">
@@ -144,7 +92,7 @@
             Trình duyệt của bạn không hỗ trợ phát video này.
           </video>
 
-          <!-- Overlay giả lập kích thích bấm -->
+          <!-- Overlay nút Play -->
           <div id="playerOverlay" class="player-overlay">
             <div class="quality-pill">HD 1080P • FULL</div>
 
@@ -161,7 +109,7 @@
           <div id="playerSpinner" class="player-spinner"></div>
         </div>
 
-        <!-- Panel nút dọc bên phải khung 9:16 (Kiểu TikTok / Reels PC) -->
+        <!-- Panel nút dọc bên phải khung 9:16 -->
         <div class="stage-side-actions">
           <button class="dock-btn" id="prevVideoBtn" title="Video trước">
             <div class="dock-icon">⏮</div>
@@ -172,11 +120,11 @@
             <span>Tiếp theo</span>
           </button>
           <button class="dock-btn" id="dockLikeBtn" title="Yêu thích">
-            <div class="dock-icon">❤️</div>
-            <span id="dockLikesCount">18.4K</span>
+            <div class="dock-icon">♥</div>
+            <span id="dockLikesCount">Thích</span>
           </button>
           <button class="dock-btn" id="dockShareBtn" title="Chia sẻ">
-            <div class="dock-icon">↗️</div>
+            <div class="dock-icon">↗</div>
             <span>Chia sẻ</span>
           </button>
         </div>
@@ -185,16 +133,14 @@
       <!-- Tiêu đề & Thông số Video -->
       <div class="video-details">
         <div class="video-category-row">
-          <span class="cat-badge" id="videoCategory">⚡ MEDIA STREAM HUB</span>
-          <span class="verified-stream">✓ Sẵn sàng phát sóng</span>
+          <span class="cat-badge" id="videoCategory">BẢN TIN 3D</span>
+          <span class="verified-stream">Full HD 1080p</span>
         </div>
         <h1 class="video-title" id="videoTitle">Sẵn sàng phát sóng clip mới</h1>
-        <p class="video-desc" id="videoDesc">Hệ thống đang ở trạng thái sạch. Hãy gửi video vào Telegram Bot hoặc Web Admin để tự động xử lý và phát sóng tại đây!</p>
+        <p class="video-desc" id="videoDesc">Bản tin hoạt hình 3D Thỏ & Gấu cập nhật liên tục.</p>
         <div class="video-meta-row">
           <div class="meta-stats">
-            <span id="videoViews">0 lượt xem</span>
-            <span>•</span>
-            <span id="videoDate">Chờ nạp clip</span>
+            <span id="videoDate">Mới cập nhật</span>
           </div>
         </div>
       </div>
@@ -205,7 +151,7 @@
           <svg viewBox="0 0 24 24">
             <path d="M14 9V5a3 3 0 0 0-3-3l-4 9v11h11.28a2 2 0 0 0 2-1.7l1.38-9a2 2 0 0 0-2-2.3zM7 22H4a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h3"></path>
           </svg>
-          <span id="videoLikes">18.4K</span>
+          <span id="videoLikes">Thích</span>
         </button>
 
         <button class="action-btn" id="shareBtn">
@@ -239,28 +185,28 @@
                 <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
               </svg>
             </div>
-            <div class="author-sub">1.2M người theo dõi • Hoạt hình Tin tức 3D Pixar cập nhật liên tục</div>
+            <div class="author-sub">Hoạt hình tin tức 3D cập nhật liên tục mỗi ngày</div>
           </div>
         </div>
-        <button class="follow-btn" id="followBtn">Đã theo dõi ✓</button>
+        <button class="follow-btn" id="followBtn">Theo dõi</button>
       </div>
 
       <!-- KHU VỰC VIDEO ĐỀ XUẤT LIÊN QUAN -->
       <section class="suggested-section" id="suggestedSection">
         <div class="section-heading">
           <div style="display:flex; align-items:center; gap:8px;">
-            <span>🐰🐻 KHO BẢN TIN 3D THỎ & GẤU TIẾP THEO</span>
+            <span>KHO BẢN TIN 3D TIẾP THEO</span>
             <span class="badge-total-clips" id="totalClipsBadge">0 Clip</span>
           </div>
           <span class="section-sub" id="paginationStatus">Trang 1 / 1</span>
         </div>
 
-        <!-- BỘ LỌC DANH MỤC (HỖ TRỢ KHI LÊN 20 - 100 CLIP) -->
+        <!-- BỘ LỌC DANH MỤC -->
         <div class="category-tabs-bar" id="categoryTabsBar">
-          <button type="button" class="cat-tab-btn active" data-cat="all">🌟 Tất cả bản tin 3D</button>
-          <button type="button" class="cat-tab-btn" data-cat="hot">🐰🐻 Vũ trụ Thỏ & Gấu</button>
-          <button type="button" class="cat-tab-btn" data-cat="chill">🏔️ 24H Khám Phá & Du Lịch</button>
-          <button type="button" class="cat-tab-btn" data-cat="news">⚽ 24H Bóng Đá & Thể Thao</button>
+          <button type="button" class="cat-tab-btn active" data-cat="all">Tất cả</button>
+          <button type="button" class="cat-tab-btn" data-cat="hot">Thỏ & Gấu 3D</button>
+          <button type="button" class="cat-tab-btn" data-cat="chill">Khám Phá & Du Lịch</button>
+          <button type="button" class="cat-tab-btn" data-cat="news">Bóng Đá & Thể Thao</button>
         </div>
 
         <div id="suggestedGrid" class="suggested-grid">
@@ -273,88 +219,31 @@
         </div>
       </section>
 
-      <!-- Bình luận người dùng -->
-      <section class="comments-section">
-        <div class="comments-header">
-          <span class="comments-title">💬 Bình luận nổi bật (386)</span>
-          <span class="comments-sort">Mới nhất ↓</span>
-        </div>
-        <div class="comment-list">
-          <div class="comment-item">
-            <img class="comment-avatar" src="assets/img/avatar_bunny.jpg" alt="User">
-            <div class="comment-body">
-              <div class="comment-user">Minh Hoàng <span class="user-badge">Fan cứng</span></div>
-              <div class="comment-text">Bản tin 3D Thỏ & Gấu xem cuốn thật sự, giọng đọc rõ nét, xem trên web này mượt hơn hẳn 👍</div>
-              <div class="comment-time">4 phút trước • Thích (42)</div>
-            </div>
-          </div>
-
-          <div class="comment-item">
-            <img class="comment-avatar" src="assets/img/avatar_bear.jpg" alt="User">
-            <div class="comment-body">
-              <div class="comment-user">Phương Ly</div>
-              <div class="comment-text">Thỏ Đỏ với Gấu Béo dễ thương xỉu, bấm mấy tập đề xuất bên dưới tập nào cũng nét căng Full HD luôn!</div>
-              <div class="comment-time">11 phút trước • Thích (19)</div>
-            </div>
-          </div>
-
-          <div class="comment-item">
-            <img class="comment-avatar" src="assets/img/avatar_sport.jpg" alt="User">
-            <div class="comment-body">
-              <div class="comment-user">Tuấn Anh Lê</div>
-              <div class="comment-text">Xem tin tức kiểu hoạt hình 3D này vừa dễ hiểu vừa giải trí, hóng ad ra thêm nhiều tập mới mỗi ngày nhé!</div>
-              <div class="comment-time">23 phút trước • Thích (8)</div>
-            </div>
-          </div>
-        </div>
-      </section>
-
     </section>
 
     <!-- =================================================================
-         CỘT BÊN PHẢI (360px): BẢNG XẾP HẠNG CLIP + PHÒNG CHAT TRỰC TIẾP
+         CỘT BÊN PHẢI (360px): TOP 8 CLIP NỔI BẬT + TỪ KHÓA
          ================================================================= -->
     <aside class="sidebar-right">
       <div class="sidebar-sticky-inner">
 
-        <!-- Widget 1: Bảng xếp hạng Top Clip Nóng 24H -->
+        <!-- Widget 1: Top 8 Clip Nổi Bật -->
         <div class="widget-box">
           <div class="widget-header-row">
-            <h3 class="widget-title">
-              <span class="icon-hot">🏆</span> BẢNG XẾP HẠNG CLIP 24H
-            </h3>
-            <span class="live-tag">TOP VIEW</span>
+            <h3 class="widget-title">CLIP NỔI BẬT</h3>
+            <span class="live-tag">TOP 8</span>
           </div>
           <div id="trendingList" class="trending-list">
-            <!-- Render tự động có số thứ tự #1, #2, #3 từ config.js -->
+            <!-- Render tối đa 8 clip nổi bật từ app.js -->
           </div>
         </div>
 
-        <!-- Widget 2: Phòng Chat Trực Tiếp (Live Chat sôi động) -->
-        <div class="widget-box live-chat-box">
-          <div class="widget-header-row">
-            <h3 class="widget-title">
-              <span class="status-dot"></span> TRÒ CHUYỆN TRỰC TIẾP
-            </h3>
-            <span class="chat-count">Đang hoạt động</span>
-          </div>
-
-          <div class="live-chat-messages" id="liveChatMessages">
-            <!-- Tin nhắn live tự động cập nhật -->
-          </div>
-
-          <form class="live-chat-form" id="liveChatForm">
-            <input type="text" id="liveChatInput" placeholder="Nhập bình luận trực tiếp..." autocomplete="off">
-            <button type="submit">Gửi</button>
-          </form>
-        </div>
-
-        <!-- Widget 3: Từ khóa xu hướng -->
+        <!-- Widget 2: Từ khóa xu hướng -->
         <div class="widget-box">
-          <h3 class="widget-title">🏷️ TỪ KHÓA ĐANG LÊN XU HƯỚNG</h3>
+          <h3 class="widget-title">CHỦ ĐỀ NỔI BẬT</h3>
           <div class="hot-tags-wrap" id="hotTagsWrap">
             <span class="tag-chip">#VuTruThoVaGau3D</span>
-            <span class="tag-chip">#BanTin3DPixar</span>
+            <span class="tag-chip">#BanTin3D</span>
             <span class="tag-chip">#24hTinNong</span>
             <span class="tag-chip">#24hKhamPha</span>
             <span class="tag-chip">#ThoNews247</span>
@@ -370,6 +259,6 @@
   <!-- Scripts -->
   <script src="config.js"></script>
   <script src="assets/js/deeplink.js"></script>
-  <script src="assets/js/app.js?v=20261125"></script>
+  <script src="assets/js/app.js?v=20261125b"></script>
 </body>
 </html>

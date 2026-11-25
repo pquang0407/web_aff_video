@@ -133,12 +133,14 @@ document.addEventListener("DOMContentLoaded", function () {
 
     if (videoTitle) videoTitle.textContent = videoData.title;
     if (videoDesc) videoDesc.textContent = videoData.description || "";
-    if (videoCategory) videoCategory.textContent = videoData.category || "🔥 ĐANG THỊNH HÀNH";
-    if (videoViews) videoViews.textContent = `${videoData.views} lượt xem`;
-    if (videoDate) videoDate.textContent = videoData.uploadDate;
-    if (videoDuration) videoDuration.textContent = videoData.duration;
-    if (videoLikes) videoLikes.textContent = videoData.likes;
-    if (dockLikesCount) dockLikesCount.textContent = videoData.likes;
+    if (videoCategory) {
+      const cleanCat = String(videoData.category || "BẢN TIN 3D")
+        .replace(/[\u{1F300}-\u{1FAFF}\u{2600}-\u{27BF}\uFE0F]/gu, "")
+        .trim();
+      videoCategory.textContent = cleanCat || "BẢN TIN 3D";
+    }
+    if (videoDate) videoDate.textContent = videoData.uploadDate || "Mới cập nhật";
+    if (videoDuration) videoDuration.textContent = videoData.duration || "--:--";
 
     // Cập nhật Poster & Ambient Background thông minh (không bị ảnh chết)
     const smartPoster = getSmartPoster(videoData);
@@ -372,8 +374,8 @@ document.addEventListener("DOMContentLoaded", function () {
         <div class="card-body">
           <h4 class="card-title">${vid.title}</h4>
           <div class="card-meta">
-            <span>👁️ ${vid.views}</span>
-            <span>${vid.uploadDate}</span>
+            <span>${vid.duration || "00:46"}</span>
+            <span>${vid.uploadDate || "Mới cập nhật"}</span>
           </div>
         </div>
       `;
@@ -484,7 +486,7 @@ document.addEventListener("DOMContentLoaded", function () {
       </div>
       <div class="trending-info">
         <h5 class="trending-title">${vid.title}</h5>
-        <div class="trending-views">${vid.views} lượt xem • ${isCurrent ? "<strong style='color:#00ff88'>Đang phát</strong>" : vid.uploadDate}</div>
+        <div class="trending-views">${isCurrent ? "<strong style='color:#00ff88'>Đang phát</strong>" : (vid.uploadDate || "Mới cập nhật")}</div>
       </div>
     `;
 
@@ -521,28 +523,22 @@ document.addEventListener("DOMContentLoaded", function () {
       return;
     }
 
-    function parseMetricNumber(val) {
-      const s = String(val || "0").trim().toUpperCase();
-      const num = parseFloat(s.replace(/[^0-9.]/g, "")) || 0;
-      if (s.includes("M")) return num * 1000000;
-      if (s.includes("K")) return num * 1000;
-      return num;
-    }
+    const SIDEBAR_MAX_ITEMS = 8;
 
-    // Cột Trái: Bản tin mới nhất (đánh số liên tiếp #1, #2, #3...)
+    // Cột Trái: Top 8 Bản tin mới nhất (đánh số liên tiếp #1..#8, gọn đẹp không kéo dài trang)
     if (leftVideoList) {
-      uniqueKeys.forEach((key, index) => {
+      uniqueKeys.slice(0, SIDEBAR_MAX_ITEMS).forEach((key, index) => {
         const vid = CONFIG.videos[key];
         leftVideoList.appendChild(createSidebarVideoItem(vid, key, index + 1));
       });
     }
 
-    // Cột Phải: Bảng Xếp Hạng Top View 24H (xếp theo lượt xem cao nhất, đánh số liên tiếp #1, #2, #3...)
+    // Cột Phải: Top 8 Clip nổi bật khác (ưu tiên clip tiếp theo nếu đủ, đánh số liên tiếp #1..#8)
     if (trendingList) {
-      const topViewKeys = [...uniqueKeys].sort((a, b) => {
-        return parseMetricNumber(CONFIG.videos[b]?.views) - parseMetricNumber(CONFIG.videos[a]?.views);
-      });
-      topViewKeys.forEach((key, index) => {
+      const rightPool = uniqueKeys.length > SIDEBAR_MAX_ITEMS
+        ? uniqueKeys.slice(SIDEBAR_MAX_ITEMS, SIDEBAR_MAX_ITEMS * 2)
+        : uniqueKeys.slice(0, SIDEBAR_MAX_ITEMS);
+      rightPool.forEach((key, index) => {
         const vid = CONFIG.videos[key];
         trendingList.appendChild(createSidebarVideoItem(vid, key, index + 1));
       });
@@ -564,7 +560,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     if (/bóng đá|u17|u23|đội tuyển|sân cỏ|cầu thủ|bàn thắng|v-league|world cup|thể thao|chạy bộ|gym/.test(text)) {
       return {
-        badge: "⚽ THỂ THAO",
+        badge: "THỂ THAO",
         items: [
           { title: "Giày Đá Bóng Sân Cỏ Nhân Tạo Nike / Chính Hãng", tag: "Bán chạy Shopee", subtitle: "Freeship + Hoàn tiền Thỏ", img: "https://images.unsplash.com/photo-1511886929837-354d827aae26?w=240&auto=format&fit=crop&q=80", url: buildShopeeAffSearchUrl("giày đá bóng nam chính hãng") },
           { title: "Áo Đấu Đội Tuyển & Câu Lạc Bộ Bản Đẹp", tag: "Hot Trend", subtitle: "Vải mè Thái thoáng mát", img: "https://images.unsplash.com/photo-1580087256394-dc596e1c8f4f?w=240&auto=format&fit=crop&q=80", url: buildShopeeAffSearchUrl("áo bóng đá đội tuyển") },
@@ -575,7 +571,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     if (/hoàng tử bé|sách|truyện|lịch sử|nhà ngô|bùi thị xuân|thời tống|kinh đô|đọc sách|tác phẩm/.test(text)) {
       return {
-        badge: "📚 SÁCH HAY",
+        badge: "SÁCH HAY",
         items: [
           { title: "Sách Hoàng Tử Bé (Bản In Màu Bìa Cứng)", tag: "Bestseller", subtitle: "Giảm tới 30% + Hoàn tiền", img: "https://images.unsplash.com/photo-1512820790803-83ca734da794?w=240&auto=format&fit=crop&q=80", url: buildShopeeAffSearchUrl("sách Hoàng Tử Bé") },
           { title: "Sách Lịch Sử & Văn Hóa Kinh Điển", tag: "Shopee Mall", subtitle: "Sách chính hãng NXB Trẻ / Nhã Nam", img: "https://images.unsplash.com/photo-1495446815901-a7297e633e8d?w=240&auto=format&fit=crop&q=80", url: buildShopeeAffSearchUrl("sách lịch sử việt nam hay") },
@@ -586,7 +582,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     if (/con giáp|giàu sang|tài lộc|phong thủy|vận may|đổi vận|may mắn|viên mãn/.test(text)) {
       return {
-        badge: "✨ PHONG THỦY",
+        badge: "PHONG THỦY",
         items: [
           { title: "Vòng Tay Đá Phong Thủy Hút Tài Lộc", tag: "Bán chạy Shopee", subtitle: "Đủ mệnh Kim - Mộc - Thủy - Hỏa - Thổ", img: "https://images.unsplash.com/photo-1611591437281-460bfbe1220a?w=240&auto=format&fit=crop&q=80", url: buildShopeeAffSearchUrl("vòng tay đá phong thủy tài lộc") },
           { title: "Ví Da Nam Nữ Dáng Dài Giữ Lộc", tag: "Deal Hot", subtitle: "Da thật cao cấp, nhiều ngăn", img: "https://images.unsplash.com/photo-1627123424574-724758594e93?w=240&auto=format&fit=crop&q=80", url: buildShopeeAffSearchUrl("ví da nam nữ cao cấp") },
@@ -597,7 +593,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     if (/du lịch|khám phá|á đinh|tứ xuyên|khai phong|công viên|biển|núi|tàu cao tốc|phượt/.test(text)) {
       return {
-        badge: "✈️ DU LỊCH",
+        badge: "DU LỊCH",
         items: [
           { title: "Balo Du Lịch Chống Nước Đa Năng", tag: "Bán chạy Shopee", subtitle: "Đựng laptop + quần áo 3-5 ngày", img: "https://images.unsplash.com/photo-1553062407-98eeb64c6a62?w=240&auto=format&fit=crop&q=80", url: buildShopeeAffSearchUrl("balo du lịch chống nước") },
           { title: "Vali Kéo Du Lịch Size 20 Chống Vỡ", tag: "Shopee Mall", subtitle: "Khóa số TSA an toàn đi máy bay", img: "https://images.unsplash.com/photo-1565026057447-bc90a3dceb87?w=240&auto=format&fit=crop&q=80", url: buildShopeeAffSearchUrl("vali kéo du lịch size 20") },
@@ -608,7 +604,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     if (/không khí lạnh|mưa|rét|thời tiết|sức khỏe|bệnh|ăn|uống|ẩm thực|nướng|gia đình|vợ|chồng/.test(text)) {
       return {
-        badge: "🏠 ĐỜI SỐNG",
+        badge: "ĐỜI SỐNG",
         items: [
           { title: "Áo Khoác Gió Giữ Nhiệt Chống Nước", tag: "Bán chạy Shopee", subtitle: "Form đẹp mặc đôi nam nữ", img: "https://images.unsplash.com/photo-1551028719-00167b16eac5?w=240&auto=format&fit=crop&q=80", url: buildShopeeAffSearchUrl("áo khoác gió giữ nhiệt") },
           { title: "Bình Giữ Nhiệt Inox 304 LocknLock", tag: "Shopee Mall", subtitle: "Giữ nóng lạnh suốt 12 giờ", img: "https://images.unsplash.com/photo-1602143407151-7111542de6e8?w=240&auto=format&fit=crop&q=80", url: buildShopeeAffSearchUrl("bình giữ nhiệt inox 304") },
@@ -618,7 +614,7 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     return {
-      badge: "🛍️ SHOPEE HOT",
+      badge: "SHOPEE HOT",
       items: [
         { title: "Tai Nghe Bluetooth Chống Ồn Pin Trâu", tag: "Bán chạy Shopee", subtitle: "Âm thanh nổi xem clip cực đã", img: "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=240&auto=format&fit=crop&q=80", url: buildShopeeAffSearchUrl("tai nghe bluetooth chống ồn") },
         { title: "Giá Đỡ Điện Thoại Xoay 360° Để Bàn", tag: "Deal 1K - 29K", subtitle: "Hợp kim chắc chắn xem video rảnh tay", img: "https://images.unsplash.com/photo-1586953208448-b95a79798f07?w=240&auto=format&fit=crop&q=80", url: buildShopeeAffSearchUrl("giá đỡ điện thoại để bàn") },
@@ -632,7 +628,7 @@ document.addEventListener("DOMContentLoaded", function () {
     relatedProductsList.innerHTML = "";
 
     const prebuilt = Array.isArray(videoData?.relatedProducts) && videoData.relatedProducts.length > 0
-      ? { badge: "🎯 SÁT CHỦ ĐỀ", items: videoData.relatedProducts }
+      ? { badge: "SÁT CHỦ ĐỀ", items: videoData.relatedProducts }
       : getContextualFallbackProducts(videoData);
 
     if (relatedTopicBadge) {
@@ -653,7 +649,7 @@ document.addEventListener("DOMContentLoaded", function () {
           <div class="flash-prod-title">${prod.title}</div>
           <div style="font-size:11px; color: var(--text-muted); margin-top:2px;">${prod.subtitle || "Top bán chạy trên Shopee"}</div>
           <div class="flash-sold-row" style="margin-top:6px;">
-            <span style="color:#ff9f43; font-weight:600;">🔥 ${prod.tag || "Bán chạy"}</span>
+            <span style="color:#ff9f43; font-weight:600;">${prod.tag || "Bán chạy"}</span>
             <span class="flash-buy-btn">XEM GIÁ</span>
           </div>
         </div>
@@ -812,10 +808,9 @@ document.addEventListener("DOMContentLoaded", function () {
 
   function syncLikeUI() {
     const isLiked = likedVideoIds.has(currentVideoId);
-    const baseLikes = CONFIG.videos?.[currentVideoId]?.likes || "18.4K";
-    const displayLikes = isLiked ? formatLikeDelta(baseLikes, 1) : baseLikes;
-    if (videoLikes) videoLikes.textContent = displayLikes;
-    if (dockLikesCount) dockLikesCount.textContent = displayLikes;
+    const label = isLiked ? "Đã thích" : "Thích";
+    if (videoLikes) videoLikes.textContent = label;
+    if (dockLikesCount) dockLikesCount.textContent = label;
     if (likeBtn) likeBtn.classList.toggle("active", isLiked);
     if (dockLikeBtn) {
       dockLikeBtn.classList.toggle("active", isLiked);
@@ -901,11 +896,9 @@ document.addEventListener("DOMContentLoaded", function () {
   if (dockVoucherBtn) dockVoucherBtn.addEventListener("click", () => triggerAffiliateAction());
   if (stagePromoCard) stagePromoCard.addEventListener("click", () => triggerAffiliateAction());
 
-  // Khởi chạy toàn bộ ứng dụng
+  // Khởi chạy toàn bộ ứng dụng (không mô phỏng bình luận/người xem giả)
   initCategoryTabs();
   loadMainVideo(currentVideoId, false);
   syncLikeUI();
   renderLeftSidebarWidgets();
-  initLiveChat();
-  initLiveTimers();
 });
